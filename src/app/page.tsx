@@ -1,9 +1,22 @@
-import styles from './page.module.css';
+'use client';
+
+import styled from 'styled-components';
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Hello Makchata!</h1>
-    </main>
+    <Container>
+      <Title>Hello Makchata!</Title>
+    </Container>
   );
 }
+
+const Container = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Title = styled.h1`
+  color: #cb4154;
+`;
