@@ -30,6 +30,8 @@ jobs:
         run: npm run lint
       - name: Compile to check syntax
         run: npm run check
+      - name: Format
+        run: npm run format
       - name: Build
         run: npm run build
       - run: echo "🍏 This job's status is ${{ job.status }}."
