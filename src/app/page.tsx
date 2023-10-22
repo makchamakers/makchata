@@ -5,6 +5,7 @@ import { alarmState } from '@/recoil/alarm';
 import styled from 'styled-components';
 import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
+import { useEffect, useRef } from 'react';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
@@ -13,6 +14,7 @@ export default function Home() {
     setAlarm(!alarm);
   };
   const currentTime = new Date();
+  let progress = 0;
 
   function updateCurrentTime() {
     const makchaTime = new Date('Sun Oct 22 2023 24:00:00 GMT+0900');
@@ -20,10 +22,9 @@ export default function Home() {
 
     const timeDifference = makchaTime.getTime() - updatedCurrentTime.getTime();
     const totalTime = makchaTime.getTime() - currentTime.getTime();
-    const progress = timeDifference / totalTime;
+    progress = timeDifference / totalTime;
 
     console.log(progress);
-    return progress;
   }
 
   // 맨 처음에 한 번 실행
@@ -33,11 +34,23 @@ export default function Home() {
   setInterval(updateCurrentTime, 60000);
 
   //게이지 기본 속성값
-  const RADIUS = 60;
-  const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+  const RADIUS = 50;
+  // const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
 
   //현재 남은 시간 게이지
-  // const timeGage = ()
+  // const timeGage = progress / 100;
+
+  // circle svg 저장용
+  const barRef = useRef<SVGCircleElement | null>(null);
+
+  useEffect(() => {
+    if (barRef.current) {
+      // strokeDashoffset 시작 위치 설정
+      // strokeDasharray는 dash의 길이와 간격 설정
+      barRef.current.style.strokeDashoffset = '0';
+      barRef.current.style.strokeDasharray = '0, 0';
+    }
+  }, []);
 
   return (
     <Container>
@@ -86,10 +99,22 @@ export default function Home() {
                 className="frame"
                 cx="60"
                 cy="60"
-                r="54"
-                strokeWidth="12"
+                r={RADIUS}
+                strokeWidth="15"
               />
-              <circle className="bar" cx="60" cy="60" r="54" strokeWidth="12" />
+              <circle
+                ref={barRef}
+                className="bar"
+                cx="60"
+                cy="60"
+                r={RADIUS}
+                stroke="#4194F1"
+                strokeWidth="15"
+                strokeDasharray="0"
+                strokeDashoffset="0, 0"
+                fill="none"
+                strokeLinecap="round"
+              />
             </svg>
             <p></p>
           </AlarmGage>
