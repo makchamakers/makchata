@@ -19,9 +19,16 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        "additionalHooks": "useRecoilCallback"
+      }
+    ]
   }
 }

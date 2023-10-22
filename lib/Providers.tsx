@@ -3,6 +3,7 @@
 import React from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { RecoilRoot } from 'recoil';
 
 type Props = {
   children: React.ReactNode;
@@ -22,10 +23,12 @@ function Providers({ children }: Props) {
   );
 
   return (
-    <QueryClientProvider client={client}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <RecoilRoot>
+      <QueryClientProvider client={client}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 }
 
