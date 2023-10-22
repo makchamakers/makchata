@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import BackBtn from '@/components/route/common/BackBtn';
+import Map from '@/components/route/summary/Map';
 
 export default function Summary() {
   return (
@@ -12,7 +13,7 @@ export default function Summary() {
           한눈에 보여줄게요!
         </p>
       </Header>
-      <Map>이동경로 지도</Map>
+      <Map />
     </Container>
   );
 }
@@ -30,12 +31,4 @@ const Header = styled.header`
     font-weight: 700;
     line-height: 34px;
   }
-`;
-
-const Map = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 453px;
-  background-color: #b7b7b7;
 `;
