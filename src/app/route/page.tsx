@@ -3,15 +3,22 @@
 import styled from 'styled-components';
 import Summary from '@/components/route/Summary';
 import AlarmModal from '@/components/route/AlarmModal';
+import { useState } from 'react';
 
-export default function page() {
+export default function Page() {
+  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
+
   return (
     <Container>
       <Summary />
       <FixedBtn>
-        <button type="button">이 경로로 알림 설정하기</button>
+        <button type="button" onClick={() => setIsAlarmModalOpen(true)}>
+          이 경로로 알림 설정하기
+        </button>
       </FixedBtn>
-      <AlarmModal />
+      {isAlarmModalOpen && (
+        <AlarmModal setIsAlarmModalOpen={setIsAlarmModalOpen} />
+      )}
     </Container>
   );
 }
@@ -21,6 +28,11 @@ const Container = styled.div`
     background-color: transparent;
     border: none;
     outline: none;
+    cursor: pointer;
+  }
+
+  li {
+    list-style: none;
   }
 `;
 
