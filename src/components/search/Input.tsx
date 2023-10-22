@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 
-const Input = () => {
+const Input = ({ defaultLocation }: { defaultLocation: string }) => {
   return (
     <div>
-      <StartInput />
+      <StartInput defaultValue={defaultLocation} />
     </div>
   );
 };
