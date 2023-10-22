@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <Container>
       <Title>Hello Makchata!</Title>
+      <button onClick={() => setTest([...test, '2'])}>Click</button>
     </Container>
   );
 }
