@@ -18,6 +18,7 @@ const ChipButton = ({ text, onClick }: IChipButton) => {
 const Button = styled.button`
   display: flex;
   padding: 4px 8px;
+  white-space: nowrap;
   align-items: center;
   border-radius: 30px;
   background: #e8ebed;
