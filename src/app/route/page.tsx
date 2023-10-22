@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import Summary from '@/components/route/Summary';
+import Summary from '@/components/route/summary/Summary';
 import AlarmModal from '@/components/route/AlarmModal';
 import { useState } from 'react';
 
