@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import BackBtn from '@/components/route/common/BackBtn';
 import Map from '@/components/route/summary/Map';
+import BottomSheet from '@/components/route/BottomSheet';
 
 export default function Summary() {
   return (
@@ -14,6 +15,7 @@ export default function Summary() {
         </p>
       </Header>
       <Map />
+      <BottomSheet />
     </Container>
   );
 }
