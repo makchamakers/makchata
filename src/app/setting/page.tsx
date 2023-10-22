@@ -5,6 +5,7 @@
 import { useRouter } from 'next/navigation';
 import ArrowIcon from './ArrowIcon';
 import styled from 'styled-components';
+import NavigationBar from '@/components/NavigationBar';
 
 const menu = ['즐겨찾기 관리', '알람 주기 관리'];
 
@@ -40,6 +41,7 @@ export default function setting() {
           ))}
         </ul>
       </main>
+      <NavigationBar />
     </Container>
   );
 }
