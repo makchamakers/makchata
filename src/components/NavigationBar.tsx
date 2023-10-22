@@ -51,7 +51,7 @@ const Container = styled.nav`
   border-top: 1px solid #ddd;
 `;
 
-const NavLink = styled.a<{ $active: boolean }>`
+const NavLink = styled.div<{ $active: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
