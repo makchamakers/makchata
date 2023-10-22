@@ -29,6 +29,7 @@
       {
         "additionalHooks": "useRecoilCallback"
       }
-    ]
+    ],
+    "react/prop-types": "off"
   }
 }
