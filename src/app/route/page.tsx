@@ -25,7 +25,6 @@ export default function Page() {
 
 const Container = styled.div`
   button {
-    background-color: transparent;
     border: none;
     outline: none;
     cursor: pointer;

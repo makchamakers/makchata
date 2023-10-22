@@ -68,6 +68,7 @@ const Title = styled.div`
   button {
     display: flex;
     align-items: flex-start;
+    background-color: transparent;
   }
 `;
 
