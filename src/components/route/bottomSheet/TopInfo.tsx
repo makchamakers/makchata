@@ -37,7 +37,7 @@ export default function CloseInfo() {
 }
 
 const Container = styled.div`
-  z-index: 10;
+  z-index: 20;
   padding: 10px 16px 20px;
   border-radius: 16px 16px 0 0;
   background-color: #f5f5f5;

@@ -38,7 +38,7 @@ const Container = styled.div`
 `;
 
 const FixedBtn = styled.div`
-  z-index: 10;
+  z-index: 20;
   position: fixed;
   bottom: 0;
 
