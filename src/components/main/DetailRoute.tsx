@@ -8,7 +8,7 @@ const DetailRoute = ({ index }: { index: number }) => {
   return (
     <div>
       <StartPoint>출발</StartPoint>
-      {subPath.map((step, index) => {
+      {subPath.map((step: any, index: any) => {
         console.log(step);
         switch (step.trafficType) {
           case 1: // Subway
