@@ -1,13 +1,13 @@
 import React from 'react';
-import mock from './detailRouteMockData.json';
-import styled from 'styled-components';
+// import mock from './detailRouteMockData.json';
+// import styled from 'styled-components';
 
-const DetailRoute = ({ index }: { index: number }) => {
-  const subPath: any = mock.result.path[index].subPath;
+const DetailRoute = () => {
+  // const subPath: any = mock.result.path[index].subPath;
 
   return (
     <div>
-      <StartPoint>출발</StartPoint>
+      {/* <StartPoint>출발</StartPoint>
       {subPath.map((step: any, index: any) => {
         console.log(step);
         switch (step.trafficType) {
@@ -37,18 +37,18 @@ const DetailRoute = ({ index }: { index: number }) => {
           default:
             return null;
         }
-      })}
+      })} */}
     </div>
   );
 };
 
 export default DetailRoute;
 
-const StartPoint = styled.p`
-  background: url('@/public/Location_on.png');
-  width: 42px;
-  height: 42px;
-`;
-const SubwayStep = styled.div``;
-const BusStep = styled.div``;
-const WalkStep = styled.div``;
+// const StartPoint = styled.p`
+//   background: url('@/public/Location_on.png');
+//   width: 42px;
+//   height: 42px;
+// `;
+// const SubwayStep = styled.div``;
+// const BusStep = styled.div``;
+// const WalkStep = styled.div``;

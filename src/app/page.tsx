@@ -138,7 +138,7 @@ export default function Home() {
           ) : (
             <>
               <h3>오늘 꼭 타야하는 막차 경로</h3>
-              <DetailRoute index={2} />
+              <DetailRoute />
             </>
           )}
         </RouteWrap>
