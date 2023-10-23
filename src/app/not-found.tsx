@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import styled from 'styled-components';
 
 export default function NotFoundPage() {
@@ -9,7 +10,9 @@ export default function NotFoundPage() {
       <SubTitle>404</SubTitle>
       <Message>길을 잃어버렸어요!</Message>
       <Image src="/crying.png" width={110} height={96} alt="crying character" />
-      <Button>홈으로 돌아가기</Button>
+      <Link href="/">
+        <Button>홈으로 돌아가기</Button>
+      </Link>
       <Footer>Copyright ⓒ MAKCHAMAKERS Co., LTD. All rights Reserved.</Footer>
     </Container>
   );
@@ -66,6 +69,7 @@ const Button = styled.button`
   border-radius: 14px;
   border: none;
   box-shadow: none;
+  cursor: pointer;
 `;
 
 const Footer = styled.footer`
