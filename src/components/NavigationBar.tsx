@@ -38,7 +38,7 @@ export default function NavigationBar() {
 }
 
 const Container = styled.nav`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 390px;
   height: 88px;
