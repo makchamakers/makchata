@@ -34,6 +34,7 @@ export default function Map() {
 }
 
 const Contaianer = styled.div`
+  z-index: 0;
   width: 390px;
-  height: 453px;
+  height: 442px;
 `;

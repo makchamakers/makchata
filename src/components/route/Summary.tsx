@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import BackBtn from '@/components/route/common/BackBtn';
 import Map from '@/components/route/summary/Map';
-import BottomSheet from '@/components/route/BottomSheet';
 
 export default function Summary() {
   return (
@@ -15,7 +14,6 @@ export default function Summary() {
         </p>
       </Header>
       <Map />
-      <BottomSheet />
     </Container>
   );
 }
@@ -23,10 +21,10 @@ export default function Summary() {
 const Container = styled.div``;
 
 const Header = styled.header`
-  margin: 45px 0 36px;
   padding: 0 16px;
 
   p {
+    margin-bottom: 36px;
     color: #242424;
     font-size: 24px;
     font-style: normal;

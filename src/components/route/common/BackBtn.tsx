@@ -19,6 +19,6 @@ export default function BackBtn() {
 
 const Button = styled.button`
   padding: 4px 8px;
-  margin-bottom: 24px;
+  margin: 45px 0 24px;
   background-color: transparent;
 `;
