@@ -9,7 +9,7 @@ const ArrowIcon = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
-      stroke="#AAA"
+      stroke={props.color || '#AAAAAA'}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
