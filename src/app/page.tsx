@@ -12,8 +12,14 @@ import Link from 'next/link';
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
 
+  if (alarm === false) {
+    setAlarm(alarm);
+  }
+
   const alarmSettingHandler = () => {
-    setAlarm(!alarm);
+    if (alarm === true) {
+      setAlarm(!alarm);
+    }
   };
   const currentTime = new Date();
   let progress = 0;
