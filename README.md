@@ -24,8 +24,8 @@
 
 <div style='display:flex height : 60%'>
 <div style='display:flex '>
-<img style="margin-right:15px" src="public/assets/icons/00Main_01디폴트.png" width="50%">
-<img src="public/assets/icons/01_알람설정.jpg" width="50%">
+<img style="margin-right:15px" src="public/assets/icons/00Main_01디폴트.png" width="40%">
+<img src="public/assets/icons/01_알람설정.jpg" width="40%">
 </div>
 </div>
 
