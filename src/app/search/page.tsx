@@ -10,7 +10,6 @@ import {
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRef } from 'react';
 
 const validate = (character: string) => {
   return /[ㄱ-ㅎ]|[ㅏ-ㅣ]/.test(character);
