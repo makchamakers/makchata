@@ -1,15 +1,17 @@
 'use client';
-
 import styled from 'styled-components';
 import { ALARM_TIME } from '@/constatns/route';
 import ArrowIcon from '../ArrowIcon';
 import NavigationBar from '@/components/NavigationBar';
+import Link from 'next/link';
 
 export default function AlarmSetting() {
   return (
     <>
       <Header>
-        <ArrowIcon color="#242424" />
+        <Link href="/setting">
+          <ArrowIcon color="#242424" />
+        </Link>
         <Title>알람 주기 관리</Title>
       </Header>
       <Container>
