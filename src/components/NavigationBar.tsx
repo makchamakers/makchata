@@ -38,10 +38,9 @@ export default function NavigationBar() {
 }
 
 const Container = styled.nav`
-  position: fixed;
+  position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  width: 390px;
   height: 88px;
   display: flex;
   justify-content: space-around;
