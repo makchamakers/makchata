@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import TopInfo from '@/components/route/bottomSheet/TopInfo';
 import BackBtn from '@/components/route/common/BackBtn';
 
-export default function BottomSheet() {
-  const [isBottomSheetOpen] = useState(true);
-
+interface IBotomSheetType {
+  isBottomSheetOpen: boolean;
+  setIsBottomSheetOpen: Dispatch<SetStateAction<boolean>>;
+}
+export default function BottomSheet({
+  isBottomSheetOpen,
+  setIsBottomSheetOpen,
+}: IBotomSheetType) {
   return (
-    <Container>
+    <Container $isBottomSheetOpen={isBottomSheetOpen}>
+      {isBottomSheetOpen && <BackBtn isBottomSheetOpen={isBottomSheetOpen} />}
       <div>
-        <BackBtn isBottomSheetOpen={isBottomSheetOpen} />
-        <TopInfo />
+        <TopInfo setIsBottomSheetOpen={setIsBottomSheetOpen} />
         <PathDetailInfo className="hide-scroll">
           경로 상세 정보 <br /> <br />
           <p>
@@ -51,24 +56,28 @@ export default function BottomSheet() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $isBottomSheetOpen: boolean }>`
   z-index: 10;
   width: 390px;
-  height: 100vh;
+  height: ${(props) => props.$isBottomSheetOpen && '100vh'};
   position: absolute;
   bottom: 0;
   background-color: rgba(36, 36, 36, 0.5);
 
-  > div {
+  > div:last-of-type {
     position: absolute;
     bottom: 88px;
 
     height: calc(100vh - 203px);
+
+    transform: ${(props) =>
+      props.$isBottomSheetOpen ? 'translate(0, 0)' : 'translate(0, 526px)'};
+    transition: all 0.5s ease-in-out;
   }
 `;
 
 const PathDetailInfo = styled.div`
-  height: 537px;
+  height: 100%;
   background-color: #fff;
   overflow: auto;
 `;

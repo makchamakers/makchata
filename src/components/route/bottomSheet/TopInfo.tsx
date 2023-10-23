@@ -1,11 +1,20 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import icBusBlue from 'public/assets/icons/ic_bus_blue.svg';
 import icSubGreen from 'public/assets/icons/ic_sub_green.svg';
 
-export default function CloseInfo() {
+export default function TopInfo({
+  setIsBottomSheetOpen,
+}: {
+  setIsBottomSheetOpen: Dispatch<SetStateAction<boolean>>;
+}) {
+  const handleTopInfo = () => {
+    setIsBottomSheetOpen((prev) => !prev);
+  };
+
   return (
-    <Container>
+    <Container onClick={handleTopInfo}>
       <Bar />
       <div>
         <Vihicle>
