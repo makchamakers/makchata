@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import { getCurrentLocation, getSearchResult } from '@/api/api';
 import {
   ChipButton,
   RouteCard,
@@ -9,76 +11,96 @@ import {
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 
-const mockData = {
-  departure: {
-    address: '서울 강남구 도산대로15길 11',
-    x: '127.10522081658463',
-    y: '37.35951219616309',
-  },
-  arrival: {
-    address: '서울대학교 관악캠퍼스',
-    x: '127.0329328',
-    y: '37.4978626',
-  },
+const validate = (character: string) => {
+  return /[ㄱ-ㅎ]|[ㅏ-ㅣ]/.test(character);
 };
 
 interface IResult {
-  address: string;
-  // x: string;
-  // y: string;
+  roadAddress: string;
+  x: string;
+  y: string;
 }
 
-const resultMockData: IResult[] = [
-  { address: '서울대학교 관악캠퍼스' },
-  { address: '서울 강남구 도산대로15길 11' },
-  { address: '서울 강남구 도산대로15길 11' },
-];
-
+// TODO: 컴포넌트 분리
 export default function SearchPage() {
-  const router = useRouter();
+  const timer = useRef<any>(null);
+
   const [departure, setDeparture] = useState({
     keyword: '',
     selected: '',
-    result: [{ address: '서울 강남구 도산대로15길 11' }],
+    result: [],
     isFocused: false,
   });
 
   const [arrival, setArrival] = useState({
     keyword: '',
     selected: '',
-    result: [{ address: '서울 강남구 도산대로15길 11' }],
+    result: [],
     isFocused: false,
   });
+
+  const [currentPosition, setCurrentPosition] = useState({
+    location: '',
+    lat: '',
+    long: '',
+  });
+
+  useEffect(() => {
+    const { geolocation } = navigator;
+    let latitude = '';
+    let longitude = '';
+    geolocation.getCurrentPosition(async (position) => {
+      setCurrentPosition({
+        ...currentPosition,
+        lat: position.coords.latitude.toString(),
+        long: position.coords.longitude.toString(),
+      });
+      latitude = position.coords.latitude.toString();
+      longitude = position.coords.longitude.toString();
+      await getCurrentLocation(latitude, longitude).then(
+        (res: { location: string }) => {
+          setCurrentPosition({ ...currentPosition, location: res.location });
+          setDeparture({
+            ...departure,
+            keyword: res.location,
+            selected: res.location,
+          });
+        }
+      );
+    });
+  }, []);
 
   const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
 
     if (name === 'arrival') {
-      setArrival({ ...arrival, keyword: value, result: resultMockData });
+      setArrival({ ...arrival, keyword: value });
     } else {
       setDeparture({ ...departure, keyword: value });
     }
-  };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setDeparture({
-        ...departure,
-        selected: mockData.departure.address,
-        keyword: `내위치: ${mockData.departure.address}`,
-      });
-    }, 500);
-  }, []);
-
-  useEffect(() => {
-    console.log('de', departure.selected, 'ar', arrival.selected);
-
-    if (departure.selected && arrival.selected) {
-      router.push('/route');
+    if (timer.current) clearTimeout(timer.current);
+    // if (validate(value)) return;
+    if (!value) {
+      return;
+    } else {
+      timer.current = setTimeout(() => {
+        getSearchResult(
+          value,
+          `${currentPosition.long},${currentPosition.lat}`
+        ).then((res) => {
+          //    console.log(res.address);
+          if (name === 'arrival') {
+            setArrival({ ...arrival, result: res.addresses });
+          } else {
+            setDeparture({ ...departure, result: res.addresses });
+          }
+        });
+      }, 800);
     }
-  }, [departure.selected, arrival.selected]);
+  };
 
   return (
     <Wrap>
@@ -98,12 +120,7 @@ export default function SearchPage() {
             placeholder="도착지를 입력해주세요"
             value={arrival.keyword}
             onFocus={() => setArrival({ ...arrival, isFocused: true })}
-            onBlur={() =>
-              setTimeout(
-                () => setDeparture({ ...departure, isFocused: false }),
-                200
-              )
-            }
+            onBlur={() => setArrival({ ...arrival, isFocused: false })}
             onChange={handleInput}
           />
         </div>
@@ -114,34 +131,14 @@ export default function SearchPage() {
       <ButtonWrap>
         <article>
           {/* TODO: ICON SVG, onClick 수정 */}
-          <ChipButton
-            disabled
-            text="우리집"
-            onClick={() => console.log('hi')}
-          />
-          <ChipButton disabled text="회사" onClick={() => console.log('hi')} />
-          <ChipButton
-            disabled
-            text="헬스장"
-            onClick={() => console.log('hi')}
-          />
+          <ChipButton text="우리집" onClick={() => console.log('hi')} />
+          <ChipButton text="회사" onClick={() => console.log('hi')} />
+          <ChipButton text="헬스장" onClick={() => console.log('hi')} />
         </article>
         {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
-        <ChipButton
-          disabled
-          text="장소 즐겨찾기"
-          onClick={() => console.log('hi')}
-        />
+        <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
-
-      {arrival.isFocused && arrival.keyword.includes('서울') && (
-        <Ul>
-          <PlaceCard
-            address="서울대학교 관악캠퍼스"
-            detailAddress="서울대학교 관악캠퍼스"
-          />
-        </Ul>
-      )}
+      <Ul></Ul>
 
       {!arrival.isFocused &&
         !departure.isFocused &&
@@ -149,13 +146,12 @@ export default function SearchPage() {
           <>
             <SmallTitle>최근 검색 경로</SmallTitle>
             <RouteCard
-              departure="서울대학교 관악캠퍼스"
               arrival="서울 강남구 도산대로15길 11"
+              departure="서울대학교 관악캠퍼스"
               link="/route"
             />
           </>
         )}
-
       {departure.selected && arrival.selected && (
         <ResultWrap>
           <ResultCard link="/route" />
@@ -239,7 +235,7 @@ const Ul = styled.ul`
 
 const SmallTitle = styled.p`
   color: var(--Gray_888888, #888);
-  padding: 16px;
+  padding-bottom: 16px;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;

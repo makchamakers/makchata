@@ -4,13 +4,12 @@ import Link from 'next/link';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
-  onClick: () => void;
 }
 
-const PlaceCard = ({ address, detailAddress, onClick }: IPlaceCard) => {
+const PlaceCard = ({ address, detailAddress }: IPlaceCard) => {
   return (
     <Link href="/route">
-      <Wrap onClick={onClick}>
+      <Wrap>
         <LocationSVG />
         <TitleWrap>
           <p>{address}</p>

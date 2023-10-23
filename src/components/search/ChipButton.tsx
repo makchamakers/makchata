@@ -4,11 +4,12 @@ import { MyHomeSVG } from './assets';
 interface IChipButton {
   text: string;
   onClick: () => void;
+  disabled: boolean;
 }
 
-const ChipButton = ({ text, onClick }: IChipButton) => {
+const ChipButton = ({ text, onClick, disabled }: IChipButton) => {
   return (
-    <Button onClick={onClick}>
+    <Button onClick={onClick} disabled={disabled}>
       <MyHomeSVG />
       <p>{text}</p>
     </Button>

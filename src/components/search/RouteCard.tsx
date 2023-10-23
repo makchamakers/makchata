@@ -42,6 +42,7 @@ const Wrap = styled.article`
 `;
 
 const Course = styled.div`
+  width: 100%;
   font-size: 14px;
   line-height: 20px;
 
