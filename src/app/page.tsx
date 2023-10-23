@@ -35,22 +35,11 @@ export default function Home() {
 
   //게이지 기본 속성값
   const RADIUS = 50;
-  // const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+  let dashoffset = CIRCUMFERENCE * (1 - progress);
 
   //현재 남은 시간 게이지
   // const timeGage = progress / 100;
-
-  // circle svg 저장용
-  const barRef = useRef<SVGCircleElement | null>(null);
-
-  useEffect(() => {
-    if (barRef.current) {
-      // strokeDashoffset 시작 위치 설정
-      // strokeDasharray는 dash의 길이와 간격 설정
-      barRef.current.style.strokeDashoffset = '0';
-      barRef.current.style.strokeDasharray = '0, 0';
-    }
-  }, []);
 
   return (
     <Container>
@@ -101,22 +90,29 @@ export default function Home() {
                 cy="60"
                 r={RADIUS}
                 strokeWidth="15"
+                fill="transparent"
+                stroke="#FFD9C9"
+                strokeDasharray={`${CIRCUMFERENCE * 0.65} ${
+                  CIRCUMFERENCE * 0.35
+                }`}
+                strokeDashoffset="0"
+                strokeLinecap="round"
               />
               <circle
-                ref={barRef}
+                // ref={barRef}
                 className="bar"
                 cx="60"
                 cy="60"
                 r={RADIUS}
-                stroke="#4194F1"
+                stroke="#ddd"
                 strokeWidth="15"
                 strokeDasharray="0"
-                strokeDashoffset="0, 0"
+                strokeDashoffset={dashoffset}
                 fill="none"
                 strokeLinecap="round"
               />
             </svg>
-            <p></p>
+            <AlarmTimer>00:00</AlarmTimer>
           </AlarmGage>
         </AlarmCard>
       </ContentWrapper>
@@ -229,20 +225,17 @@ const ToggleSwitch = styled.button<{ alarm: string }>`
   transition: 0.3s;
 `;
 const AlarmGage = styled.div`
+  position: relative;
   width: 120px;
   height: 120px;
-  & .circle_progress {
-    transform: rotate(-90deg);
-  }
-  & .frame,
-  & .bar {
-    fill: none;
-  }
-  & .frame {
-    stroke: #e6e6e6;
-  }
-  & .bar {
-    stroke: #03c75a;
-    stroke-linecap: round;
-  }
+`;
+
+const AlarmTimer = styled.p`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  font-size: 24px;
+  color: #aaa;
 `;
