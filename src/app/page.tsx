@@ -5,13 +5,20 @@ import { alarmState } from '@/recoil/alarm';
 import styled from 'styled-components';
 import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
-import { useEffect, useRef } from 'react';
+import exclamationMark from '/public/exclamation_mark.png';
+import Link from 'next/link';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
 
+  if (alarm === false) {
+    setAlarm(alarm);
+  }
+
   const alarmSettingHandler = () => {
-    setAlarm(!alarm);
+    if (alarm === true) {
+      setAlarm(!alarm);
+    }
   };
   const currentTime = new Date();
   let progress = 0;
@@ -35,22 +42,11 @@ export default function Home() {
 
   //게이지 기본 속성값
   const RADIUS = 50;
-  // const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+  const dashoffset = CIRCUMFERENCE * (1 - progress);
 
   //현재 남은 시간 게이지
   // const timeGage = progress / 100;
-
-  // circle svg 저장용
-  const barRef = useRef<SVGCircleElement | null>(null);
-
-  useEffect(() => {
-    if (barRef.current) {
-      // strokeDashoffset 시작 위치 설정
-      // strokeDasharray는 dash의 길이와 간격 설정
-      barRef.current.style.strokeDashoffset = '0';
-      barRef.current.style.strokeDasharray = '0, 0';
-    }
-  }, []);
 
   return (
     <Container>
@@ -68,11 +64,11 @@ export default function Home() {
           <AlarmSetting>
             <StartingPoint alarm={alarm.toString()}>
               출발지
-              <span>출발지 설정하기</span>
+              <Link href={'/search'}>출발지 설정하기</Link>
             </StartingPoint>
             <Destination alarm={alarm.toString()}>
               도착지
-              <span>도착지 설정하기</span>
+              <Link href={'/search'}>도착지 설정하기</Link>
             </Destination>
             <StartAlarm alarm={alarm.toString()}>
               <p>출발 알림</p>
@@ -101,24 +97,42 @@ export default function Home() {
                 cy="60"
                 r={RADIUS}
                 strokeWidth="15"
+                fill="transparent"
+                stroke="#FFD9C9"
+                strokeDasharray={`${CIRCUMFERENCE * 0.65} ${
+                  CIRCUMFERENCE * 0.35
+                }`}
+                strokeDashoffset="0"
+                strokeLinecap="round"
               />
               <circle
-                ref={barRef}
+                // ref={barRef}
                 className="bar"
                 cx="60"
                 cy="60"
                 r={RADIUS}
-                stroke="#4194F1"
+                stroke="#ddd"
                 strokeWidth="15"
                 strokeDasharray="0"
-                strokeDashoffset="0, 0"
+                strokeDashoffset={dashoffset}
                 fill="none"
                 strokeLinecap="round"
               />
             </svg>
-            <p></p>
+            <AlarmTimer>00:00</AlarmTimer>
           </AlarmGage>
         </AlarmCard>
+        <RouteWrap>
+          <InfoBox>
+            <Image
+              src={exclamationMark}
+              alt="alert이미지"
+              width={40}
+              height={40}
+            />
+            <p>막차 경로를 설정해주세요</p>
+          </InfoBox>
+        </RouteWrap>
       </ContentWrapper>
     </Container>
   );
@@ -152,7 +166,7 @@ const ContentWrapper = styled.div`
   position: relative;
   top: 100px;
   width: 100%;
-  height: calc(100% - 269px);
+  height: calc(100% - 265px);
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -174,13 +188,14 @@ const AlarmCard = styled.div`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const AlarmSetting = styled.div`
-  width: calc(100% - 120px);
+  width: calc(100% - 140px);
+  margin-right: 16px;
 `;
 const StartingPoint = styled.p<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
   font-size: 14px;
   font-weight: 700;
-  & span {
+  & a {
     font-weight: 300;
     padding-left: 8px;
   }
@@ -190,7 +205,7 @@ const Destination = styled.p<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
   font-size: 14px;
   font-weight: 700;
-  & span {
+  & a {
     font-weight: 300;
     padding-left: 8px;
   }
@@ -229,20 +244,33 @@ const ToggleSwitch = styled.button<{ alarm: string }>`
   transition: 0.3s;
 `;
 const AlarmGage = styled.div`
+  position: relative;
   width: 120px;
   height: 120px;
-  & .circle_progress {
-    transform: rotate(-90deg);
+`;
+
+const AlarmTimer = styled.p`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  font-size: 24px;
+  color: #aaa;
+`;
+
+const RouteWrap = styled.div``;
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 84px;
+  & img {
+    margin-bottom: 14px;
   }
-  & .frame,
-  & .bar {
-    fill: none;
-  }
-  & .frame {
-    stroke: #e6e6e6;
-  }
-  & .bar {
-    stroke: #03c75a;
-    stroke-linecap: round;
+  & p {
+    color: #aaa;
+    font-weight: 300;
   }
 `;
