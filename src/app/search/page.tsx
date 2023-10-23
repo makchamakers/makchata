@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { getCurrentLocation, getSearchResult } from '@/api/api';
 import {
   ChipButton,
   RouteCard,
@@ -11,97 +9,76 @@ import {
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
-const validate = (character: string) => {
-  return /[ㄱ-ㅎ]|[ㅏ-ㅣ]/.test(character);
+const mockData = {
+  departure: {
+    address: '서울 강남구 도산대로15길 11',
+    x: '127.10522081658463',
+    y: '37.35951219616309',
+  },
+  arrival: {
+    address: '서울대학교 관악캠퍼스',
+    x: '127.10522081658463',
+    y: '37.35951219616309',
+  },
 };
 
 interface IResult {
-  roadAddress: string;
-  x: string;
-  y: string;
+  address: string;
+  // x: string;
+  // y: string;
 }
 
-// TODO: 컴포넌트 분리
-export default function SearchPage() {
-  const timer = useRef<any>(null);
+const resultMockData: IResult[] = [
+  { address: '서울 강남구 도산대로15길 11' },
+  { address: '서울 강남구 도산대로15길 11' },
+  { address: '서울 강남구 도산대로15길 11' },
+];
 
+export default function SearchPage() {
+  const router = useRouter();
   const [departure, setDeparture] = useState({
     keyword: '',
     selected: '',
-    result: [],
+    result: [{ address: '서울 강남구 도산대로15길 11' }],
     isFocused: false,
   });
 
   const [arrival, setArrival] = useState({
     keyword: '',
     selected: '',
-    result: [],
+    result: [{ address: '서울 강남구 도산대로15길 11' }],
     isFocused: false,
   });
-
-  const [currentPosition, setCurrentPosition] = useState({
-    location: '',
-    lat: '',
-    long: '',
-  });
-
-  useEffect(() => {
-    const { geolocation } = navigator;
-    let latitude = '';
-    let longitude = '';
-    geolocation.getCurrentPosition(async (position) => {
-      setCurrentPosition({
-        ...currentPosition,
-        lat: position.coords.latitude.toString(),
-        long: position.coords.longitude.toString(),
-      });
-      latitude = position.coords.latitude.toString();
-      longitude = position.coords.longitude.toString();
-      await getCurrentLocation(latitude, longitude).then(
-        (res: { location: string }) => {
-          setCurrentPosition({ ...currentPosition, location: res.location });
-        }
-      );
-    });
-  }, []);
 
   const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
 
     if (name === 'arrival') {
-      setArrival({ ...arrival, keyword: value });
+      setArrival({ ...arrival, keyword: value, result: resultMockData });
     } else {
       setDeparture({ ...departure, keyword: value });
     }
-
-    if (timer.current) clearTimeout(timer.current);
-    if (validate(value)) return;
-    if (!value) {
-      return;
-    } else {
-      timer.current = setTimeout(() => {
-        getSearchResult(
-          value,
-          `${currentPosition.long},${currentPosition.lat}`
-        ).then((res) => {
-          console.log(res.address);
-          if (name === 'arrival') {
-            setArrival({ ...arrival, result: res.addresses });
-          } else {
-            setDeparture({ ...departure, result: res.addresses });
-          }
-        });
-      }, 500);
-    }
   };
 
-  // useEffect(() => {
-  //   if (currentPosition?.location) {
-  //     setDeparture({ ...departure, keyword: currentPosition?.location });
-  //   }
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setDeparture({
+        ...departure,
+        selected: mockData.departure.address,
+        keyword: `내위치: ${mockData.departure.address}`,
+      });
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    console.log('de', departure.selected, 'ar', arrival.selected);
+
+    if (departure.selected && arrival.selected) {
+      router.push('/route');
+    }
+  }, [departure.selected, arrival.selected]);
 
   return (
     <Wrap>
@@ -144,20 +121,22 @@ export default function SearchPage() {
           departure.result.length !== 0 &&
           departure.result.map((list: IResult, idx) => (
             <PlaceCard
-              key={list.roadAddress + list.x + list.y + idx}
-              address={list.roadAddress}
-              detailAddress={list.roadAddress}
-              link="/route"
+              key={list.address + idx}
+              address={list.address}
+              detailAddress={list.address}
+              onClick={() =>
+                setDeparture({ ...departure, selected: list.address })
+              }
             />
           ))}
         {arrival.isFocused &&
           arrival.result.length !== 0 &&
           arrival.result.map((list: IResult, idx) => (
             <PlaceCard
-              key={list.roadAddress + list.x + list.y + idx}
-              address={list.roadAddress}
-              detailAddress={list.roadAddress}
-              link="/route"
+              key={list.address + idx}
+              address={list.address}
+              detailAddress={list.address}
+              onClick={() => setArrival({ ...arrival, selected: list.address })}
             />
           ))}
       </Ul>
