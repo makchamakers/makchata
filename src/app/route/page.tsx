@@ -17,7 +17,10 @@ export default function Page() {
         </button>
       </FixedBtn>
       {isAlarmModalOpen && (
-        <AlarmModal setIsAlarmModalOpen={setIsAlarmModalOpen} />
+        <AlarmModal
+          isAlarmModalOpen={isAlarmModalOpen}
+          setIsAlarmModalOpen={setIsAlarmModalOpen}
+        />
       )}
     </Container>
   );
