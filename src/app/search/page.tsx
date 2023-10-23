@@ -114,28 +114,12 @@ export default function SearchPage() {
       <ButtonWrap>
         <article>
           {/* TODO: ICON SVG, onClick 수정 */}
-          <ChipButton
-            disabled={true}
-            text="우리집"
-            onClick={() => console.log('hi')}
-          />
-          <ChipButton
-            disabled={true}
-            text="회사"
-            onClick={() => console.log('hi')}
-          />
-          <ChipButton
-            disabled={true}
-            text="헬스장"
-            onClick={() => console.log('hi')}
-          />
+          <ChipButton text="우리집" onClick={() => console.log('hi')} />
+          <ChipButton text="회사" onClick={() => console.log('hi')} />
+          <ChipButton text="헬스장" onClick={() => console.log('hi')} />
         </article>
         {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
-        <ChipButton
-          disabled={true}
-          text="장소 즐겨찾기"
-          onClick={() => console.log('hi')}
-        />
+        <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
 
       {arrival.isFocused && arrival.keyword.includes('서울') && (
