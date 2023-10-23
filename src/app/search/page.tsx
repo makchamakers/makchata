@@ -140,24 +140,19 @@ export default function SearchPage() {
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
       <Ul>
-        <PlaceCard
-          address={'주소'}
-          detailAddress={'주소'}
-          onClick={() => {
-            console.log('hey');
-          }}
-        />
+        <PlaceCard address={'주소'} detailAddress={'주소'} link="/route" />
       </Ul>
       <Ul>
         <SmallTitle>최근 검색 경로</SmallTitle>
         <RouteCard
           arrival="서울 강남구 도산대로15길 11"
           departure="서울대학교 관악캠퍼스"
+          link="/route"
         />
       </Ul>
       <ResultWrap>
-        <ResultCard />
-        <ResultCard />
+        <ResultCard link="/route" />
+        <ResultCard link="/route" />
       </ResultWrap>
     </Wrap>
   );

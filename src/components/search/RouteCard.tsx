@@ -1,27 +1,30 @@
 import styled from 'styled-components';
 import { XSVG } from './assets';
+import Link from 'next/link';
 
 interface IRouteCard {
-  onClick?: () => void; //TODO
+  link: string;
   departure: string;
   arrival: string;
 }
 
 const RouteCard = (props: IRouteCard) => {
-  const { onClick, departure, arrival } = props;
+  const { link, departure, arrival } = props;
 
   return (
-    <Wrap onClick={onClick}>
-      <Course>
-        <p>
-          <span>출발지</span> {departure}
-        </p>
-        <p>
-          <span>도착지</span> {arrival}
-        </p>
-      </Course>
-      <XSVG size="8" />
-    </Wrap>
+    <Link href={link}>
+      <Wrap>
+        <Course>
+          <p>
+            <span>출발지</span> {departure}
+          </p>
+          <p>
+            <span>도착지</span> {arrival}
+          </p>
+        </Course>
+        <XSVG size="8" />
+      </Wrap>
+    </Link>
   );
 };
 export default RouteCard;

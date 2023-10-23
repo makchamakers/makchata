@@ -1,30 +1,33 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 interface IResultCard {
-  onClick?: () => void; //TODO
+  link: string;
 }
 
 const ResultCard = (props: IResultCard) => {
-  const { onClick } = props;
+  const { link } = props;
 
   return (
-    <Wrap onClick={onClick}>
-      <Header>
-        <Type>지하철</Type>
-        <Right>
-          <p>
-            막차 시간 <span>AM00:11</span>
-          </p>
-          <p>
-            소요 시간 <span>1시간 31분</span>
-          </p>
-        </Right>
-      </Header>
-      <RouteBar></RouteBar>
-      <DepartureText>
-        <span>16</span>분 뒤에 출발해야해요
-      </DepartureText>
-    </Wrap>
+    <Link href={link}>
+      <Wrap>
+        <Header>
+          <Type>지하철</Type>
+          <Right>
+            <p>
+              막차 시간 <span>AM00:11</span>
+            </p>
+            <p>
+              소요 시간 <span>1시간 31분</span>
+            </p>
+          </Right>
+        </Header>
+        <RouteBar></RouteBar>
+        <DepartureText>
+          <span>16</span>분 뒤에 출발해야해요
+        </DepartureText>
+      </Wrap>
+    </Link>
   );
 };
 
