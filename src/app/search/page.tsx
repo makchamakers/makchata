@@ -18,7 +18,7 @@ const validate = (character: string) => {
 
 // TODO: 컴포넌트 분리
 export default function SearchPage() {
-  const timer = useRef<unknown>(null);
+  // const timer = useRef<unknown>(null);
 
   const [departure, setDeparture] = useState({
     keyword: '',
@@ -81,24 +81,26 @@ export default function SearchPage() {
       setDeparture({ ...departure, keyword: value });
     }
 
-    if (timer.current) clearTimeout(timer.current);
+    // if (timer.current) {
+    //   clearTimeout(timer.current);
+    //  }
     if (validate(value)) return;
     if (!value) {
       return;
     } else {
-      timer.current = setTimeout(() => {
-        getSearchResult(
-          value,
-          `${currentPosition.long},${currentPosition.lat}`
-        ).then((res) => {
-          console.log(res.address);
-          if (name === 'arrival') {
-            setArrival({ ...arrival, result: res.addresses });
-          } else {
-            setDeparture({ ...departure, result: res.addresses });
-          }
-        });
-      }, 500);
+      // timer.current = setTimeout(() => {
+      getSearchResult(
+        value,
+        `${currentPosition.long},${currentPosition.lat}`
+      ).then((res) => {
+        console.log(res.address);
+        if (name === 'arrival') {
+          setArrival({ ...arrival, result: res.addresses });
+        } else {
+          setDeparture({ ...departure, result: res.addresses });
+        }
+      });
+      //  }, 500);
     }
   };
 
