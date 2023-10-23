@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { getCurrentLocation, getSearchResult } from '@/api/api';
@@ -10,38 +11,33 @@ import {
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useRef } from 'react';
 
 const validate = (character: string) => {
   return /[ㄱ-ㅎ]|[ㅏ-ㅣ]/.test(character);
 };
 
+interface IResult {
+  roadAddress: string;
+  x: string;
+  y: string;
+}
+
 // TODO: 컴포넌트 분리
 export default function SearchPage() {
-  // const timer = useRef<unknown>(null);
+  const timer = useRef<any>(null);
 
   const [departure, setDeparture] = useState({
     keyword: '',
     selected: '',
-    result: [
-      {
-        roadAddress: '',
-        x: '',
-        y: '',
-      },
-    ],
+    result: [],
     isFocused: false,
   });
 
   const [arrival, setArrival] = useState({
     keyword: '',
     selected: '',
-    result: [
-      {
-        roadAddress: '',
-        x: '',
-        y: '',
-      },
-    ],
+    result: [],
     isFocused: false,
   });
 
@@ -80,28 +76,32 @@ export default function SearchPage() {
       setDeparture({ ...departure, keyword: value });
     }
 
-    // if (timer.current) {
-    //   clearTimeout(timer.current);
-    //  }
+    if (timer.current) clearTimeout(timer.current);
     if (validate(value)) return;
     if (!value) {
       return;
     } else {
-      // timer.current = setTimeout(() => {
-      getSearchResult(
-        value,
-        `${currentPosition.long},${currentPosition.lat}`
-      ).then((res) => {
-        console.log(res.address);
-        if (name === 'arrival') {
-          setArrival({ ...arrival, result: res.addresses });
-        } else {
-          setDeparture({ ...departure, result: res.addresses });
-        }
-      });
-      //  }, 500);
+      timer.current = setTimeout(() => {
+        getSearchResult(
+          value,
+          `${currentPosition.long},${currentPosition.lat}`
+        ).then((res) => {
+          console.log(res.address);
+          if (name === 'arrival') {
+            setArrival({ ...arrival, result: res.addresses });
+          } else {
+            setDeparture({ ...departure, result: res.addresses });
+          }
+        });
+      }, 500);
     }
   };
+
+  // useEffect(() => {
+  //   if (currentPosition?.location) {
+  //     setDeparture({ ...departure, keyword: currentPosition?.location });
+  //   }
+  // }, []);
 
   return (
     <Wrap>
@@ -112,7 +112,6 @@ export default function SearchPage() {
             name="departure"
             placeholder="출발지를 입력해주세요"
             value={departure.keyword}
-            defaultValue={currentPosition?.location}
             onFocus={() => setDeparture({ ...departure, isFocused: true })}
             onBlur={() => setDeparture({ ...departure, isFocused: false })}
             onChange={handleInput}
@@ -141,20 +140,46 @@ export default function SearchPage() {
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
       <Ul>
-        <PlaceCard address={'주소'} detailAddress={'주소'} link="/route" />
+        {departure.isFocused &&
+          departure.result.length !== 0 &&
+          departure.result.map((list: IResult, idx) => (
+            <PlaceCard
+              key={list.roadAddress + list.x + list.y + idx}
+              address={list.roadAddress}
+              detailAddress={list.roadAddress}
+              link="/route"
+            />
+          ))}
+        {arrival.isFocused &&
+          arrival.result.length !== 0 &&
+          arrival.result.map((list: IResult, idx) => (
+            <PlaceCard
+              key={list.roadAddress + list.x + list.y + idx}
+              address={list.roadAddress}
+              detailAddress={list.roadAddress}
+              link="/route"
+            />
+          ))}
       </Ul>
-      <Ul>
-        <SmallTitle>최근 검색 경로</SmallTitle>
-        <RouteCard
-          arrival="서울 강남구 도산대로15길 11"
-          departure="서울대학교 관악캠퍼스"
-          link="/route"
-        />
-      </Ul>
-      <ResultWrap>
-        <ResultCard link="/route" />
-        <ResultCard link="/route" />
-      </ResultWrap>
+
+      {!arrival.isFocused &&
+        !departure.isFocused &&
+        (!departure.selected || !arrival.selected) && (
+          <>
+            <SmallTitle>최근 검색 경로</SmallTitle>
+            <RouteCard
+              arrival="서울 강남구 도산대로15길 11"
+              departure="서울대학교 관악캠퍼스"
+              link="/route"
+            />
+          </>
+        )}
+      {departure.selected && arrival.selected && (
+        <ResultWrap>
+          <ResultCard link="/route" />
+          <ResultCard link="/route" />
+        </ResultWrap>
+      )}
     </Wrap>
   );
 }
