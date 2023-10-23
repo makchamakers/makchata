@@ -13,9 +13,9 @@ import NavigationBar from '@/components/NavigationBar';
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
 
-  // if (alarm === false) {
-  //   setAlarm(alarm);
-  // }
+  if (alarm === false) {
+    setAlarm(alarm);
+  }
 
   const alarmSettingHandler = () => {
     if (alarm === true) {
