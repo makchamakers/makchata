@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 export default function NavigationBar() {
   const activePath = usePathname();
-  const isSetting = activePath === '/setting';
+  const isSetting = activePath.includes('/setting');
   const isHome = activePath === '/';
   const isMyPage = activePath === '/mypage';
 
