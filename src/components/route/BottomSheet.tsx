@@ -1,5 +1,15 @@
-'use client';
+import styled from 'styled-components';
+import TopInfo from '@/components/route/bottomSheet/TopInfo';
 
 export default function BottomSheet() {
-  return <div>BottomSheet</div>;
+  return (
+    <Container>
+      <TopInfo />
+    </Container>
+  );
 }
+
+const Container = styled.div`
+  position: absolute;
+  bottom: 88px;
+`;
