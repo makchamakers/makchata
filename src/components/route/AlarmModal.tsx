@@ -42,7 +42,7 @@ export default function AlarmModal({
 }
 
 const Container = styled.div`
-  z-index: 10;
+  z-index: 30;
   position: fixed;
   bottom: 0;
 

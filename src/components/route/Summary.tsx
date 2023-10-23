@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import BackBtn from '@/components/route/common/BackBtn';
 import Map from '@/components/route/summary/Map';
+import BottomSheet from '@/components/route/BottomSheet';
 
 export default function Summary() {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+
   return (
     <Container>
       <Header>
-        <BackBtn />
+        <BackBtn isBottomSheetOpen={isBottomSheetOpen} />
         <p>
           경로 정보를
           <br />
@@ -14,17 +18,23 @@ export default function Summary() {
         </p>
       </Header>
       <Map />
+      <BottomSheet
+        isBottomSheetOpen={isBottomSheetOpen}
+        setIsBottomSheetOpen={setIsBottomSheetOpen}
+      />
     </Container>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  height: 100vh;
+`;
 
 const Header = styled.header`
-  margin: 45px 0 36px;
   padding: 0 16px;
 
   p {
+    margin-bottom: 36px;
     color: #242424;
     font-size: 24px;
     font-style: normal;
