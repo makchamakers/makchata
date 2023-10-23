@@ -10,6 +10,7 @@ import {
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useRef } from 'react';
 
 const mockPlaceList = [
   {
@@ -26,8 +27,14 @@ const mockPlaceList = [
   },
 ];
 
+const validate = (character: string) => {
+  return /[ㄱ-ㅎ]|[ㅏ-ㅣ]/.test(character);
+};
+
 // TODO: 컴포넌트 분리
 export default function SearchPage() {
+  const timer = useRef<unknown>(null);
+
   const [whoIsFocused, setWhoIsFocused] = useState('');
   const [placeList, setPlaceList] = useState(mockPlaceList);
   const [coords, setCoords] = useState({
@@ -69,9 +76,24 @@ export default function SearchPage() {
     const { name, value } = event.currentTarget;
     setInput({ ...input, [name]: value });
 
-    // TODO: 장소 api 호출
     //"coordinate=127.1054328,37.3595963"
-    getSearchResult(value, `${coords.longitude},${coords.latitude}`);
+    if (timer.current) clearTimeout(timer.current);
+
+    if (validate(value)) return;
+
+    if (!value) {
+      return;
+    } else {
+      timer.current = setTimeout(() => {
+        /** call API(value).
+         *  .then(result => setState(result))
+         * 장소 목록 setState
+         */
+        getSearchResult(value, `${coords.longitude},${coords.latitude}`).then(
+          (res) => console.log(res)
+        );
+      }, 500);
+    }
   };
 
   return (
