@@ -3,7 +3,7 @@ import mock from './detailRouteMockData.json';
 import styled from 'styled-components';
 
 const DetailRoute = ({ index }: { index: number }) => {
-  const subPath = mock.result.path[index].subPath;
+  const subPath: any = mock.result.path[index].subPath;
 
   return (
     <div>
