@@ -5,7 +5,9 @@ import { alarmState } from '@/recoil/alarm';
 import styled from 'styled-components';
 import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
+import exclamationMark from '/public/exclamation_mark.png';
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
@@ -57,11 +59,11 @@ export default function Home() {
           <AlarmSetting>
             <StartingPoint alarm={alarm.toString()}>
               출발지
-              <span>출발지 설정하기</span>
+              <Link href={'/search'}>출발지 설정하기</Link>
             </StartingPoint>
             <Destination alarm={alarm.toString()}>
               도착지
-              <span>도착지 설정하기</span>
+              <Link href={'/search'}>도착지 설정하기</Link>
             </Destination>
             <StartAlarm alarm={alarm.toString()}>
               <p>출발 알림</p>
@@ -115,6 +117,17 @@ export default function Home() {
             <AlarmTimer>00:00</AlarmTimer>
           </AlarmGage>
         </AlarmCard>
+        <RouteWrap>
+          <InfoBox>
+            <Image
+              src={exclamationMark}
+              alt="alert이미지"
+              width={40}
+              height={40}
+            />
+            <p>막차 경로를 설정해주세요</p>
+          </InfoBox>
+        </RouteWrap>
       </ContentWrapper>
     </Container>
   );
@@ -148,7 +161,7 @@ const ContentWrapper = styled.div`
   position: relative;
   top: 100px;
   width: 100%;
-  height: calc(100% - 269px);
+  height: calc(100% - 265px);
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -170,13 +183,14 @@ const AlarmCard = styled.div`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 const AlarmSetting = styled.div`
-  width: calc(100% - 120px);
+  width: calc(100% - 140px);
+  margin-right: 16px;
 `;
 const StartingPoint = styled.p<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
   font-size: 14px;
   font-weight: 700;
-  & span {
+  & a {
     font-weight: 300;
     padding-left: 8px;
   }
@@ -186,7 +200,7 @@ const Destination = styled.p<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
   font-size: 14px;
   font-weight: 700;
-  & span {
+  & a {
     font-weight: 300;
     padding-left: 8px;
   }
@@ -238,4 +252,20 @@ const AlarmTimer = styled.p`
   font-weight: 600;
   font-size: 24px;
   color: #aaa;
+`;
+
+const RouteWrap = styled.div``;
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 84px;
+  & img {
+    margin-bottom: 14px;
+  }
+  & p {
+    color: #aaa;
+    font-weight: 300;
+  }
 `;
