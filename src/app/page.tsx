@@ -7,13 +7,15 @@ import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
 import exclamationMark from '/public/exclamation_mark.png';
 import Link from 'next/link';
+import DetailRoute from '@/components/main/DetailRoute';
+import NavigationBar from '@/components/NavigationBar';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
 
-  if (alarm === false) {
-    setAlarm(alarm);
-  }
+  // if (alarm === false) {
+  //   setAlarm(alarm);
+  // }
 
   const alarmSettingHandler = () => {
     if (alarm === true) {
@@ -123,16 +125,24 @@ export default function Home() {
           </AlarmGage>
         </AlarmCard>
         <RouteWrap>
-          <InfoBox>
-            <Image
-              src={exclamationMark}
-              alt="alert이미지"
-              width={40}
-              height={40}
-            />
-            <p>막차 경로를 설정해주세요</p>
-          </InfoBox>
+          {alarm === false ? (
+            <InfoBox>
+              <Image
+                src={exclamationMark}
+                alt="alert이미지"
+                width={40}
+                height={40}
+              />
+              <p>막차 경로를 설정해주세요</p>
+            </InfoBox>
+          ) : (
+            <>
+              <h3>오늘 꼭 타야하는 막차 경로</h3>
+              <DetailRoute />
+            </>
+          )}
         </RouteWrap>
+        <NavigationBar />
       </ContentWrapper>
     </Container>
   );
@@ -170,7 +180,7 @@ const ContentWrapper = styled.div`
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 116px 16px 0;
+  padding-top: 116px;
 `;
 
 const AlarmCard = styled.div`
