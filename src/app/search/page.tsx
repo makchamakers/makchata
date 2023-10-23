@@ -1,18 +1,111 @@
 'use client';
 
-import ChipButton from '@/components/search/ChipButton';
+import {
+  ChipButton,
+  RouteCard,
+  PlaceCard,
+  ResultCard,
+} from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 
-// TODO: 컴포넌트 분리
+const mockData = {
+  departure: {
+    address: '서울 강남구 도산대로15길 11',
+    x: '127.10522081658463',
+    y: '37.35951219616309',
+  },
+  arrival: {
+    address: '서울대학교 관악캠퍼스',
+    x: '127.0329328',
+    y: '37.4978626',
+  },
+};
+
+interface IResult {
+  address: string;
+  // x: string;
+  // y: string;
+}
+
+const resultMockData: IResult[] = [
+  { address: '서울대학교 관악캠퍼스' },
+  { address: '서울 강남구 도산대로15길 11' },
+  { address: '서울 강남구 도산대로15길 11' },
+];
+
 export default function SearchPage() {
+  const router = useRouter();
+  const [departure, setDeparture] = useState({
+    keyword: '',
+    selected: '',
+    result: [{ address: '서울 강남구 도산대로15길 11' }],
+    isFocused: false,
+  });
+
+  const [arrival, setArrival] = useState({
+    keyword: '',
+    selected: '',
+    result: [{ address: '서울 강남구 도산대로15길 11' }],
+    isFocused: false,
+  });
+
+  const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+
+    if (name === 'arrival') {
+      setArrival({ ...arrival, keyword: value, result: resultMockData });
+    } else {
+      setDeparture({ ...departure, keyword: value });
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDeparture({
+        ...departure,
+        selected: mockData.departure.address,
+        keyword: `내위치: ${mockData.departure.address}`,
+      });
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    console.log('de', departure.selected, 'ar', arrival.selected);
+
+    if (departure.selected && arrival.selected) {
+      router.push('/route');
+    }
+  }, [departure.selected, arrival.selected]);
+
   return (
     <Wrap>
       <Header>
         <SwitchSVG />
         <div>
-          <Input name="departure" placeholder="출발지를 입력해주세요" />
-          <Input name="arrival" placeholder="도착지를 입력해주세요" />
+          <Input
+            name="departure"
+            placeholder="출발지를 입력해주세요"
+            value={departure.keyword}
+            onFocus={() => setDeparture({ ...departure, isFocused: true })}
+            onBlur={() => setDeparture({ ...departure, isFocused: false })}
+            onChange={handleInput}
+          />
+          <Input
+            name="arrival"
+            placeholder="도착지를 입력해주세요"
+            value={arrival.keyword}
+            onFocus={() => setArrival({ ...arrival, isFocused: true })}
+            onBlur={() =>
+              setTimeout(
+                () => setDeparture({ ...departure, isFocused: false }),
+                200
+              )
+            }
+            onChange={handleInput}
+          />
         </div>
         <ResetBox>
           <XSVG />
@@ -20,13 +113,43 @@ export default function SearchPage() {
       </Header>
       <ButtonWrap>
         <article>
+          {/* TODO: ICON SVG, onClick 수정 */}
           <ChipButton text="우리집" onClick={() => console.log('hi')} />
           <ChipButton text="회사" onClick={() => console.log('hi')} />
           <ChipButton text="헬스장" onClick={() => console.log('hi')} />
         </article>
-        {/* TODO: 스타일 수정 */}
+        {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
+
+      {arrival.isFocused && arrival.keyword.includes('서울') && (
+        <Ul>
+          <PlaceCard
+            address="서울대학교 관악캠퍼스"
+            detailAddress="서울대학교 관악캠퍼스"
+          />
+        </Ul>
+      )}
+
+      {!arrival.isFocused &&
+        !departure.isFocused &&
+        (!departure.selected || !arrival.selected) && (
+          <>
+            <SmallTitle>최근 검색 경로</SmallTitle>
+            <RouteCard
+              departure="서울대학교 관악캠퍼스"
+              arrival="서울 강남구 도산대로15길 11"
+              link="/route"
+            />
+          </>
+        )}
+
+      {departure.selected && arrival.selected && (
+        <ResultWrap>
+          <ResultCard link="/route" />
+          <ResultCard link="/route" />
+        </ResultWrap>
+      )}
     </Wrap>
   );
 }
@@ -58,6 +181,7 @@ const Input = styled.input`
   color: var(--Black, #242424);
   font-weight: 400;
   line-height: 20px;
+  font-size: 14px;
 
   &:first-of-type {
     margin-bottom: 6px;
@@ -93,4 +217,25 @@ const ButtonWrap = styled.div`
     gap: 8px;
     display: flex;
   }
+`;
+
+const Ul = styled.ul`
+  list-style: none;
+  width: 100%;
+  padding: 16px;
+`;
+
+const SmallTitle = styled.p`
+  color: var(--Gray_888888, #888);
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+`;
+
+const ResultWrap = styled.ul`
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
