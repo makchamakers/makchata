@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 export default function NavigationBar() {
   const activePath = usePathname();
-  const isSetting = activePath === '/setting';
+  const isSetting = activePath.includes('/setting');
   const isHome = activePath === '/';
   const isMyPage = activePath === '/mypage';
 
@@ -38,10 +38,9 @@ export default function NavigationBar() {
 }
 
 const Container = styled.nav`
-  position: fixed;
+  position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  width: 390px;
   height: 88px;
   display: flex;
   justify-content: space-around;
@@ -49,6 +48,7 @@ const Container = styled.nav`
   padding: 8px 64px 32px;
   background-color: #fff;
   border-top: 1px solid #ddd;
+  box-shadow: 0px -4px 10px 0px rgba(0, 0, 0, 0.08);
 `;
 
 const NavLink = styled.div<{ $active: boolean }>`

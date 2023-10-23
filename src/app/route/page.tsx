@@ -33,14 +33,18 @@ const Container = styled.div`
   li {
     list-style: none;
   }
+
+  color: #242424;
 `;
 
 const FixedBtn = styled.div`
+  z-index: 20;
   position: fixed;
   bottom: 0;
 
   width: 390px;
   padding: 8px 16px 34px;
+  background-color: #fff;
   box-shadow: 0px -4px 10px 0px rgba(0, 0, 0, 0.08);
 
   button {

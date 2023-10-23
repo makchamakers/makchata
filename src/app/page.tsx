@@ -8,6 +8,7 @@ import makchata from '/public/makchata_illust.png';
 import exclamationMark from '/public/exclamation_mark.png';
 import Link from 'next/link';
 import DetailRoute from '@/components/main/DetailRoute';
+import NavigationBar from '@/components/NavigationBar';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
@@ -141,6 +142,7 @@ export default function Home() {
             </>
           )}
         </RouteWrap>
+        <NavigationBar />
       </ContentWrapper>
     </Container>
   );
