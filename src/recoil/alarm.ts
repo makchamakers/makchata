@@ -5,6 +5,6 @@ const { persistAtom } = recoilPersist();
 
 export const alarmState = atom({
   key: 'alarm',
-  default: false,
+  default: true,
   effects_UNSTABLE: [persistAtom],
 });

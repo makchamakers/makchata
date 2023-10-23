@@ -7,13 +7,14 @@ import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
 import exclamationMark from '/public/exclamation_mark.png';
 import Link from 'next/link';
+import DetailRoute from '@/components/main/DetailRoute';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
 
-  if (alarm === false) {
-    setAlarm(alarm);
-  }
+  // if (alarm === false) {
+  //   setAlarm(alarm);
+  // }
 
   const alarmSettingHandler = () => {
     if (alarm === true) {
@@ -123,15 +124,22 @@ export default function Home() {
           </AlarmGage>
         </AlarmCard>
         <RouteWrap>
-          <InfoBox>
-            <Image
-              src={exclamationMark}
-              alt="alert이미지"
-              width={40}
-              height={40}
-            />
-            <p>막차 경로를 설정해주세요</p>
-          </InfoBox>
+          {alarm === false ? (
+            <InfoBox>
+              <Image
+                src={exclamationMark}
+                alt="alert이미지"
+                width={40}
+                height={40}
+              />
+              <p>막차 경로를 설정해주세요</p>
+            </InfoBox>
+          ) : (
+            <>
+              <h3>오늘 꼭 타야하는 막차 경로</h3>
+              <DetailRoute index={2} />
+            </>
+          )}
         </RouteWrap>
       </ContentWrapper>
     </Container>
