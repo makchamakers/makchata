@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import TopInfo from '@/components/route/bottomSheet/TopInfo';
 import BackBtn from '@/components/route/common/BackBtn';
 
-interface IBotomSheetType {
+interface IBottomSheetType {
   isBottomSheetOpen: boolean;
   setIsBottomSheetOpen: Dispatch<SetStateAction<boolean>>;
 }
 export default function BottomSheet({
   isBottomSheetOpen,
   setIsBottomSheetOpen,
-}: IBotomSheetType) {
+}: IBottomSheetType) {
   return (
     <Container $isBottomSheetOpen={isBottomSheetOpen}>
       {isBottomSheetOpen && <BackBtn isBottomSheetOpen={isBottomSheetOpen} />}

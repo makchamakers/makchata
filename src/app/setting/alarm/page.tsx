@@ -1,6 +1,6 @@
 'use client';
 import styled from 'styled-components';
-import { ALARM_TIME } from '@/constatns/route';
+import { ALARM_TIME } from '@/constants/route';
 import ArrowIcon from '../ArrowIcon';
 import NavigationBar from '@/components/NavigationBar';
 import Link from 'next/link';

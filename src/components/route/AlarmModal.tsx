@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styled from 'styled-components';
 import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
-import { ALARM_TIME } from '@/constatns/route';
+import { ALARM_TIME } from '@/constants/route';
 
 export default function AlarmModal({
   setIsAlarmModalOpen,
