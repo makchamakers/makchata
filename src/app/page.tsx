@@ -9,6 +9,7 @@ import exclamationMark from '/public/exclamation_mark.png';
 import Link from 'next/link';
 import DetailRoute from '@/components/main/DetailRoute';
 import NavigationBar from '@/components/NavigationBar';
+import PathDetail from '@/components/route/bottomSheet/PathDetail';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
@@ -137,8 +138,9 @@ export default function Home() {
             </InfoBox>
           ) : (
             <>
-              <h3>오늘 꼭 타야하는 막차 경로</h3>
-              <DetailRoute />
+              <PathDetailInfo className="hide-scroll">
+                <PathDetail />
+              </PathDetailInfo>
             </>
           )}
         </RouteWrap>
@@ -225,7 +227,7 @@ const Destination = styled.p<{ alarm: string }>`
 const StartAlarm = styled.div<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
   display: flex;
-  align-item: center;
+  align-items: center;
   padding-top: 18px;
   & p {
     font-size: 14px;
