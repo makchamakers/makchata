@@ -8,3 +8,9 @@ export const alarmState = atom({
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
+export const alarmCheckedState = atom({
+  key: 'alarmChecked',
+  default: [false, false, false, false, false, false, false],
+  effects_UNSTABLE: [persistAtom],
+});
