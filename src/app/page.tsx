@@ -180,7 +180,7 @@ const ContentWrapper = styled.div`
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 116px 16px 0;
+  padding-top: 116px;
 `;
 
 const AlarmCard = styled.div`
