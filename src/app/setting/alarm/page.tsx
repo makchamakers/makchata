@@ -1,11 +1,24 @@
 'use client';
+import Link from 'next/link';
+import { useRecoilState } from 'recoil';
+import { alarmCheckedState } from '@/recoil/alarm';
 import styled from 'styled-components';
 import { ALARM_TIME } from '@/constants/route';
 import ArrowIcon from '../ArrowIcon';
 import NavigationBar from '@/components/NavigationBar';
-import Link from 'next/link';
 
 export default function AlarmSetting() {
+  // TODO: 라디오 버튼 상태 및 기능 구현
+  const [alarmTime, setAlarmTime] = useRecoilState(alarmCheckedState);
+
+  const handleAlarmCheckChange = (index: number) => {
+    setAlarmTime((prev: boolean[]) => {
+      const newAlarmTime = [...prev];
+      newAlarmTime[index] = !newAlarmTime[index];
+      return newAlarmTime;
+    });
+  };
+
   return (
     <>
       <Header>
@@ -21,7 +34,12 @@ export default function AlarmSetting() {
             {ALARM_TIME.map((list, index) => (
               <li key={list}>
                 <label>
-                  <input type="checkbox" id={`frequency-${index}`} />
+                  <input
+                    type="checkbox"
+                    id={`frequency-${index}`}
+                    checked={alarmTime[index]}
+                    onChange={() => handleAlarmCheckChange(index)}
+                  />
                   {list}
                 </label>
               </li>
@@ -34,7 +52,12 @@ export default function AlarmSetting() {
             {['드득', '드득드득', '드드드드득'].map((pattern, index) => (
               <li key={pattern}>
                 <label>
-                  <input type="radio" id={`pattern-${index}`} name="pattern" />
+                  <input
+                    type="radio"
+                    id={`pattern-${index}`}
+                    name="pattern"
+                    checked
+                  />
                   {pattern}
                 </label>
               </li>
