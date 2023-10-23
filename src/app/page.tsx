@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
 import exclamationMark from '/public/exclamation_mark.png';
-import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -44,7 +43,7 @@ export default function Home() {
   //게이지 기본 속성값
   const RADIUS = 50;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
-  let dashoffset = CIRCUMFERENCE * (1 - progress);
+  const dashoffset = CIRCUMFERENCE * (1 - progress);
 
   //현재 남은 시간 게이지
   // const timeGage = progress / 100;
