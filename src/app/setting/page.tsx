@@ -12,22 +12,25 @@ const menu = [
 
 export default function setting() {
   return (
-    <Container>
-      <Title>설정</Title>
-      <main>
-        {menu.map(({ label, href }, index) => (
-          <Link key={index} href={href}>
-            <span>{label}</span>
-            <ArrowIcon />
-          </Link>
-        ))}
-      </main>
+    <>
+      <Container>
+        <Title>설정</Title>
+        <main>
+          {menu.map(({ label, href }, index) => (
+            <Link key={index} href={href}>
+              <span>{label}</span>
+              <ArrowIcon />
+            </Link>
+          ))}
+        </main>
+      </Container>
       <NavigationBar />
-    </Container>
+    </>
   );
 }
 
 const Container = styled.div`
+  width: 390px;
   padding: 0 16px;
   > main {
     padding-top: 16px;
