@@ -7,3 +7,10 @@ export const getCurrentLoaction = async (
   );
   return res.json();
 };
+
+export const getSearchResult = async (search: string, departure: string) => {
+  const res = await fetch(
+    `http://localhost:8080/search?search=${search}&departure=${departure}`
+  );
+  return res.json();
+};
