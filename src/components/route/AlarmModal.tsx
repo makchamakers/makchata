@@ -8,7 +8,7 @@ import { alarmCheckedState, alarmState } from '@/recoil/alarm';
 import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 import { ALARM_TIME } from '@/constants/route';
 import InputCheckbox from '@/components/common/InputCheckbox';
-import { IAlarm } from '@/app/type/alarm';
+import { IAlarm } from '@/type/alarm';
 
 export default function AlarmModal({
   setIsAlarmModalOpen,
