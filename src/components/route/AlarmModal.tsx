@@ -7,6 +7,7 @@ import { alarmCheckedState, alarmState } from '@/recoil/alarm';
 
 import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 import { ALARM_TIME } from '@/constants/route';
+import InputCheckbox from '../common/InputCheckbox';
 
 export default function AlarmModal({
   setIsAlarmModalOpen,
@@ -50,12 +51,14 @@ export default function AlarmModal({
         <CheckboxList>
           {ALARM_TIME.map((list, index) => (
             <li key={list}>
-              <input
-                type="checkbox"
-                id={`frequency-${index}`}
-                onChange={(e) => handleCheckedBox(e, list, index)}
-              />
-              <label htmlFor={`frequency-${index}`}>{list}</label>
+              <InputCheckbox>
+                <input
+                  type="checkbox"
+                  id={`frequency-${index}`}
+                  onChange={(e) => handleCheckedBox(e, list, index)}
+                />
+                <label htmlFor={`frequency-${index}`}>{list}</label>
+              </InputCheckbox>
             </li>
           ))}
         </CheckboxList>
@@ -121,32 +124,6 @@ const CheckboxList = styled.ul`
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
-
-  li {
-    input[type='checkbox'] {
-      display: none;
-
-      + label {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-
-        &:before {
-          content: '';
-          width: 20px;
-          height: 20px;
-          margin-right: 10px;
-          background-image: url('/assets/icons/ic_checkbox_unchecked_gray.svg');
-        }
-      }
-
-      &:checked {
-        + label:before {
-          background-image: url('/assets/icons/ic_checkbox_checked_orange.svg');
-        }
-      }
-    }
-  }
 `;
 
 const ApplyAlarm = styled.div`
