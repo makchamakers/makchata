@@ -7,7 +7,8 @@ import { alarmCheckedState, alarmState } from '@/recoil/alarm';
 
 import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 import { ALARM_TIME } from '@/constants/route';
-import InputCheckbox from '../common/InputCheckbox';
+import InputCheckbox from '@/components/common/InputCheckbox';
+import { IAlarm } from '@/app/type/alarm';
 
 export default function AlarmModal({
   setIsAlarmModalOpen,
@@ -20,7 +21,7 @@ export default function AlarmModal({
   const [alarmChecked, setAlarmChecked] = useRecoilState(alarmCheckedState);
 
   useEffect(() => {
-    setAlarmChecked([false, false, false, false, false, false, false]);
+    setAlarmChecked(alarmChecked);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -31,12 +32,16 @@ export default function AlarmModal({
 
   const handleCheckedBox = (
     e: React.ChangeEvent<HTMLInputElement>,
-    list: string,
     index: number
   ) => {
-    const updatedStates = [...alarmChecked];
-    updatedStates[index] = e.currentTarget.checked;
-    setAlarmChecked(updatedStates);
+    setAlarmChecked((prev: IAlarm[]) => {
+      const newAlarmChecked = [...prev];
+      newAlarmChecked[index] = {
+        ...newAlarmChecked[index],
+        checked: e.currentTarget.checked,
+      };
+      return newAlarmChecked;
+    });
   };
 
   return (
@@ -55,7 +60,8 @@ export default function AlarmModal({
                 <input
                   type="checkbox"
                   id={`frequency-${index}`}
-                  onChange={(e) => handleCheckedBox(e, list, index)}
+                  checked={alarmChecked[index].checked}
+                  onChange={(e) => handleCheckedBox(e, index)}
                 />
                 <label htmlFor={`frequency-${index}`}>{list}</label>
               </InputCheckbox>
