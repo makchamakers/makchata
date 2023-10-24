@@ -50,14 +50,12 @@ export default function AlarmModal({
         <CheckboxList>
           {ALARM_TIME.map((list, index) => (
             <li key={list}>
-              <label htmlFor={`frequency-${index}`}>
-                <input
-                  type="checkbox"
-                  id={`frequency-${index}`}
-                  onChange={(e) => handleCheckedBox(e, list, index)}
-                />
-                {list}
-              </label>
+              <input
+                type="checkbox"
+                id={`frequency-${index}`}
+                onChange={(e) => handleCheckedBox(e, list, index)}
+              />
+              <label htmlFor={`frequency-${index}`}>{list}</label>
             </li>
           ))}
         </CheckboxList>
@@ -126,7 +124,27 @@ const CheckboxList = styled.ul`
 
   li {
     input[type='checkbox'] {
-      margin-right: 10px;
+      display: none;
+
+      + label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &:before {
+          content: '';
+          width: 20px;
+          height: 20px;
+          margin-right: 10px;
+          background-image: url('/assets/icons/ic_checkbox_unchecked_gray.svg');
+        }
+      }
+
+      &:checked {
+        + label:before {
+          background-image: url('/assets/icons/ic_checkbox_checked_orange.svg');
+        }
+      }
     }
   }
 `;
