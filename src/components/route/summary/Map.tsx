@@ -22,7 +22,7 @@ export default function Map() {
         // 초기 지도화면
         const mapContainer = document.getElementById('map');
         const mapOption = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+          center: new window.kakao.maps.LatLng(37.5190581, 127.0238072), // 지도의 중심좌표
           level: 3, // 지도의 확대 레벨
         };
 
@@ -40,18 +40,21 @@ export default function Map() {
         const positions = [
           {
             title: '출발지',
-            latlng: new window.kakao.maps.LatLng(33.450705, 126.570677),
+            latlng: new window.kakao.maps.LatLng(37.5190581, 127.0238072),
             src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png',
           },
           {
             title: '도착지',
-            latlng: new window.kakao.maps.LatLng(33.450936, 126.569477),
+            latlng: new window.kakao.maps.LatLng(37.464007, 126.9522394),
             src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png',
           },
         ];
 
         // 마커 이미지 크기
         const imageSize = new window.kakao.maps.Size(37, 42);
+
+        // 지도 중심좌표 및 범위 재설정
+        const bounds = new window.kakao.maps.LatLngBounds();
 
         for (const position of positions) {
           // 마커 이미지 생성
@@ -61,13 +64,18 @@ export default function Map() {
           );
 
           // 마커 생성
-          new window.kakao.maps.Marker({
+          const marker = new window.kakao.maps.Marker({
             map, // 마커를 표시할 지도
             position: position.latlng, // 마커를 표시할 위치
             title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됨
             image: markerImage, // 마커 이미지
           });
+
+          marker.setMap(map);
+          bounds.extend(position.latlng);
         }
+
+        map.setBounds(bounds);
       });
     };
 
