@@ -10,20 +10,31 @@ declare global {
 
 export default function Map() {
   useEffect(() => {
+    // 지도불러오는 script
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = false;
-    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false`;
+    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false&libraries=services,clusterer,drawing`;
     document.head.appendChild(kakaoMapScript);
 
+    // 지도 띄우기
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        const container = document.getElementById('map');
-        const options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
+        // 초기 지도화면
+        const mapContainer = document.getElementById('map');
+        const mapOption = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+          level: 3, // 지도의 확대 레벨
         };
 
-        return window.kakao.maps.Map(container, options);
+        const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+        // 지도 확대, 축소 이벤트
+        const zoomControl = new window.kakao.maps.ZoomControl();
+        map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+
+        window.kakao.maps.event.addListener(map, 'zoom_changed', () => {
+          map.getLevel();
+        });
       });
     };
 
