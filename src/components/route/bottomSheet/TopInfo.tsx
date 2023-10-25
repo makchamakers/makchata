@@ -17,13 +17,13 @@ export default function TopInfo({
     <Container onClick={handleTopInfo}>
       <Bar />
       <div>
-        <Vihicle>
+        <Vehicle>
           <div>
             <Image src={icSubGreen} alt="지하철 아이콘" />
             <Image src={icBusBlue} alt="버스 아이콘" />
           </div>
           <p>지하철+버스</p>
-        </Vihicle>
+        </Vehicle>
         <TextInfo>
           <ul>
             <li>
@@ -66,7 +66,7 @@ const Bar = styled.div`
   background-color: #ccc;
 `;
 
-const Vihicle = styled.div`
+const Vehicle = styled.div`
   > div {
     margin-bottom: 6px;
   }
