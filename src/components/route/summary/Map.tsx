@@ -30,10 +30,10 @@ export default function Map() {
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
   }, []);
 
-  return <Contaianer id="map"></Contaianer>;
+  return <Container id="map"></Container>;
 }
 
-const Contaianer = styled.div`
+const Container = styled.div`
   z-index: 0;
   width: 390px;
   height: 442px;

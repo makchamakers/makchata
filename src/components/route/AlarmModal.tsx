@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { alarmCheckedState, alarmState } from '@/recoil/alarm';
 
-import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 import { ALARM_TIME } from '@/constants/route';
+import type { IAlarm } from '@/type/alarm';
+import InputCheckbox from '@/components/common/InputCheckbox';
+import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 
 export default function AlarmModal({
   setIsAlarmModalOpen,
@@ -19,7 +21,7 @@ export default function AlarmModal({
   const [alarmChecked, setAlarmChecked] = useRecoilState(alarmCheckedState);
 
   useEffect(() => {
-    setAlarmChecked([false, false, false, false, false, false, false]);
+    setAlarmChecked(alarmChecked);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -30,12 +32,16 @@ export default function AlarmModal({
 
   const handleCheckedBox = (
     e: React.ChangeEvent<HTMLInputElement>,
-    list: string,
     index: number
   ) => {
-    const updatedStates = [...alarmChecked];
-    updatedStates[index] = e.currentTarget.checked;
-    setAlarmChecked(updatedStates);
+    setAlarmChecked((prev: IAlarm[]) => {
+      const newAlarmChecked = [...prev];
+      newAlarmChecked[index] = {
+        ...newAlarmChecked[index],
+        checked: e.currentTarget.checked,
+      };
+      return newAlarmChecked;
+    });
   };
 
   return (
@@ -50,14 +56,15 @@ export default function AlarmModal({
         <CheckboxList>
           {ALARM_TIME.map((list, index) => (
             <li key={list}>
-              <label htmlFor={`frequency-${index}`}>
+              <InputCheckbox>
                 <input
                   type="checkbox"
                   id={`frequency-${index}`}
-                  onChange={(e) => handleCheckedBox(e, list, index)}
+                  checked={alarmChecked[index].checked}
+                  onChange={(e) => handleCheckedBox(e, index)}
                 />
-                {list}
-              </label>
+                <label htmlFor={`frequency-${index}`}>{list}</label>
+              </InputCheckbox>
             </li>
           ))}
         </CheckboxList>
@@ -123,12 +130,6 @@ const CheckboxList = styled.ul`
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
-
-  li {
-    input[type='checkbox'] {
-      margin-right: 10px;
-    }
-  }
 `;
 
 const ApplyAlarm = styled.div`
