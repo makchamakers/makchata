@@ -35,6 +35,39 @@ export default function Map() {
         window.kakao.maps.event.addListener(map, 'zoom_changed', () => {
           map.getLevel();
         });
+
+        // 다중 마커 표시
+        const positions = [
+          {
+            title: '출발지',
+            latlng: new window.kakao.maps.LatLng(33.450705, 126.570677),
+            src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png',
+          },
+          {
+            title: '도착지',
+            latlng: new window.kakao.maps.LatLng(33.450936, 126.569477),
+            src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png',
+          },
+        ];
+
+        // 마커 이미지 크기
+        const imageSize = new window.kakao.maps.Size(37, 42);
+
+        for (const position of positions) {
+          // 마커 이미지 생성
+          const markerImage = new window.kakao.maps.MarkerImage(
+            position.src,
+            imageSize
+          );
+
+          // 마커 생성
+          new window.kakao.maps.Marker({
+            map, // 마커를 표시할 지도
+            position: position.latlng, // 마커를 표시할 위치
+            title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됨
+            image: markerImage, // 마커 이미지
+          });
+        }
       });
     };
 
