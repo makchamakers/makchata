@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { alarmCheckedState, alarmState } from '@/recoil/alarm';
 
-import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 import { ALARM_TIME } from '@/constants/route';
+import type { IAlarm } from '@/type/alarm';
 import InputCheckbox from '@/components/common/InputCheckbox';
-import { IAlarm } from '@/type/alarm';
+import icCloseGray from 'public/assets/icons/ic_close_gray.svg';
 
 export default function AlarmModal({
   setIsAlarmModalOpen,
