@@ -7,6 +7,8 @@ import Image from 'next/image';
 import makchata from '/public/makchata_illust.png';
 import exclamationMark from '/public/exclamation_mark.png';
 import Link from 'next/link';
+import NavigationBar from '@/components/NavigationBar';
+import PathDetail from '@/components/route/bottomSheet/PathDetail';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
@@ -64,11 +66,17 @@ export default function Home() {
           <AlarmSetting>
             <StartingPoint alarm={alarm.toString()}>
               출발지
-              <Link href={'/search'}>출발지 설정하기</Link>
+              <Link href={'/search'}>
+                {alarm === false
+                  ? '출발지 설정하기'
+                  : '서울시 강남구 도산대로 15길 11'}
+              </Link>
             </StartingPoint>
             <Destination alarm={alarm.toString()}>
               도착지
-              <Link href={'/search'}>도착지 설정하기</Link>
+              <Link href={'/search'}>
+                {alarm === false ? '도착지 설정하기' : '서울대학교 관악캠퍼스'}
+              </Link>
             </Destination>
             <StartAlarm alarm={alarm.toString()}>
               <p>출발 알림</p>
@@ -111,7 +119,7 @@ export default function Home() {
                 cx="60"
                 cy="60"
                 r={RADIUS}
-                stroke="#ddd"
+                stroke={alarm === false ? '#ddd' : 'FFD9C9'}
                 strokeWidth="15"
                 strokeDasharray="0"
                 strokeDashoffset={dashoffset}
@@ -119,20 +127,30 @@ export default function Home() {
                 strokeLinecap="round"
               />
             </svg>
-            <AlarmTimer>00:00</AlarmTimer>
+            <AlarmTimer alarm={alarm.toString()}>
+              {alarm === false ? '00:00' : '16:00'}
+            </AlarmTimer>
           </AlarmGage>
         </AlarmCard>
         <RouteWrap>
-          <InfoBox>
-            <Image
-              src={exclamationMark}
-              alt="alert이미지"
-              width={40}
-              height={40}
-            />
-            <p>막차 경로를 설정해주세요</p>
-          </InfoBox>
+          {alarm === false ? (
+            <InfoBox>
+              <Image
+                src={exclamationMark}
+                alt="alert이미지"
+                width={40}
+                height={40}
+              />
+              <p>막차 경로를 설정해주세요</p>
+            </InfoBox>
+          ) : (
+            <>
+              <h3>오늘 꼭 타야하는 막차 경로</h3>
+              <PathDetail />
+            </>
+          )}
         </RouteWrap>
+        <NavigationBar />
       </ContentWrapper>
     </Container>
   );
@@ -146,6 +164,7 @@ const Container = styled.main`
   // align-items: center;
   // justify-content: center;
   background-color: #ffd9c9;
+  color: #242424;
 `;
 
 const TitleWrapper = styled.div`
@@ -166,11 +185,12 @@ const ContentWrapper = styled.div`
   position: relative;
   top: 100px;
   width: 100%;
-  height: calc(100% - 265px);
+  min-height: calc(100% - 265px);
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 116px 16px 0;
+  padding-top: 116px;
+  padding-bottom: 88px;
 `;
 
 const AlarmCard = styled.div`
@@ -190,6 +210,11 @@ const AlarmCard = styled.div`
 const AlarmSetting = styled.div`
   width: calc(100% - 140px);
   margin-right: 16px;
+
+  p {
+    display: flex;
+    align-items: center;
+  }
 `;
 const StartingPoint = styled.p<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
@@ -198,6 +223,11 @@ const StartingPoint = styled.p<{ alarm: string }>`
   & a {
     font-weight: 300;
     padding-left: 8px;
+    display: inline-block;
+    width: 103px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   padding-bottom: 8px;
 `;
@@ -208,6 +238,11 @@ const Destination = styled.p<{ alarm: string }>`
   & a {
     font-weight: 300;
     padding-left: 8px;
+    display: inline-block;
+    width: 103px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   border-bottom: 1px solid #ccc;
   padding-bottom: 18px;
@@ -215,7 +250,7 @@ const Destination = styled.p<{ alarm: string }>`
 const StartAlarm = styled.div<{ alarm: string }>`
   color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
   display: flex;
-  align-item: center;
+  align-items: center;
   padding-top: 18px;
   & p {
     font-size: 14px;
@@ -249,17 +284,27 @@ const AlarmGage = styled.div`
   height: 120px;
 `;
 
-const AlarmTimer = styled.p`
+const AlarmTimer = styled.p<{ alarm: string }>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: 600;
   font-size: 24px;
-  color: #aaa;
+  color: ${(props) => (props.alarm === 'true' ? '#FF8048' : '#aaa')};
 `;
 
-const RouteWrap = styled.div``;
+const RouteWrap = styled.div`
+  padding-left: 16px;
+
+  h3 {
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+  }
+`;
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;

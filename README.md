@@ -1,13 +1,43 @@
 # 막차타
 
+<img src="public/assets/icons/App Icon.png" width="700" height="500"/>
+<br/>
+<br/> 
 막차제작단에 의한  
 막차제작단을 위한  
-막차제작단의 주말 프로젝트입니다.
-
+막차제작단의 주말 프로젝트입니다.<br/>
 정확한 막차 알림을 직관적이고 따뜻하고 귀엽게 맞춤형으로 알려줍니다!
+<br/>막차타고 싶은사람! -> https://makchata.vercel.app/
+<br />
+<br />
 
-<br />
-<br />
+## 🛴 이런 기능이 있어요!
+
+- 출발지와 목적지를 설정해서 언제 자리에서 엉덩이를 떼야 도착할 수 있는지?
+- 어떤 교통수단을 이용해야 하는지?
+- 얼마를 아꼈는지?
+- 심지어 몇 분 전에 도착 하는지 진동으로 알려줍니다!
+
+저희 막차제작단은 여러분의 시간을 <strong>소중하게</strong> 생각하니까요💗
+
+### 한눈에 출발지와 도착지를 확인 할 수 있어요!
+
+<div style='display:flex height : 60%'>
+<div style='display:flex '>
+<img style="margin-right:15px" src="public/assets/icons/00Main_01디폴트.png" width="40%">
+<img src="public/assets/icons/01_알람설정.jpg" width="40%">
+</div>
+</div>
+
+### 경로를 검색해 막차 정보를 확인해보세요!
+
+<div style='display:flex margin-top:30px'>
+
+<img src="public/assets/icons/01Search_04검색된경로결과.png" width="40%" >
+<img style="margin-right:15px" src="public/assets/icons/02Route_01한눈에보기페이지_02바텀시트Down.png" width="40%">
+</div>
+
+<br/>
 
 ## ✋ 사전준비
 
@@ -52,8 +82,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-/////TODO: 시스템에서 일부 데이터를 가져오거나 간단한 데모에 사용하는 예제로 마무리 필요./////
 
 <br />
 <br />
