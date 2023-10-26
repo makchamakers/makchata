@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import styled from 'styled-components';
 import TopInfo from '@/components/route/bottomSheet/TopInfo';
 import BackBtn from '@/components/route/common/BackBtn';
@@ -12,8 +12,20 @@ export default function BottomSheet({
   isBottomSheetOpen,
   setIsBottomSheetOpen,
 }: IBottomSheetType) {
+  const modalRef = useRef(null);
+
+  const modalOutSideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current === e.target) {
+      setIsBottomSheetOpen(false);
+    }
+  };
+
   return (
-    <Container $isBottomSheetOpen={isBottomSheetOpen}>
+    <Container
+      ref={modalRef}
+      onClick={(e) => modalOutSideClick(e)}
+      $isBottomSheetOpen={isBottomSheetOpen}
+    >
       {isBottomSheetOpen && <BackBtn isBottomSheetOpen={isBottomSheetOpen} />}
       <div>
         <TopInfo setIsBottomSheetOpen={setIsBottomSheetOpen} />
