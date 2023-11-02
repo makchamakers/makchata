@@ -26,7 +26,6 @@ export default function Home() {
     }
   };
 
-  const currentTime = new Date();
   let progress = 0;
 
   function updateCurrentTime() {
