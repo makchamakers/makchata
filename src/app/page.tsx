@@ -26,7 +26,7 @@ export default function Home() {
     }
   };
 
-  let progress = 0;
+  const progress = 0;
 
   function updateCurrentTime() {
     // 막차 시간 임의로 설정
