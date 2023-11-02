@@ -11,6 +11,14 @@ export const alarmState = atom({
 
 export const alarmCheckedState = atom({
   key: 'alarmChecked',
-  default: [false, false, false, false, false, false, false],
+  default: [
+    { text: '막차 탑승하기 1시간 전', checked: false },
+    { text: '막차 탑승하기 30분 전', checked: false },
+    { text: '막차 탑승하기 10분 전', checked: false },
+    { text: '막차 탑승하기 5분 전', checked: false },
+    { text: '막차 탑승하기 3분 전', checked: false },
+    { text: '막차가 출발지에 도착했을 때', checked: false },
+    { text: '막차가 도착지에 도착했을 때', checked: false },
+  ],
   effects_UNSTABLE: [persistAtom],
 });

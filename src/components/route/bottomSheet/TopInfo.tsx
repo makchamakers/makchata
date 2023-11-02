@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
-import styled from 'styled-components';
 import Image from 'next/image';
+import styled from 'styled-components';
 import icBusBlue from 'public/assets/icons/ic_bus_blue.svg';
 import icSubGreen from 'public/assets/icons/ic_sub_green.svg';
 

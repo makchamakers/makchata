@@ -1,22 +1,23 @@
 import styled from 'styled-components';
 import { LocationSVG, XSVG } from './assets';
-
+import Link from 'next/link';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
-  onClick?: () => void; //TODO
 }
 
-const PlaceCard = ({ address, detailAddress, onClick }: IPlaceCard) => {
+const PlaceCard = ({ address, detailAddress }: IPlaceCard) => {
   return (
-    <Wrap onClick={onClick}>
-      <LocationSVG />
-      <TitleWrap>
-        <p>{address}</p>
-        <p>{detailAddress}</p>
-      </TitleWrap>
-      <XSVG size="8" />
-    </Wrap>
+    <Link href="/route">
+      <Wrap>
+        <LocationSVG />
+        <TitleWrap>
+          <p>{address}</p>
+          <p>{detailAddress}</p>
+        </TitleWrap>
+        <XSVG size="8" />
+      </Wrap>
+    </Link>
   );
 };
 
