@@ -1,17 +1,20 @@
 'use client';
 
-import { useRecoilState } from 'recoil';
-import { alarmState } from '@/recoil/alarm';
-import styled from 'styled-components';
-import Image from 'next/image';
-import makchata from '/public/makchata_illust.png';
-import exclamationMark from '/public/exclamation_mark.png';
-import Link from 'next/link';
 import NavigationBar from '@/components/NavigationBar';
 import PathDetail from '@/components/route/bottomSheet/PathDetail';
+import { alarmState } from '@/recoil/alarm';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import exclamationMark from '/public/exclamation_mark.png';
+import makchata from '/public/makchata_illust.png';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
+  const [restHour, setRestHour] = useState('0');
+  const [restMinute, setRestMinute] = useState('0');
 
   if (alarm === false) {
     setAlarm(alarm);
@@ -22,25 +25,49 @@ export default function Home() {
       setAlarm(!alarm);
     }
   };
+
   const currentTime = new Date();
   let progress = 0;
 
   function updateCurrentTime() {
-    const makchaTime = new Date('Sun Oct 22 2023 24:00:00 GMT+0900');
-    const updatedCurrentTime = new Date();
+    // 막차 시간 임의로 설정
+    const makchaTime = new Date('Thu Nov 02 2023 23:59:59 GMT+0900');
+    const currentTime = new Date();
 
-    const timeDifference = makchaTime.getTime() - updatedCurrentTime.getTime();
-    const totalTime = makchaTime.getTime() - currentTime.getTime();
-    progress = timeDifference / totalTime;
+    // 두 시간 사이의 차이 (밀리초)
+    const timeDifferenceInMilliseconds =
+      makchaTime.getTime() - currentTime.getTime();
 
-    console.log(progress);
+    // 차이를 시간과 분으로 계산
+    const newRestHour = Math.floor(
+      timeDifferenceInMilliseconds / (1000 * 60 * 60)
+    );
+    const newRestMinute = Math.floor(
+      (timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const formattedRestHour = String(newRestHour).padStart(2, '0');
+    const formattedRestMinute = String(newRestMinute).padStart(2, '0');
+
+    // restHour와 restMinute 상태 업데이트
+    setRestHour(formattedRestHour);
+    setRestMinute(formattedRestMinute);
+
+    console.log(`남은 시간: ${newRestHour} 시간 ${newRestMinute} 분`);
+    console.log(timeDifferenceInMilliseconds);
   }
 
-  // 맨 처음에 한 번 실행
-  updateCurrentTime();
+  // 컴포넌트가 처음 렌더링될 때 실행
+  useEffect(() => {
+    // 맨 처음에 한 번 실행
+    updateCurrentTime();
 
-  // 그 후에는 1분마다 실행
-  setInterval(updateCurrentTime, 60000);
+    // 그 후에는 1분마다 실행
+    const timerId = setInterval(updateCurrentTime, 60000);
+
+    return () => {
+      clearInterval(timerId); // 컴포넌트가 언마운트되면 타이머 해제
+    };
+  }, []);
 
   //게이지 기본 속성값
   const RADIUS = 50;
@@ -128,7 +155,7 @@ export default function Home() {
               />
             </svg>
             <AlarmTimer alarm={alarm.toString()}>
-              {alarm === false ? '00:00' : '16:00'}
+              {alarm === false ? '00:00' : `${restHour} : ${restMinute}`}
             </AlarmTimer>
           </AlarmGage>
         </AlarmCard>
@@ -285,12 +312,14 @@ const AlarmGage = styled.div`
 `;
 
 const AlarmTimer = styled.p<{ alarm: string }>`
+  width: 80px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: 600;
   font-size: 24px;
+  text-align: center;
   color: ${(props) => (props.alarm === 'true' ? '#FF8048' : '#aaa')};
 `;
 
