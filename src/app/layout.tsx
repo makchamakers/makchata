@@ -7,6 +7,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Makchata',
   description: 'Makchata by MakchaMakers',
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: '막차타',
     description:
