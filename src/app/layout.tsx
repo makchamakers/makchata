@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: 'https://makchata.vercel.app/',
     images: [
       {
-        url: '/og-image.png',
+        url: '/assets/images/img_thumbnail.png',
         width: 800,
         height: 600,
         alt: '막차타',
