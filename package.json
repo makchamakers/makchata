@@ -6,10 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prepare": "husky install",
     "check": "tsc --noEmit",
     "lint": "next lint --fix --ext .js,.jsx,.ts,.tsx .",
     "format": "prettier --check .",
     "format:fix": "prettier --write --list-different ."
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "tsc --noEmit",
+      "next lint --fix",
+      "prettier --write --list-different --cache"
+    ]
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
