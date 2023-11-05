@@ -38,7 +38,7 @@ const Container = styled.div`
     margin-top: 16px;
     margin-bottom: 24px;
   }
-  > button {
+  > a {
     margin-top: 88px;
   }
 `;
