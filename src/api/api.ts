@@ -1,4 +1,4 @@
-export const getCurrentLoaction = async (
+export const getCurrentLocation = async (
   latitude: string,
   longitude: string
 ) => {
