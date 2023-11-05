@@ -1,12 +1,7 @@
 'use client';
 
-import { getCurrentLocation, getSearchResult } from '@/api/api';
-import {
-  ChipButton,
-  RouteCard,
-  PlaceCard,
-  ResultCard,
-} from '@/components/search';
+import { getCurrentLocation } from '@/api/api';
+import { ChipButton } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -17,7 +12,9 @@ export default function SearchPage() {
     latitude: '',
     longitude: '',
   });
-  const [currentPostion, setCurrentPostion] = useState<{ location: string }>();
+  const [currentPosition, setCurrentPosition] = useState<{
+    location: string;
+  }>();
 
   useEffect(() => {
     const { geolocation } = navigator;
@@ -35,7 +32,7 @@ export default function SearchPage() {
       console.log(latitude, longitude, coords.latitude);
       await getCurrentLocation(latitude, longitude).then(
         (res: { location: string }) => {
-          setCurrentPostion(res);
+          setCurrentPosition(res);
           console.log(res);
         }
       );
@@ -50,7 +47,7 @@ export default function SearchPage() {
           <Input
             name="departure"
             placeholder="출발지를 입력해주세요"
-            defaultValue={currentPostion}
+            defaultValue={currentPosition?.location || ''}
           />
           <Input name="arrival" placeholder="도착지를 입력해주세요" />
         </div>
