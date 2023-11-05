@@ -1,6 +1,6 @@
 # 막차타
 
-<img src="public/assets/icons/App Icon.png" width="700" height="500"/>
+<img src="public/assets/images/img_thumbnail.png" width="500"/>
 <br/>
 <br/> 
 막차제작단에 의한  
@@ -24,8 +24,8 @@
 
 <div style='display:flex height : 60%'>
 <div style='display:flex '>
-<img style="margin-right:15px" src="public/assets/icons/00Main_01디폴트.png" width="40%">
-<img src="public/assets/icons/01_알람설정.jpg" width="40%">
+<img style="margin-right:15px" src="public/assets/images/img_mainPage_off.png" width="40%">
+<img src="public/assets/images/img_mainPage_on.jpg" width="40%">
 </div>
 </div>
 
@@ -33,8 +33,8 @@
 
 <div style='display:flex margin-top:30px'>
 
-<img src="public/assets/icons/01Search_04검색된경로결과.png" width="40%" >
-<img style="margin-right:15px" src="public/assets/icons/02Route_01한눈에보기페이지_02바텀시트Down.png" width="40%">
+<img src="public/assets/images/img_searchPage_result.png" width="40%" >
+<img style="margin-right:15px" src="public/assets/images/img_routePage_summary.png" width="40%">
 </div>
 
 <br/>
