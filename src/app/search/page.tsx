@@ -1,6 +1,6 @@
 'use client';
 
-import { getCurrentLoaction, getSearchResult } from '@/api/api';
+import { getCurrentLocation, getSearchResult } from '@/api/api';
 import {
   ChipButton,
   RouteCard,
@@ -13,12 +13,45 @@ import styled from 'styled-components';
 
 // TODO: 컴포넌트 분리
 export default function SearchPage() {
+  const [coords, setCoords] = useState({
+    latitude: '',
+    longitude: '',
+  });
+  const [currentPostion, setCurrentPostion] = useState<{ location: string }>();
+
+  useEffect(() => {
+    const { geolocation } = navigator;
+    let latitude = '';
+    let longitude = '';
+
+    geolocation.getCurrentPosition(async (position) => {
+      setCoords({
+        latitude: position.coords.latitude.toString(),
+        longitude: position.coords.longitude.toString(),
+      });
+
+      latitude = position.coords.latitude.toString();
+      longitude = position.coords.longitude.toString();
+      console.log(latitude, longitude, coords.latitude);
+      await getCurrentLocation(latitude, longitude).then(
+        (res: { location: string }) => {
+          setCurrentPostion(res);
+          console.log(res);
+        }
+      );
+    });
+  }, []);
+
   return (
     <Wrap>
       <Header>
         <SwitchSVG />
         <div>
-          <Input name="departure" placeholder="출발지를 입력해주세요" />
+          <Input
+            name="departure"
+            placeholder="출발지를 입력해주세요"
+            defaultValue={currentPostion}
+          />
           <Input name="arrival" placeholder="도착지를 입력해주세요" />
         </div>
         <ResetBox>
