@@ -18,9 +18,12 @@ export default function Home() {
   const [restMinute, setRestMinute] = useState('0');
   const [timeGage, setTimeGage] = useState(0);
 
-  if (alarm === false) {
-    setAlarm(alarm);
-  }
+  useEffect(() => {
+    if (alarm === false) {
+      setAlarm(alarm);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alarm]);
 
   const alarmSettingHandler = () => {
     if (alarm === true) {
