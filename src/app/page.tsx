@@ -2,10 +2,10 @@
 
 import NavigationBar from '@/components/NavigationBar';
 import PathDetail from '@/components/route/bottomSheet/PathDetail';
-import { alarmState } from '@/recoil/alarm';
+import { alarmSettingState, alarmState } from '@/recoil/alarm';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import exclamationMark from '/public/exclamation_mark.png';
 import makchata from '/public/makchata_illust.png';
@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
+  const alarmSettingTime = useRecoilValue(alarmSettingState);
   const [restHour, setRestHour] = useState('0');
   const [restMinute, setRestMinute] = useState('0');
 
@@ -26,11 +27,11 @@ export default function Home() {
     }
   };
 
-  const progress = 0;
+  let leftTime = 0;
 
   function updateCurrentTime() {
     // 막차 시간 임의로 설정
-    const makchaTime = new Date('Thu Nov 02 2023 23:59:59 GMT+0900');
+    const makchaTime = new Date('Thu Nov 06 2023 23:59:59 GMT+0900');
     const currentTime = new Date();
 
     // 두 시간 사이의 차이 (밀리초)
@@ -51,6 +52,9 @@ export default function Home() {
     setRestHour(formattedRestHour);
     setRestMinute(formattedRestMinute);
 
+    // 게이지 계산하기
+    leftTime = makchaTime.getTime() - alarmSettingTime.getTime();
+    console.log(leftTime);
     console.log(`남은 시간: ${newRestHour} 시간 ${newRestMinute} 분`);
     console.log(timeDifferenceInMilliseconds);
   }
@@ -71,7 +75,7 @@ export default function Home() {
   //게이지 기본 속성값
   const RADIUS = 50;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
-  const dashoffset = CIRCUMFERENCE * (1 - progress);
+  const dashoffset = CIRCUMFERENCE * (1 - 0);
 
   //현재 남은 시간 게이지
   // const timeGage = progress / 100;
