@@ -79,6 +79,7 @@ export default function Home() {
     return () => {
       clearInterval(timerId); // 컴포넌트가 언마운트되면 타이머 해제
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //게이지 기본 속성값
