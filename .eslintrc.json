@@ -31,5 +31,6 @@
       }
     ],
     "react/prop-types": "off"
-  }
+  },
+  "ignorePatterns": ["next.config.js"]
 }
