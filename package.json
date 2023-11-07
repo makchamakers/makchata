@@ -10,7 +10,8 @@
     "check": "tsc --noEmit",
     "lint": "next lint --fix --ext .js,.jsx,.ts,.tsx .",
     "format": "prettier --check .",
-    "format:fix": "prettier --write --list-different ."
+    "format:fix": "prettier --write --list-different .",
+    "precommit": "npm run check && npm run lint && npm run format:fix"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js,jsx}": [

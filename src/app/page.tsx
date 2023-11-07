@@ -2,10 +2,10 @@
 
 import NavigationBar from '@/components/NavigationBar';
 import PathDetail from '@/components/route/bottomSheet/PathDetail';
-import { alarmState } from '@/recoil/alarm';
+import { alarmSettingState, alarmState } from '@/recoil/alarm';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import icExclamationMark from 'public/assets/icons/ic_exclamationMark_gray.svg';
 import icCharDefault from 'public/assets/icons/ic_char_default.svg';
@@ -13,8 +13,10 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
+  const alarmSettingTime: Date = useRecoilValue(alarmSettingState);
   const [restHour, setRestHour] = useState('0');
   const [restMinute, setRestMinute] = useState('0');
+  const [timeGage, setTimeGage] = useState(0);
 
   if (alarm === false) {
     setAlarm(alarm);
@@ -26,11 +28,9 @@ export default function Home() {
     }
   };
 
-  const progress = 0;
-
   function updateCurrentTime() {
     // 막차 시간 임의로 설정
-    const makchaTime = new Date('Thu Nov 02 2023 23:59:59 GMT+0900');
+    const makchaTime = new Date('Thu Nov 07 2023 23:59:59 GMT+0900');
     const currentTime = new Date();
 
     // 두 시간 사이의 차이 (밀리초)
@@ -51,8 +51,21 @@ export default function Home() {
     setRestHour(formattedRestHour);
     setRestMinute(formattedRestMinute);
 
-    console.log(`남은 시간: ${newRestHour} 시간 ${newRestMinute} 분`);
-    console.log(timeDifferenceInMilliseconds);
+    // 게이지 계산하기
+    // 알람 시간을 Date 객체로 변환
+    const alarmSettingTime2 = new Date(alarmSettingTime);
+
+    const leftTime = makchaTime.getTime() - alarmSettingTime2.getTime();
+
+    //현재 남은 시간 게이지
+    const leftTimeGage = Math.floor(
+      (timeDifferenceInMilliseconds / leftTime) * 100
+    );
+
+    setTimeGage(leftTimeGage);
+    console.log('시간 차이 : ' + timeDifferenceInMilliseconds);
+    console.log(`남은 시간: ${leftTime}`);
+    console.log(`타임 게이지: ${timeGage}`);
   }
 
   // 컴포넌트가 처음 렌더링될 때 실행
@@ -71,10 +84,7 @@ export default function Home() {
   //게이지 기본 속성값
   const RADIUS = 50;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
-  const dashoffset = CIRCUMFERENCE * (1 - progress);
-
-  //현재 남은 시간 게이지
-  // const timeGage = progress / 100;
+  // const dashoffset = CIRCUMFERENCE * (1 - 0);
 
   return (
     <Container>
@@ -138,7 +148,7 @@ export default function Home() {
                 strokeWidth="15"
                 fill="transparent"
                 stroke="#FFD9C9"
-                strokeDasharray={`${CIRCUMFERENCE * 0.65} ${
+                strokeDasharray={`CIRCUMFERENCE * 0.65} ${
                   CIRCUMFERENCE * 0.35
                 }`}
                 strokeDashoffset="0"
@@ -153,7 +163,7 @@ export default function Home() {
                 stroke={alarm === false ? '#ddd' : 'FFD9C9'}
                 strokeWidth="15"
                 strokeDasharray="0"
-                strokeDashoffset={dashoffset}
+                strokeDashoffset={timeGage}
                 fill="none"
                 strokeLinecap="round"
               />

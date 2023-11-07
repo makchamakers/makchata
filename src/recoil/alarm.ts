@@ -9,6 +9,12 @@ export const alarmState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const alarmSettingState = atom({
+  key: 'alarmSetTime',
+  default: new Date(),
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const alarmCheckedState = atom({
   key: 'alarmChecked',
   default: [
