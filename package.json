@@ -6,10 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prepare": "husky install",
     "check": "tsc --noEmit",
     "lint": "next lint --fix --ext .js,.jsx,.ts,.tsx .",
     "format": "prettier --check .",
     "format:fix": "prettier --write --list-different ."
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "tsc --noEmit",
+      "next lint --fix",
+      "prettier --write --list-different --cache"
+    ]
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
@@ -39,6 +47,8 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   }

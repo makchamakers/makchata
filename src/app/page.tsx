@@ -7,8 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import exclamationMark from '/public/exclamation_mark.png';
-import makchata from '/public/makchata_illust.png';
+import icExclamationMark from 'public/assets/icons/ic_exclamationMark_gray.svg';
+import icCharDefault from 'public/assets/icons/ic_char_default.svg';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -88,7 +88,12 @@ export default function Home() {
           <br />
           막차타요
         </Title>
-        <Image src={makchata} width={110} height={96} alt="막차타일러스트" />
+        <Image
+          src={icCharDefault}
+          width={110}
+          height={96}
+          alt="막차타일러스트"
+        />
       </TitleWrapper>
 
       <ContentWrapper>
@@ -166,7 +171,7 @@ export default function Home() {
           {alarm === false ? (
             <InfoBox>
               <Image
-                src={exclamationMark}
+                src={icExclamationMark}
                 alt="alert이미지"
                 width={40}
                 height={40}

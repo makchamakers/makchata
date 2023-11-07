@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
+import icCharCrying from 'public/assets/icons/ic_char_crying.svg';
 
 export default function NotFoundPage() {
   return (
@@ -9,7 +10,12 @@ export default function NotFoundPage() {
       <Title>Error</Title>
       <SubTitle>404</SubTitle>
       <Message>길을 잃어버렸어요!</Message>
-      <Image src="/crying.png" width={110} height={96} alt="crying character" />
+      <Image
+        src={icCharCrying}
+        width={110}
+        height={96}
+        alt="crying character"
+      />
       <Link href="/">
         <Button>홈으로 돌아가기</Button>
       </Link>
@@ -32,7 +38,7 @@ const Container = styled.div`
     margin-top: 16px;
     margin-bottom: 24px;
   }
-  > button {
+  > a {
     margin-top: 88px;
   }
 `;

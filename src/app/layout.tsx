@@ -7,6 +7,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Makchata',
   description: 'Makchata by MakchaMakers',
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: '막차타',
     description:
@@ -16,7 +19,7 @@ export const metadata: Metadata = {
     url: 'https://makchata.vercel.app/',
     images: [
       {
-        url: '/og-image.png',
+        url: '/assets/images/img_thumbnail.png',
         width: 800,
         height: 600,
         alt: '막차타',
