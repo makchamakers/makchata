@@ -58,11 +58,11 @@ export default function Home() {
     const leftTime = makchaTime.getTime() - alarmSettingTime2.getTime();
 
     //현재 남은 시간 게이지
-    const timeGage = Math.floor(
+    const leftTimeGage = Math.floor(
       (timeDifferenceInMilliseconds / leftTime) * 100
     );
 
-    setTimeGage(timeGage);
+    setTimeGage(leftTimeGage);
     console.log('시간 차이 : ' + timeDifferenceInMilliseconds);
     console.log(`남은 시간: ${leftTime}`);
     console.log(`타임 게이지: ${timeGage}`);
