@@ -31,7 +31,7 @@ export default function Home() {
 
   function updateCurrentTime() {
     // 막차 시간 임의로 설정
-    const makchaTime = new Date('Thu Nov 06 2023 23:59:59 GMT+0900');
+    const makchaTime = new Date('Thu Nov 07 2023 23:59:59 GMT+0900');
     const currentTime = new Date();
 
     // 두 시간 사이의 차이 (밀리초)
