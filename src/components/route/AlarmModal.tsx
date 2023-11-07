@@ -24,8 +24,7 @@ export default function AlarmModal({
   const router = useRouter();
 
   const setIsAlarmOn = useSetRecoilState(alarmState);
-  const [alarmSettingTime, setAlarmSettingTime] =
-    useRecoilState(alarmSettingState);
+  const [, setAlarmSettingTime] = useRecoilState(alarmSettingState);
   const [alarmChecked, setAlarmChecked] = useRecoilState(alarmCheckedState);
 
   useEffect(() => {
