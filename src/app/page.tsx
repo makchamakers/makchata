@@ -18,9 +18,12 @@ export default function Home() {
   const [restMinute, setRestMinute] = useState('0');
   const [timeGage, setTimeGage] = useState(0);
 
-  if (alarm === false) {
-    setAlarm(alarm);
-  }
+  useEffect(() => {
+    if (alarm === false) {
+      setAlarm(alarm);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alarm]);
 
   const alarmSettingHandler = () => {
     if (alarm === true) {
@@ -79,6 +82,7 @@ export default function Home() {
     return () => {
       clearInterval(timerId); // 컴포넌트가 언마운트되면 타이머 해제
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //게이지 기본 속성값
@@ -105,7 +109,7 @@ export default function Home() {
       <ContentWrapper>
         <AlarmCard>
           <AlarmSetting>
-            <StartingPoint alarm={alarm.toString()}>
+            <StartingPoint $alarm={alarm.toString()}>
               출발지
               <Link href={'/search'}>
                 {alarm === false
@@ -113,17 +117,17 @@ export default function Home() {
                   : '서울시 강남구 도산대로 15길 11'}
               </Link>
             </StartingPoint>
-            <Destination alarm={alarm.toString()}>
+            <Destination $alarm={alarm.toString()}>
               도착지
               <Link href={'/search'}>
                 {alarm === false ? '도착지 설정하기' : '서울대학교 관악캠퍼스'}
               </Link>
             </Destination>
-            <StartAlarm alarm={alarm.toString()}>
+            <StartAlarm $alarm={alarm.toString()}>
               <p>출발 알림</p>
-              <AlarmToggle alarm={alarm.toString()}>
+              <AlarmToggle $alarm={alarm.toString()}>
                 <ToggleSwitch
-                  alarm={alarm.toString()}
+                  $alarm={alarm.toString()}
                   onClick={() => {
                     alarmSettingHandler();
                   }}
@@ -168,7 +172,7 @@ export default function Home() {
                 strokeLinecap="round"
               />
             </svg>
-            <AlarmTimer alarm={alarm.toString()}>
+            <AlarmTimer $alarm={alarm.toString()}>
               {alarm === false ? '00:00' : `${restHour} : ${restMinute}`}
             </AlarmTimer>
           </AlarmGage>
@@ -257,8 +261,8 @@ const AlarmSetting = styled.div`
     align-items: center;
   }
 `;
-const StartingPoint = styled.p<{ alarm: string }>`
-  color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
+const StartingPoint = styled.p<{ $alarm: string }>`
+  color: ${(props) => (props.$alarm === 'true' ? '#333' : '#ccc')};
   font-size: 14px;
   font-weight: 700;
   & a {
@@ -272,8 +276,8 @@ const StartingPoint = styled.p<{ alarm: string }>`
   }
   padding-bottom: 8px;
 `;
-const Destination = styled.p<{ alarm: string }>`
-  color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
+const Destination = styled.p<{ $alarm: string }>`
+  color: ${(props) => (props.$alarm === 'true' ? '#333' : '#ccc')};
   font-size: 14px;
   font-weight: 700;
   & a {
@@ -288,8 +292,8 @@ const Destination = styled.p<{ alarm: string }>`
   border-bottom: 1px solid #ccc;
   padding-bottom: 18px;
 `;
-const StartAlarm = styled.div<{ alarm: string }>`
-  color: ${(props) => (props.alarm === 'true' ? '#333' : '#ccc')};
+const StartAlarm = styled.div<{ $alarm: string }>`
+  color: ${(props) => (props.$alarm === 'true' ? '#333' : '#ccc')};
   display: flex;
   align-items: center;
   padding-top: 18px;
@@ -299,24 +303,25 @@ const StartAlarm = styled.div<{ alarm: string }>`
     line-height: 26px;
   }
 `;
-const AlarmToggle = styled.div<{ alarm: string }>`
+const AlarmToggle = styled.div<{ $alarm: string }>`
   background-color: ${(props) =>
-    props.alarm === 'true' ? '#FFD9C9' : '#D9D9D9'};
+    props.$alarm === 'true' ? '#FFD9C9' : '#D9D9D9'};
   width: 58px;
   height: 26px;
   border-radius: 20px;
   margin-left: 10px;
 `;
-const ToggleSwitch = styled.button<{ alarm: string }>`
+const ToggleSwitch = styled.button<{ $alarm: string }>`
   color: #fff;
-  background-color: ${(props) => (props.alarm === 'true' ? '#FF8048' : '#888')};
+  background-color: ${(props) =>
+    props.$alarm === 'true' ? '#FF8048' : '#888'};
   border: none;
   width: 35px;
   height: 22px;
   border-radius: 20px;
   font-size: 12px;
   transform: ${(props) =>
-    props.alarm === 'true' ? 'translate(20px, 2px);' : 'translate(2px, 2px);'};
+    props.$alarm === 'true' ? 'translate(20px, 2px);' : 'translate(2px, 2px);'};
   transition: 0.3s;
 `;
 const AlarmGage = styled.div`
@@ -325,7 +330,7 @@ const AlarmGage = styled.div`
   height: 120px;
 `;
 
-const AlarmTimer = styled.p<{ alarm: string }>`
+const AlarmTimer = styled.p<{ $alarm: string }>`
   width: 80px;
   position: absolute;
   top: 50%;
@@ -334,7 +339,7 @@ const AlarmTimer = styled.p<{ alarm: string }>`
   font-weight: 600;
   font-size: 24px;
   text-align: center;
-  color: ${(props) => (props.alarm === 'true' ? '#FF8048' : '#aaa')};
+  color: ${(props) => (props.$alarm === 'true' ? '#FF8048' : '#aaa')};
 `;
 
 const RouteWrap = styled.div`

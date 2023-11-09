@@ -15,6 +15,7 @@ export default function NotFoundPage() {
         width={110}
         height={96}
         alt="crying character"
+        priority
       />
       <Link href="/">
         <Button>홈으로 돌아가기</Button>
