@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import icExclamationMark from 'public/assets/icons/ic_exclamationMark_gray.svg';
 import icCharDefault from 'public/assets/icons/ic_char_default.svg';
 import { useEffect, useState } from 'react';
+import DetailRoute from '@/components/main/DetailRoute';
 
 export default function Home() {
   const [alarm, setAlarm] = useRecoilState(alarmState);
@@ -187,6 +188,7 @@ export default function Home() {
           ) : (
             <>
               <h3>오늘 꼭 타야하는 막차 경로</h3>
+              <DetailRoute index={0} />
             </>
           )}
         </RouteWrap>
