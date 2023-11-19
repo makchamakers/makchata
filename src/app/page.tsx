@@ -112,15 +112,13 @@ export default function Home() {
             <StartingPoint $alarm={alarm.toString()}>
               출발지
               <Link href={'/search'}>
-                {alarm === false
-                  ? '출발지 설정하기'
-                  : '서울시 강남구 도산대로 15길 11'}
+                {alarm === false ? '출발지 설정하기' : ''}
               </Link>
             </StartingPoint>
             <Destination $alarm={alarm.toString()}>
               도착지
               <Link href={'/search'}>
-                {alarm === false ? '도착지 설정하기' : '서울대학교 관악캠퍼스'}
+                {alarm === false ? '도착지 설정하기' : ''}
               </Link>
             </Destination>
             <StartAlarm $alarm={alarm.toString()}>
