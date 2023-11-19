@@ -1,9 +1,9 @@
 'use client';
 
-import { getCurrentLocation } from '@/api/api';
+//import { getCurrentLocation } from '@/api/api';
 import { ChipButton, PlaceCard } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import {
@@ -15,38 +15,35 @@ import ArrivalInput from '@/components/search/Input/ArrivalInput';
 
 // TODO: 컴포넌트 분리
 export default function SearchPage() {
-  const [coords, setCoords] = useState({
-    latitude: '',
-    longitude: '',
-  });
-  const [currentPosition, setCurrentPosition] = useState<{
-    location: string;
-  }>();
+  // const [coords, setCoords] = useState({
+  //   latitude: '',
+  //   longitude: '',
+  // });
+  // const [currentPosition, setCurrentPosition] = useState<{
+  //   location: string;
+  // }>();
   const departureAddresses = useRecoilValue(departureAddressesState);
   console.log(departureAddresses, 'page');
   const arrivalAddresses = useRecoilValue(arrivalAddressesState);
 
   //상대방의 동의를 구하고 현재 위치를 구해야한다.
   useEffect(() => {
-    const { geolocation } = navigator;
-    let latitude = '';
-    let longitude = '';
-
-    geolocation.getCurrentPosition(async (position) => {
-      setCoords({
-        latitude: position.coords.latitude.toString(),
-        longitude: position.coords.longitude.toString(),
-      });
-
-      latitude = position.coords.latitude.toString();
-      longitude = position.coords.longitude.toString();
-      await getCurrentLocation(latitude, longitude).then(
-        (res: { location: string }) => {
-          setCurrentPosition(res);
-        }
-      );
-    });
-
+    // const { geolocation } = navigator;
+    // let latitude = '';
+    // let longitude = '';
+    // geolocation.getCurrentPosition(async (position) => {
+    //   setCoords({
+    //     latitude: position.coords.latitude.toString(),
+    //     longitude: position.coords.longitude.toString(),
+    //   });
+    //   latitude = position.coords.latitude.toString();
+    //   longitude = position.coords.longitude.toString();
+    //   await getCurrentLocation(latitude, longitude).then(
+    //     (res: { location: string }) => {
+    //       setCurrentPosition(res);
+    //     }
+    //   );
+    // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [departureAddresses, arrivalAddresses]);
 

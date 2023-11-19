@@ -17,6 +17,7 @@ const ArrivalInput = () => {
 
   useEffect(() => {
     if (debounceValue) getSearchResult(search).then((res) => setAddresses(res));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceValue, setAddresses]);
 
   return (

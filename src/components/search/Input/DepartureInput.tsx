@@ -23,6 +23,10 @@ const DepartureInput = () => {
         console.log(res);
         setAddresses(res);
       });
+    //search를 의존성 배열에 넣게 되면 처음 입력에는 debounce가 잘 되다가
+    //재입력했을 때 debounce가 걸리지 않습니다.
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceValue, setAddresses]);
 
   return (
