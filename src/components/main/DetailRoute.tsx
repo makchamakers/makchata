@@ -15,23 +15,32 @@ const DetailRoute: React.FC<DetailRouteProps> = ({ index }) => {
       <StartPoint>
         <span>00:11</span>서울 강남구 도산대로 15길 11
       </StartPoint>
-      {subPath.map((step: any, index: any) => {
+      {subPath.map((step: any, index: number) => {
         console.log(step);
         switch (step.trafficType) {
           case 1: // Subway
             return (
               <SubwayStep key={index} $line={step?.lane[0]?.subwayCode}>
-                <p>
+                <StepIcons
+                  $trafficType="sub"
+                  $line={step?.lane[0]?.subwayCode}
+                />
+                <RidingStep>
                   {step?.lane[0]?.subwayCode}호선 {step.startName}역 승차
-                </p>
-                <span>빠른 환승 {step.door}</span>
-                <p>{step.endName} 하차</p>
+                </RidingStep>
+                <StepTrans>빠른 환승 {step.door}</StepTrans>
+                <QuitStepIcons
+                  $trafficType="sub"
+                  $line={step?.lane[0]?.subwayCode}
+                />
+                <QuitStep>{step.endName} 하차</QuitStep>
                 <SectionTime>{step.sectionTime}분</SectionTime>
               </SubwayStep>
             );
           case 2: // Bus
             return (
               <BusStep key={index}>
+                <StepIcons $trafficType="bus" $line={step?.lane[0]?.busNo} />
                 <p>{step?.lane[0]?.busNo}</p>
                 <p>{step.startName}</p>
                 <p>{step.endName}</p>
@@ -54,6 +63,9 @@ const DetailRoute: React.FC<DetailRouteProps> = ({ index }) => {
             return null;
         }
       })}
+      <EndPoint>
+        <span>00:11</span>서울 강남구 도산대로 15길 11
+      </EndPoint>
     </RouteWrapper>
   );
 };
@@ -62,9 +74,12 @@ export default DetailRoute;
 
 const RouteWrapper = styled.div`
   width: 100%;
+  height: calc(100% - 40px);
+  padding-bottom: 20px;
+  overflow-x: hidden;
+  overflow-y: scroll;
   & p {
     width: 100%;
-    height: 42px;
   }
 `;
 
@@ -92,43 +107,40 @@ const StartPoint = styled.p`
     transform: translateY(-50%);
   }
 `;
+
+const EndPoint = styled.p`
+  position: relative;
+  width: calc(100% - 78px);
+  margin-left: 78px;
+  line-height: 42px;
+  font-weight: 700;
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: -40px;
+    transform: translateY(-50%);
+    content: '';
+    display: inline-block;
+    background: url('/assets/icons/ic_directionEnd_gray.svg');
+    width: 42px;
+    height: 42px;
+  }
+  & span {
+    position: absolute;
+    top: 50%;
+    left: -78px;
+    transform: translateY(-50%);
+  }
+`;
+
 const SubwayStep = styled.div<{ $line: number }>`
   position: relative;
+  // height: 88px;
   border-left: ${(props) => `solid 3px #${subwayColor[props.$line] || '000'}`};
   margin-left: 58px;
   & p {
     padding-left: 21px;
     position: relative;
-  }
-  & p::before {
-    position: absolute;
-    top: 50%;
-    left: -36px;
-    transform: translateY(-41%);
-    z-index: 1;
-    content: '';
-    display: inline-block;
-    background: url('/assets/icons/ic_sub_white.svg');
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-  }
-  & p::after {
-    position: absolute;
-    top: 0;
-    left: -12px;
-    content: '';
-    background-color: ${(props) => `#${subwayColor[props.$line] || '000'}`};
-    width: 23px;
-    height: 23px;
-    border-radius: 20px;
-  }
-  & p:last-of-type {
-    transform: translateY(21px);
-    &::after {
-      top: initial;
-      bottom: 21px;
-    }
   }
 `;
 const BusStep = styled.div`
@@ -139,6 +151,67 @@ const BusStep = styled.div`
     padding-left: 21px;
   }
 `;
+
+const StepIcons = styled.div<{ $trafficType: string; $line: string }>`
+  position: relative;
+  width: 25px;
+  height: 25px;
+  left: -12px;
+  background-color: ${(props) =>
+    props.$trafficType === 'sub'
+      ? `#${subwayColor[props.$line]}`
+      : `#${props.$line}`};
+
+  z-index: 1;
+  border-radius: 20px;
+
+  &::after {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    content: '';
+    background: ${(props) =>
+      `url('/assets/icons/ic_${props.$trafficType}_white.svg')`};
+    background-repeat: no-repeat;
+    width: 23px;
+    height: 23px;
+  }
+`;
+
+const QuitStepIcons = styled.div<{ $trafficType: string; $line: string }>`
+  position: relative;
+  width: 25px;
+  height: 25px;
+  left: -12px;
+  bottom: -21px;
+  background-color: ${(props) =>
+    props.$trafficType === 'sub'
+      ? `#${subwayColor[props.$line]}`
+      : `#${props.$line}`};
+
+  z-index: 1;
+  border-radius: 20px;
+  &::after {
+    position: absolute;
+    top: 6px;
+    left: 4px;
+    content: '하차';
+    color: #fff;
+    font-size: 10px;
+  }
+`;
+
+const RidingStep = styled.p`
+  position: relative;
+  bottom: 21px;
+`;
+const QuitStep = styled.p`
+  position: relative;
+  bottom: 0;
+`;
+
+const StepTrans = styled.p``;
+
 const WalkStep = styled.div`
   position: relative;
   margin-left: 58px;
@@ -153,6 +226,6 @@ const WalkStep = styled.div`
 const SectionTime = styled.span`
   position: absolute;
   top: 50%;
-  left: -78px;
+  left: -60px;
   transform: translateY(-50%);
 `;

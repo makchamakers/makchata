@@ -227,7 +227,7 @@ const ContentWrapper = styled.div`
   position: relative;
   top: 100px;
   width: 100%;
-  min-height: calc(100% - 265px);
+  height: calc(100% - 265px);
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -341,7 +341,7 @@ const AlarmTimer = styled.p<{ $alarm: string }>`
 
 const RouteWrap = styled.div`
   padding-left: 16px;
-
+  height: 100%;
   h3 {
     margin-bottom: 16px;
     font-size: 16px;
