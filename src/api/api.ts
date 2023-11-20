@@ -34,3 +34,22 @@ export const getUserRoute = async (
   );
   return res.json();
 };
+
+export const getPathDetail = async ({
+  sx,
+  sy,
+  ex,
+  ey,
+  index,
+}: {
+  sx: string;
+  sy: string;
+  ex: string;
+  ey: string;
+  index: number;
+}) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination/${index}?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
+  );
+  return res.json();
+};
