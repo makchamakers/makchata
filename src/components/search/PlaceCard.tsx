@@ -1,21 +1,45 @@
 import styled from 'styled-components';
-import { LocationSVG, XSVG } from './assets';
+import { LocationSVG } from './assets';
 import Link from 'next/link';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import {
+  departureAddressesState,
+  arrivalAddressesState,
+  departureResultState,
+  arrivalResultState,
+} from '@/recoil/search';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
+  x: string;
+  y: string;
+  type: string;
 }
 
-const PlaceCard = ({ address, detailAddress }: IPlaceCard) => {
+const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
+  const [, setDeparture] = useRecoilState(departureResultState);
+  const [, setArrival] = useRecoilState(arrivalResultState);
+
+  const saveAddress = () => {
+    if (type === 'departure') {
+      setDeparture({ address, detailAddress, x, y });
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useResetRecoilState(departureAddressesState);
+    } else if (type === 'arrival') {
+      setArrival({ address, detailAddress, x, y });
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useResetRecoilState(arrivalAddressesState);
+    }
+  };
+
   return (
-    <Link href="/route">
+    <Link onClick={() => saveAddress()} href={'/'}>
       <Wrap>
         <LocationSVG />
         <TitleWrap>
           <p>{address}</p>
           <p>{detailAddress}</p>
         </TitleWrap>
-        <XSVG size="8" />
       </Wrap>
     </Link>
   );
