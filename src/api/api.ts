@@ -1,3 +1,5 @@
+import { PathDetailRequestProps } from '@/type/path';
+
 export const getCurrentLocation = async (
   latitude: string,
   longitude: string
@@ -43,13 +45,7 @@ export const getPathDetail = async ({
   ex,
   ey,
   index,
-}: {
-  sx: string;
-  sy: string;
-  ex: string;
-  ey: string;
-  index: number;
-}) => {
+}: PathDetailRequestProps) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination/${index}?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
   );
