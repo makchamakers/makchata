@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { getPathDetail } from '@/api/api';
+import { PathDetailResponseProps } from '@/type/path';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 declare global {
@@ -11,6 +13,27 @@ declare global {
 }
 
 export default function Map() {
+  // 경로 상세 response 담는 state
+  const [pathDetailLocations, setPathDetailLocations] = useState<
+    PathDetailResponseProps[]
+  >([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getPathDetail({
+        sx: '127.0238072',
+        sy: '37.5190581',
+        ex: '126.9522394',
+        ey: '37.464007',
+        index: 1,
+      });
+      setPathDetailLocations(res);
+    };
+    fetchData();
+  }, []);
+
+  console.log(pathDetailLocations);
+
   useEffect(() => {
     // 지도불러오는 script
     const kakaoMapScript = document.createElement('script');
