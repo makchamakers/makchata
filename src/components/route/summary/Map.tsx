@@ -12,10 +12,10 @@ declare global {
   }
 }
 
-// 지도 띄우기
+// 지도 띄우기 함수
 const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
   window.kakao.maps.load(() => {
-    // 초기 지도화면
+    // 초기 지도화면 생성
     const mapContainer = document.getElementById('map');
     const mapOption = {
       center: new window.kakao.maps.LatLng(37.5190581, 127.0238072), // 지도의 중심좌표
@@ -91,8 +91,6 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
         color: path.trafficType === '버스' ? '#1954b3' : '#ffab24FF',
       });
     });
-
-    console.log(linePaths);
 
     linePaths.map((linePath) => {
       const polyline = new window.kakao.maps.Polyline({
