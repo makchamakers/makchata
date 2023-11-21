@@ -47,3 +47,8 @@ export const arrivalResultState = atom({
     y: '',
   },
 });
+
+export const selectedPathIndexState = atom({
+  key: 'selectedPathIndexState',
+  default: 0,
+});

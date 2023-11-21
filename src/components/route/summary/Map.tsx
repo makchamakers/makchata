@@ -1,8 +1,10 @@
 'use client';
 
 import { getPathDetail } from '@/api/api';
+import { selectedPathIndexState } from '@/recoil/search';
 import { PathDetailResponseProps } from '@/type/path';
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 declare global {
@@ -18,8 +20,6 @@ const temptObj = {
   departureLatitude: 37.5190581,
   arrivalLongitude: 126.9522394,
   arrivalLatitude: 37.464007,
-  // recoil selectedPathIndexState 값 추가 예정
-  index: 1,
 };
 
 // 지도 띄우기 함수
@@ -130,19 +130,22 @@ export default function Map() {
   const [pathDetailLocations, setPathDetailLocations] = useState<
     PathDetailResponseProps[]
   >([]);
+  const selectedPathIndex = useRecoilValue(selectedPathIndexState);
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await getPathDetail({
+        // recoil pathResultState 값 사용 예정
         sx: temptObj.departureLongitude,
         sy: temptObj.departureLatitude,
         ex: temptObj.arrivalLongitude,
         ey: temptObj.arrivalLatitude,
-        index: 1,
+        index: selectedPathIndex,
       });
       setPathDetailLocations(res);
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 지도불러오는 script
