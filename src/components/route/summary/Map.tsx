@@ -73,7 +73,38 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
 
     map.setBounds(bounds);
 
-    console.log(pathDetailLocations);
+    // 지도 경로 표시
+    type LinePathsProps = {
+      path: string[] | undefined;
+      color: string;
+    };
+    const linePaths: LinePathsProps[] = [];
+    const arrayExceptedWalkingPath = pathDetailLocations.filter(
+      (path: PathDetailResponseProps) => path.trafficType !== '도보'
+    );
+    arrayExceptedWalkingPath.map((path) => {
+      linePaths.push({
+        path: path.coords?.map(
+          (coord) => new window.kakao.maps.LatLng(coord.y, coord.x)
+          // (coord) => `new window.kakao.maps.LatLng(${coord.y}, ${coord.x})`
+        ),
+        color: path.trafficType === '버스' ? '#1954b3' : '#ffab24FF',
+      });
+    });
+
+    console.log(linePaths);
+
+    linePaths.map((linePath) => {
+      const polyline = new window.kakao.maps.Polyline({
+        path: linePath.path,
+        strokeWeight: 5,
+        strokeColor: linePath.color,
+        strokeOpacity: 1,
+        strokeStyle: 'solid',
+      });
+
+      polyline?.setMap(map);
+    });
   });
 };
 
