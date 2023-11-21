@@ -3,14 +3,16 @@ export const getCurrentLocation = async (
   longitude: string
 ) => {
   const res = await fetch(
-    `http://localhost:8080?latitude=${latitude}&longitude=${longitude}`
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}?latitude=${latitude}&longitude=${longitude}`
   );
   return res.json();
 };
 
 export const getSearchResult = async (search: string) => {
   try {
-    const res = await fetch(`http://localhost:8080/search?search=${search}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/search?search=${search}`
+    );
     return await res.json();
   } catch (err) {
     console.error(err);
@@ -32,7 +34,7 @@ export const getUserRoute = async (
   ey: string
 ) => {
   const res = await fetch(
-    `http://localhost:8080/destination?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
   );
   return res.json();
 };

@@ -1,49 +1,25 @@
+import { IAddressProps } from '@/type/search';
 import { atom } from 'recoil';
 
-export interface AddressProps {
-  address_name: string;
-  phone: string;
-  place_name: string;
-  x: string;
-  y: string;
-}
-
-export const departureAddressesState = atom<AddressProps[]>({
-  key: 'departureAddresses',
+export const addressesState = atom<IAddressProps[]>({
+  key: 'addresses',
   default: [],
 });
 
-export const arrivalAddressesState = atom<AddressProps[]>({
-  key: 'arrivalAddresses',
-  default: [],
-});
-
-export const departureInputState = atom({
-  key: 'departureInput',
-  default: '',
-});
-
-export const arrivalInputState = atom({
-  key: 'arrivalInput',
-  default: '',
-});
-
-export const departureResultState = atom({
-  key: 'departureResult',
+export const pathResultState = atom({
+  key: 'pathResult',
   default: {
-    address: '',
-    detailAddress: '',
-    x: '',
-    y: '',
-  },
-});
-
-export const arrivalResultState = atom({
-  key: 'arrivalResult',
-  default: {
-    address: '',
-    detailAddress: '',
-    x: '',
-    y: '',
+    arrival: {
+      address: '',
+      detailAddress: '',
+      x: '',
+      y: '',
+    },
+    departure: {
+      address: '',
+      detailAddress: '',
+      x: '',
+      y: '',
+    },
   },
 });

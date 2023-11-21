@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 import { LocationSVG } from './assets';
-import Link from 'next/link';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import {
-  departureAddressesState,
-  arrivalAddressesState,
-  departureResultState,
-  arrivalResultState,
-} from '@/recoil/search';
+import { addressesState, pathResultState } from '@/recoil/search';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
@@ -17,23 +11,21 @@ interface IPlaceCard {
 }
 
 const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
-  const [, setDeparture] = useRecoilState(departureResultState);
-  const [, setArrival] = useRecoilState(arrivalResultState);
+  const [path, setPath] = useRecoilState(pathResultState);
+  const resetPath = useResetRecoilState(addressesState);
 
   const saveAddress = () => {
     if (type === 'departure') {
-      setDeparture({ address, detailAddress, x, y });
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useResetRecoilState(departureAddressesState);
+      setPath({ ...path, departure: { address, detailAddress, x, y } });
+      resetPath();
     } else if (type === 'arrival') {
-      setArrival({ address, detailAddress, x, y });
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useResetRecoilState(arrivalAddressesState);
+      setPath({ ...path, arrival: { address, detailAddress, x, y } });
+      resetPath();
     }
   };
 
   return (
-    <Link onClick={() => saveAddress()} href={'/'}>
+    <Button onClick={() => saveAddress()}>
       <Wrap>
         <LocationSVG />
         <TitleWrap>
@@ -41,14 +33,20 @@ const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
           <p>{detailAddress}</p>
         </TitleWrap>
       </Wrap>
-    </Link>
+    </Button>
   );
 };
 
 export default PlaceCard;
 
+const Button = styled.button`
+  cursor: pointer;
+  background-color: white;
+  border: none;
+`;
+
 const Wrap = styled.article`
-  display: grid;
+  display: flex;
   grid-template-columns: 18px 1fr 18px;
   align-items: center;
   gap: 16px;
@@ -61,10 +59,13 @@ const TitleWrap = styled.div`
 
   > p:first-of-type {
     font-weight: 600;
+    margin-bottom: 8px;
+    text-align: left;
   }
 
   > p:last-of-type {
     color: var(--Gray_888888, #888);
     font-weight: 400;
+    text-align: left;
   }
 `;

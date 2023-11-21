@@ -1,19 +1,23 @@
 import { getSearchResult } from '@/api/api';
 import useDebounce from '@/hooks/useDebounce';
-import { arrivalAddressesState, arrivalResultState } from '@/recoil/search';
+import { addressesState, pathResultState } from '@/recoil/search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const ArrivalInput = () => {
+interface InputProps {
+  type: string;
+  onClick: () => void;
+}
+const Input = ({ type, onClick }: InputProps) => {
   const [search, setSearch] = useState('');
-  const [, setAddresses] = useRecoilState(arrivalAddressesState);
+  const [, setAddresses] = useRecoilState(addressesState);
   const debounceValue = useDebounce(search, 500);
   const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSearch(value);
   };
-  const decisionArrival = useRecoilValue(arrivalResultState);
+  const decisionPath = useRecoilValue(pathResultState);
 
   useEffect(() => {
     if (debounceValue) getSearchResult(search).then((res) => setAddresses(res));
@@ -21,17 +25,29 @@ const ArrivalInput = () => {
   }, [debounceValue, setAddresses]);
 
   return (
-    <Input
-      onChange={(e) => onChangeValue(e)}
-      placeholder="도착지를 입력해주세요"
-      value={decisionArrival.detailAddress || search}
-    />
+    <>
+      {type === 'arrival' ? (
+        <SearchInput
+          onChange={(e) => onChangeValue(e)}
+          onClick={onClick}
+          placeholder="도착지를 입력해주세요"
+          value={decisionPath.arrival.detailAddress || search}
+        />
+      ) : (
+        <SearchInput
+          onChange={(e) => onChangeValue(e)}
+          onClick={onClick}
+          placeholder="출발지를 입력해주세요"
+          value={decisionPath.departure.detailAddress || search}
+        />
+      )}
+    </>
   );
 };
 
-export default ArrivalInput;
+export default Input;
 
-const Input = styled.input`
+const SearchInput = styled.input`
   display: flex;
   width: 290px;
   padding: 12px 24px;
