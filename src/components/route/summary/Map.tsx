@@ -12,13 +12,26 @@ declare global {
   }
 }
 
+const temptObj = {
+  // recoil pathResultState 값 사용 예정
+  departureLongitude: 127.0238072,
+  departureLatitude: 37.5190581,
+  arrivalLongitude: 126.9522394,
+  arrivalLatitude: 37.464007,
+  // recoil selectedPathIndexState 값 추가 예정
+  index: 1,
+};
+
 // 지도 띄우기 함수
 const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
   window.kakao.maps.load(() => {
     // 초기 지도화면 생성
     const mapContainer = document.getElementById('map');
     const mapOption = {
-      center: new window.kakao.maps.LatLng(37.5190581, 127.0238072), // 지도의 중심좌표
+      center: new window.kakao.maps.LatLng(
+        temptObj.departureLatitude,
+        temptObj.departureLongitude
+      ), // 지도의 중심좌표
       level: 3, // 지도의 확대 레벨
     };
 
@@ -36,12 +49,18 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
     const positions = [
       {
         title: '출발지',
-        latlng: new window.kakao.maps.LatLng(37.5190581, 127.0238072),
+        latlng: new window.kakao.maps.LatLng(
+          temptObj.departureLatitude,
+          temptObj.departureLongitude
+        ),
         src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png',
       },
       {
         title: '도착지',
-        latlng: new window.kakao.maps.LatLng(37.464007, 126.9522394),
+        latlng: new window.kakao.maps.LatLng(
+          temptObj.arrivalLatitude,
+          temptObj.arrivalLongitude
+        ),
         src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png',
       },
     ];
@@ -115,10 +134,10 @@ export default function Map() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getPathDetail({
-        sx: '127.0238072',
-        sy: '37.5190581',
-        ex: '126.9522394',
-        ey: '37.464007',
+        sx: temptObj.departureLongitude,
+        sy: temptObj.departureLatitude,
+        ex: temptObj.arrivalLongitude,
+        ey: temptObj.arrivalLatitude,
         index: 1,
       });
       setPathDetailLocations(res);
