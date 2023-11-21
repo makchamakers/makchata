@@ -126,17 +126,15 @@ export default function Map() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // 지도불러오는 script
-    const kakaoMapScript = document.createElement('script');
-    kakaoMapScript.async = false;
-    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false&libraries=services,clusterer,drawing`;
-    document.head.appendChild(kakaoMapScript);
+  // 지도불러오는 script
+  const kakaoMapScript = document.createElement('script');
+  kakaoMapScript.async = false;
+  kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false&libraries=services,clusterer,drawing`;
+  document.head.appendChild(kakaoMapScript);
 
-    kakaoMapScript.addEventListener('load', () =>
-      onLoadKakaoAPI(pathDetailLocations)
-    );
-  }, []);
+  kakaoMapScript.addEventListener('load', () =>
+    onLoadKakaoAPI(pathDetailLocations)
+  );
 
   return <Container id="map"></Container>;
 }
