@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { LocationSVG } from './assets';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { addressesState, pathResultState } from '@/recoil/search';
+import { addressesState, pathResultState, searchState } from '@/recoil/search';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
@@ -13,13 +13,16 @@ interface IPlaceCard {
 const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
   const [path, setPath] = useRecoilState(pathResultState);
   const resetPath = useResetRecoilState(addressesState);
+  const [search, setSearch] = useRecoilState(searchState);
 
   const saveAddress = () => {
     if (type === 'departure') {
       setPath({ ...path, departure: { address, detailAddress, x, y } });
+      setSearch({ ...search, departure: detailAddress });
       resetPath();
     } else if (type === 'arrival') {
       setPath({ ...path, arrival: { address, detailAddress, x, y } });
+      setSearch({ ...search, arrival: detailAddress });
       resetPath();
     }
   };

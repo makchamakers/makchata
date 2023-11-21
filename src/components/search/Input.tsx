@@ -1,8 +1,8 @@
 import { getSearchResult } from '@/api/api';
 import useDebounce from '@/hooks/useDebounce';
-import { addressesState, pathResultState } from '@/recoil/search';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { addressesState, searchState } from '@/recoil/search';
+import React, { ChangeEvent, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 interface InputProps {
@@ -10,17 +10,22 @@ interface InputProps {
   onClick: () => void;
 }
 const Input = ({ type, onClick }: InputProps) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useRecoilState(searchState);
   const [, setAddresses] = useRecoilState(addressesState);
   const debounceValue = useDebounce(search, 500);
   const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setSearch(value);
+    const { value, name } = e.target;
+    setSearch({ ...search, [name]: value });
   };
-  const decisionPath = useRecoilValue(pathResultState);
 
   useEffect(() => {
-    if (debounceValue) getSearchResult(search).then((res) => setAddresses(res));
+    if (debounceValue) {
+      if (type === 'arrival') {
+        getSearchResult(search.arrival).then((res) => setAddresses(res));
+      } else {
+        getSearchResult(search.departure).then((res) => setAddresses(res));
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceValue, setAddresses]);
 
@@ -31,14 +36,16 @@ const Input = ({ type, onClick }: InputProps) => {
           onChange={(e) => onChangeValue(e)}
           onClick={onClick}
           placeholder="도착지를 입력해주세요"
-          value={decisionPath.arrival.detailAddress || search}
+          name={type}
+          value={search.arrival}
         />
       ) : (
         <SearchInput
           onChange={(e) => onChangeValue(e)}
           onClick={onClick}
           placeholder="출발지를 입력해주세요"
-          value={decisionPath.departure.detailAddress || search}
+          name={type}
+          value={search.departure}
         />
       )}
     </>
