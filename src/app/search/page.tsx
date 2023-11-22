@@ -1,7 +1,7 @@
 'use client';
 import { ChipButton, PlaceCard } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { addressesState } from '@/recoil/search';
