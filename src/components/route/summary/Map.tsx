@@ -1,10 +1,9 @@
 'use client';
 
 import { getPathDetail } from '@/api/api';
-import { selectedPathIndexState } from '@/recoil/search';
 import { PathDetailResponseProps } from '@/type/path';
+import { ParamsProps } from '@/type/route';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 declare global {
@@ -124,12 +123,11 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
   });
 };
 
-export default function Map() {
+export default function Map({ params }: ParamsProps) {
   // 경로 상세 response 담는 state
   const [pathDetailLocations, setPathDetailLocations] = useState<
     PathDetailResponseProps[]
   >([]);
-  const selectedPathIndex = useRecoilValue(selectedPathIndexState);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -139,7 +137,7 @@ export default function Map() {
         sy: temptObj.departureLatitude,
         ex: temptObj.arrivalLongitude,
         ey: temptObj.arrivalLatitude,
-        index: selectedPathIndex,
+        index: params.index,
       });
       setPathDetailLocations(res);
     };

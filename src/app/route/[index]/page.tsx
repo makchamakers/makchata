@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import Summary from '@/components/route/Summary';
 import AlarmModal from '@/components/route/AlarmModal';
 import { useState } from 'react';
+import { ParamsProps } from '@/type/route';
 
-export default function Page() {
+export default function Page({ params }: ParamsProps) {
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
 
   return (
     <Container>
-      <Summary />
+      <Summary params={params} />
       <FixedBtn>
         <button type="button" onClick={() => setIsAlarmModalOpen(true)}>
           이 경로로 알림 설정하기
