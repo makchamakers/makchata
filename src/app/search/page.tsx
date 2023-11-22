@@ -1,60 +1,26 @@
 'use client';
-
-//import { getCurrentLocation } from '@/api/api';
 import { ChipButton, PlaceCard } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import {
-  arrivalAddressesState,
-  departureAddressesState,
-} from '@/recoil/search';
-import DepartureInput from '@/components/search/Input/DepartureInput';
-import ArrivalInput from '@/components/search/Input/ArrivalInput';
+import { addressesState } from '@/recoil/search';
+import Input from '@/components/search/Input';
 
-// TODO: 컴포넌트 분리
 export default function SearchPage() {
-  // const [coords, setCoords] = useState({
-  //   latitude: '',
-  //   longitude: '',
-  // });
-  // const [currentPosition, setCurrentPosition] = useState<{
-  //   location: string;
-  // }>();
-  const departureAddresses = useRecoilValue(departureAddressesState);
-  console.log(departureAddresses, 'page');
-  const arrivalAddresses = useRecoilValue(arrivalAddressesState);
-
-  //상대방의 동의를 구하고 현재 위치를 구해야한다.
-  useEffect(() => {
-    // const { geolocation } = navigator;
-    // let latitude = '';
-    // let longitude = '';
-    // geolocation.getCurrentPosition(async (position) => {
-    //   setCoords({
-    //     latitude: position.coords.latitude.toString(),
-    //     longitude: position.coords.longitude.toString(),
-    //   });
-    //   latitude = position.coords.latitude.toString();
-    //   longitude = position.coords.longitude.toString();
-    //   await getCurrentLocation(latitude, longitude).then(
-    //     (res: { location: string }) => {
-    //       setCurrentPosition(res);
-    //     }
-    //   );
-    // });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [departureAddresses, arrivalAddresses]);
+  const addresses = useRecoilValue(addressesState);
+  const [inputType, setInputType] = useState('departure');
 
   return (
     <Wrap>
       <Header>
         <SwitchSVG />
         <div>
-          {/* defaultLocation={currentPosition?.location || ''} */}
-          <DepartureInput />
-          <ArrivalInput />
+          <Input
+            inputType="departure"
+            onClick={() => setInputType('departure')}
+          />
+          <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
           <XSVG />
@@ -70,9 +36,8 @@ export default function SearchPage() {
         {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
-      {Array.isArray(departureAddresses) &&
-        departureAddresses.length > 0 &&
-        departureAddresses.map(({ address_name, place_name, x, y }, index) => {
+      {addresses.length > 0 &&
+        addresses.map(({ address_name, place_name, x, y }, index) => {
           return (
             <PlaceCard
               key={index}
@@ -80,22 +45,10 @@ export default function SearchPage() {
               detailAddress={place_name}
               x={x}
               y={y}
-              type={'departure'}
+              type={inputType}
             />
           );
         })}
-      {Array.isArray(arrivalAddresses) &&
-        arrivalAddresses.length > 0 &&
-        arrivalAddresses.map(({ address_name, place_name, x, y }, index) => (
-          <PlaceCard
-            key={index}
-            address={address_name}
-            detailAddress={place_name}
-            x={x}
-            y={y}
-            type={'arrival'}
-          />
-        ))}
     </Wrap>
   );
 }
