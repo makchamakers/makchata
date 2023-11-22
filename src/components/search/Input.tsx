@@ -2,53 +2,51 @@ import { getSearchResult } from '@/api/api';
 import useDebounce from '@/hooks/useDebounce';
 import { addressesState, searchState } from '@/recoil/search';
 import React, { ChangeEvent, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 interface InputProps {
-  type: string;
+  inputType: string;
   onClick: () => void;
 }
-const Input = ({ type, onClick }: InputProps) => {
+const Input = ({ inputType, onClick }: InputProps) => {
   const [search, setSearch] = useRecoilState(searchState);
-  const [, setAddresses] = useRecoilState(addressesState);
+  const setAddresses = useSetRecoilState(addressesState);
   const debounceValue = useDebounce(search, 500);
   const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setSearch({ ...search, [name]: value });
   };
 
+  const fetchSearchValue = async (val: string) => {
+    const response = await getSearchResult(val);
+    return setAddresses(response);
+  };
+
   useEffect(() => {
-    if (debounceValue) {
-      if (type === 'arrival') {
-        getSearchResult(search.arrival).then((res) => setAddresses(res));
-      } else {
-        getSearchResult(search.departure).then((res) => setAddresses(res));
-      }
+    if (inputType === 'arrival' && debounceValue.arrival.length > 0) {
+      fetchSearchValue(debounceValue.arrival);
+      return;
+    }
+    if (inputType === 'departure' && debounceValue.departure.length > 0) {
+      fetchSearchValue(debounceValue.departure);
+      return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceValue, setAddresses]);
+  }, [debounceValue.arrival, debounceValue.departure]);
 
   return (
-    <>
-      {type === 'arrival' ? (
-        <SearchInput
-          onChange={(e) => onChangeValue(e)}
-          onClick={onClick}
-          placeholder="도착지를 입력해주세요"
-          name={type}
-          value={search.arrival}
-        />
-      ) : (
-        <SearchInput
-          onChange={(e) => onChangeValue(e)}
-          onClick={onClick}
-          placeholder="출발지를 입력해주세요"
-          name={type}
-          value={search.departure}
-        />
-      )}
-    </>
+    <SearchInput
+      onChange={(e) => onChangeValue(e)}
+      onClick={onClick}
+      placeholder={
+        inputType === 'arrival'
+          ? '도착지를 입력해주세요'
+          : '출발지를 입력해주세요'
+      }
+      name={inputType}
+      value={inputType === 'arrival' ? search.arrival : search.departure}
+    />
   );
 };
 

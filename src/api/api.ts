@@ -11,7 +11,10 @@ export const getCurrentLocation = async (
 export const getSearchResult = async (search: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/search?search=${search}`
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/search?search=${search}`,
+      {
+        cache: 'force-cache',
+      }
     );
     return await res.json();
   } catch (err) {

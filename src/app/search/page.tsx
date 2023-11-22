@@ -11,15 +11,16 @@ export default function SearchPage() {
   const addresses = useRecoilValue(addressesState);
   const [inputType, setInputType] = useState('departure');
 
-  useEffect(() => {}, [addresses]);
-
   return (
     <Wrap>
       <Header>
         <SwitchSVG />
         <div>
-          <Input type="departure" onClick={() => setInputType('departure')} />
-          <Input type="arrival" onClick={() => setInputType('arrival')} />
+          <Input
+            inputType="departure"
+            onClick={() => setInputType('departure')}
+          />
+          <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
           <XSVG />
@@ -35,8 +36,7 @@ export default function SearchPage() {
         {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
-      {Array.isArray(addresses) &&
-        addresses.length > 0 &&
+      {addresses.length > 0 &&
         addresses.map(({ address_name, place_name, x, y }, index) => {
           return (
             <PlaceCard
