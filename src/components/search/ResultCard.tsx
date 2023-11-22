@@ -16,6 +16,7 @@ const ResultCard = ({
     <Link prefetch={false} href={`/route/${index.toString()}`}>
       <Wrap>
         <Header>
+          <div>{totalDistance}</div>
           <Type>{type}</Type>
           <Right>
             <p>
@@ -114,7 +115,7 @@ const DepartureText = styled.p`
   }
 `;
 
-const TestDiv = styled.div<{ distance: number; trafficType: string }>`
-  width: ${({ distance }) => distance}%;
-  background-color: red;
-`;
+// const TestDiv = styled.div<{ distance: number; trafficType: string }>`
+//   width: ${({ distance }) => distance}%;
+//   background-color: red;
+// `;
