@@ -105,7 +105,6 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
       linePaths.push({
         path: path.coords?.map(
           (coord) => new window.kakao.maps.LatLng(coord.y, coord.x)
-          // (coord) => `new window.kakao.maps.LatLng(${coord.y}, ${coord.x})`
         ),
         color: path.trafficType === '버스' ? '#1954b3' : '#ffab24FF',
       });
