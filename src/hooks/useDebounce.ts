@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-// interface SearchProps {
-//   departure: string;
-//   arrival: string;
-// }
-const useDebounce = (value: string, delay: number) => {
+interface SearchProps {
+  departure: string;
+  arrival: string;
+}
+const useDebounce = (value: SearchProps, delay: number) => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
