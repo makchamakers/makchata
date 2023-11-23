@@ -2,36 +2,41 @@ import React from 'react';
 import mock from './detailRouteMockData.json';
 import styled from 'styled-components';
 import { subwayColor } from '@/constants/routeColor';
+import { SubPath } from '@/type/route';
 
 interface DetailRouteProps {
   index: number;
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const DetailRoute: React.FC<DetailRouteProps> = ({ index }) => {
-  const subPath: any = mock.result.path[index].subPath;
-
+  const subPath = mock.result.path[index].subPath;
   return (
     <RouteWrapper>
       <StartPoint>
         <span>00:11</span>서울 강남구 도산대로 15길 11
       </StartPoint>
-      {subPath.map((step: any, index: number) => {
+      {subPath.map((step: any, idx: number) => {
         console.log(step);
         switch (step.trafficType) {
           case 1: // Subway
             return (
-              <SubwayStep key={index} $line={step?.lane[0]?.subwayCode}>
+              <SubwayStep
+                key={idx}
+                $line={step.lane && step?.lane[0]?.subwayCode}
+              >
                 <StepIcons
                   $trafficType="sub"
-                  $line={step?.lane[0]?.subwayCode}
+                  $line={step.lane && step?.lane[0]?.subwayCode}
                 />
                 <RidingStep>
-                  {step?.lane[0]?.subwayCode}호선 {step.startName}역 승차
+                  {step.lane && step?.lane[0]?.subwayCode}호선 {step.startName}
+                  역 승차
                 </RidingStep>
                 <StepTrans>빠른 환승 {step.door}</StepTrans>
                 <QuitStepIcons
                   $trafficType="sub"
-                  $line={step?.lane[0]?.subwayCode}
+                  $line={step.lane && step?.lane[0]?.subwayCode}
                 />
                 <QuitStep>{step.endName} 하차</QuitStep>
                 <SectionTime>{step.sectionTime}분</SectionTime>
@@ -39,9 +44,9 @@ const DetailRoute: React.FC<DetailRouteProps> = ({ index }) => {
             );
           case 2: // Bus
             return (
-              <BusStep key={index}>
-                <StepIcons $trafficType="bus" $line={step?.lane[0]?.busNo} />
-                <RidingStep>{step?.lane[0]?.busNo}</RidingStep>
+              <BusStep key={idx}>
+                <StepIcons $trafficType="bus" $line="1" />
+                <RidingStep>{step?.busNo}</RidingStep>
                 <StepTrans>{step.startName}</StepTrans>
                 <QuitStep>{step.endName}</QuitStep>
                 <SectionTime>{step.sectionTime}분</SectionTime>
@@ -51,8 +56,8 @@ const DetailRoute: React.FC<DetailRouteProps> = ({ index }) => {
             return (
               <WalkStep key={index}>
                 <p>
-                  {subPath[index + 1]?.startName}
-                  {subPath[index + 1]?.trafficType === 1
+                  {subPath[idx + 1]?.startName}
+                  {subPath[idx + 1]?.trafficType === 1
                     ? '역'
                     : '정류장'} 까지 {step.distance}m 걷기
                 </p>

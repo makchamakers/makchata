@@ -1,7 +1,6 @@
 'use client';
 
 import NavigationBar from '@/components/NavigationBar';
-import PathDetail from '@/components/route/bottomSheet/PathDetail';
 import { alarmSettingState, alarmState } from '@/recoil/alarm';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -86,8 +85,8 @@ export default function Home() {
   //게이지 기본 속성값
   const RADIUS = 50;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
-  let progress = timeGage / 100;
-  let circleProgress = CIRCUMFERENCE * (1 - progress);
+  const progress = timeGage / 100;
+  const circleProgress = CIRCUMFERENCE * (1 - progress);
 
   return (
     <Container>
