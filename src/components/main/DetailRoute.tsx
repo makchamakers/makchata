@@ -2,7 +2,6 @@ import React from 'react';
 import mock from './detailRouteMockData.json';
 import styled from 'styled-components';
 import { subwayColor } from '@/constants/routeColor';
-import { SubPath } from '@/type/route';
 
 interface DetailRouteProps {
   index: number;
