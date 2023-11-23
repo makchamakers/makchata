@@ -1,30 +1,55 @@
 import styled from 'styled-components';
-import { LocationSVG, XSVG } from './assets';
-import Link from 'next/link';
+import { LocationSVG } from './assets';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { addressesState, pathResultState, searchState } from '@/recoil/search';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
+  x: string;
+  y: string;
+  type: string;
 }
 
-const PlaceCard = ({ address, detailAddress }: IPlaceCard) => {
+const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
+  const [path, setPath] = useRecoilState(pathResultState);
+  const resetPath = useResetRecoilState(addressesState);
+  const [search, setSearch] = useRecoilState(searchState);
+
+  const saveAddress = () => {
+    if (type === 'departure') {
+      setPath({ ...path, departure: { address, detailAddress, x, y } });
+      setSearch({ ...search, departure: detailAddress });
+      resetPath();
+    } else if (type === 'arrival') {
+      setPath({ ...path, arrival: { address, detailAddress, x, y } });
+      setSearch({ ...search, arrival: detailAddress });
+      resetPath();
+    }
+  };
+
   return (
-    <Link href="/route">
+    <Button onClick={() => saveAddress()}>
       <Wrap>
         <LocationSVG />
         <TitleWrap>
           <p>{address}</p>
           <p>{detailAddress}</p>
         </TitleWrap>
-        <XSVG size="8" />
       </Wrap>
-    </Link>
+    </Button>
   );
 };
 
 export default PlaceCard;
 
+const Button = styled.button`
+  cursor: pointer;
+  background-color: white;
+  border: none;
+`;
+
 const Wrap = styled.article`
-  display: grid;
+  display: flex;
   grid-template-columns: 18px 1fr 18px;
   align-items: center;
   gap: 16px;
@@ -37,10 +62,13 @@ const TitleWrap = styled.div`
 
   > p:first-of-type {
     font-weight: 600;
+    margin-bottom: 8px;
+    text-align: left;
   }
 
   > p:last-of-type {
     color: var(--Gray_888888, #888);
     font-weight: 400;
+    text-align: left;
   }
 `;

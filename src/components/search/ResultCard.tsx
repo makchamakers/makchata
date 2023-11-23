@@ -1,28 +1,45 @@
+import { IResultProps } from '@/type/search';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-interface IResultCard {
-  link: string;
-}
-
-const ResultCard = (props: IResultCard) => {
-  const { link } = props;
-
+const ResultCard = ({
+  type,
+  totalTime,
+  totalDistance,
+  subPath,
+  index,
+}: IResultProps) => {
+  const lastTime = subPath.map((item) => {
+    return item.lastTime || '';
+  })[subPath.length - 1];
   return (
-    <Link href={link}>
+    <Link prefetch={false} href={`/route/${index.toString()}`}>
       <Wrap>
         <Header>
-          <Type>지하철</Type>
+          <div>{totalDistance}</div>
+          <Type>{type}</Type>
           <Right>
             <p>
-              막차 시간 <span>AM00:11</span>
+              막차 시간 <span>{lastTime}</span>
             </p>
             <p>
-              소요 시간 <span>1시간 31분</span>
+              소요 시간 <span>{totalTime}</span>
             </p>
           </Right>
         </Header>
-        <RouteBar></RouteBar>
+        <RouteBar>
+          {/* {subPath.map(({ distance, trafficType, sectionTime }) => {
+            return (
+              {trafficType === 1 ? ''}
+              <>
+              
+                <TestDiv
+                  distance={Math.floor(totalDistance / distance)}
+                ></TestDiv>
+              </>
+            );
+          })} */}
+        </RouteBar>
         <DepartureText>
           <span>16</span>분 뒤에 출발해야해요
         </DepartureText>
@@ -73,6 +90,7 @@ const Type = styled.h1`
 `;
 
 const RouteBar = styled.div`
+  display: flex;
   width: 100%;
   height: 14px;
   border-radius: 100px;
@@ -96,3 +114,8 @@ const DepartureText = styled.p`
     padding-right: 2px;
   }
 `;
+
+// const TestDiv = styled.div<{ distance: number; trafficType: string }>`
+//   width: ${({ distance }) => distance}%;
+//   background-color: red;
+// `;
