@@ -41,9 +41,9 @@ const DetailRoute: React.FC<DetailRouteProps> = ({ index }) => {
             return (
               <BusStep key={index}>
                 <StepIcons $trafficType="bus" $line={step?.lane[0]?.busNo} />
-                <p>{step?.lane[0]?.busNo}</p>
-                <p>{step.startName}</p>
-                <p>{step.endName}</p>
+                <RidingStep>{step?.lane[0]?.busNo}</RidingStep>
+                <StepTrans>{step.startName}</StepTrans>
+                <QuitStep>{step.endName}</QuitStep>
                 <SectionTime>{step.sectionTime}분</SectionTime>
               </BusStep>
             );

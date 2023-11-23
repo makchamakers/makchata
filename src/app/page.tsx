@@ -34,7 +34,7 @@ export default function Home() {
 
   function updateCurrentTime() {
     // 막차 시간 임의로 설정ß
-    const makchaTime = new Date('Sun Nov 12 2023 22:59:59 GMT+0900');
+    const makchaTime = new Date('Wed Nov 23 2023 23:59:59 GMT+0900');
     const currentTime = new Date();
     console.log(currentTime);
 
@@ -86,6 +86,8 @@ export default function Home() {
   //게이지 기본 속성값
   const RADIUS = 50;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 둘레 길이
+  let progress = timeGage / 100;
+  let circleProgress = CIRCUMFERENCE * (1 - progress);
 
   return (
     <Container>
@@ -155,7 +157,6 @@ export default function Home() {
                 strokeLinecap="round"
               />
               <circle
-                // ref={barRef}
                 className="bar"
                 cx="60"
                 cy="60"
@@ -163,8 +164,8 @@ export default function Home() {
                 stroke={alarm === false ? '#ddd' : '#FFD9C9'}
                 strokeWidth="15"
                 strokeDasharray={CIRCUMFERENCE}
-                strokeDashoffset={timeGage}
-                fill="none"
+                strokeDashoffset={circleProgress}
+                fill="transparent"
                 strokeLinecap="round"
               />
             </svg>
@@ -201,10 +202,6 @@ export default function Home() {
 const Container = styled.main`
   width: 100%;
   height: 100vh;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // justify-content: center;
   background-color: #ffd9c9;
   color: #242424;
 `;
@@ -325,6 +322,7 @@ const AlarmGage = styled.div`
   position: relative;
   width: 120px;
   height: 120px;
+  transform: rotate(-90deg);
 `;
 
 const AlarmTimer = styled.p<{ $alarm: string }>`
@@ -332,7 +330,7 @@ const AlarmTimer = styled.p<{ $alarm: string }>`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(90deg);
   font-weight: 600;
   font-size: 24px;
   text-align: center;
