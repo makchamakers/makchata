@@ -1,4 +1,4 @@
-import { PathAllRequestProps } from '@/type/path';
+import { PathAllRequestProps, PathDetailRequestProps } from '@/type/path';
 
 // 현재위치 조회
 export const getCurrentLocation = async (
@@ -42,6 +42,24 @@ export const getPathLists = async ({ sx, sy, ex, ey }: PathAllRequestProps) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
+    );
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 이동경로 상세 조회
+export const getPathDetail = async ({
+  sx,
+  sy,
+  ex,
+  ey,
+  index,
+}: PathDetailRequestProps) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination/${index}?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
     );
     return await res.json();
   } catch (error) {

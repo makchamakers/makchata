@@ -1,6 +1,6 @@
 'use client';
 
-import { getPathDetail } from '@/utils/apis/route';
+import { getPathDetail } from '@/utils/apis/path';
 import { PathDetailResponseProps } from '@/type/path';
 import { ParamsProps } from '@/type/route';
 import React, { useEffect, useState } from 'react';
