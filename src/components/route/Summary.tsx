@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import BackBtn from '@/components/route/common/BackBtn';
 import Map from '@/components/route/summary/Map';
 import BottomSheet from '@/components/route/BottomSheet';
+import { ParamsProps } from '@/type/route';
 
-export default function Summary() {
+export default function Summary({ params }: ParamsProps) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
 
   return (
@@ -19,7 +20,7 @@ export default function Summary() {
           한눈에 보여줄게요!
         </p>
       </Header>
-      <Map />
+      <Map params={params} />
       <BottomSheet
         isBottomSheetOpen={isBottomSheetOpen}
         setIsBottomSheetOpen={setIsBottomSheetOpen}

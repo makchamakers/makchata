@@ -1,3 +1,4 @@
+
 export interface Station {
   index: number;
   stationID: number;
@@ -50,4 +51,10 @@ export interface SubPath {
   endExitX?: number;
   endExitY?: number;
   passStopList?: PassStopList;
+
+export interface ParamsProps {
+  params: {
+    index: number;
+  };
+
 }

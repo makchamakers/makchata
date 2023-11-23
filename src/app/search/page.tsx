@@ -1,44 +1,27 @@
 'use client';
-
-import { getCurrentLocation } from '@/api/api';
-import { ChipButton } from '@/components/search';
+import { ChipButton, PlaceCard } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { addressesState, pathResultState } from '@/recoil/search';
+import Input from '@/components/search/Input';
+import ResultCards from '@/components/search/ResultCards';
 
-// TODO: 컴포넌트 분리
 export default function SearchPage() {
-  const [coords, setCoords] = useState({
-    latitude: '',
-    longitude: '',
-  });
-  const [currentPosition, setCurrentPosition] = useState<{
-    location: string;
-  }>();
-
+  const addresses = useRecoilValue(addressesState);
+  const pathResult = useRecoilValue(pathResultState);
+  const [inputType, setInputType] = useState('departure');
+  const resetAddresses = useResetRecoilState(addressesState);
   useEffect(() => {
-    const { geolocation } = navigator;
-    let latitude = '';
-    let longitude = '';
-
-    geolocation.getCurrentPosition(async (position) => {
-      setCoords({
-        latitude: position.coords.latitude.toString(),
-        longitude: position.coords.longitude.toString(),
-      });
-
-      latitude = position.coords.latitude.toString();
-      longitude = position.coords.longitude.toString();
-      console.log(latitude, longitude, coords.latitude);
-      await getCurrentLocation(latitude, longitude).then(
-        (res: { location: string }) => {
-          setCurrentPosition(res);
-          console.log(res);
-        }
-      );
-    });
+    if (
+      pathResult.arrival.address.length !== 0 &&
+      pathResult.departure.address.length !== 0
+    ) {
+      resetAddresses();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [addresses]);
 
   return (
     <Wrap>
@@ -46,11 +29,10 @@ export default function SearchPage() {
         <SwitchSVG />
         <div>
           <Input
-            name="departure"
-            placeholder="출발지를 입력해주세요"
-            defaultValue={currentPosition?.location || ''}
+            inputType="departure"
+            onClick={() => setInputType('departure')}
           />
-          <Input name="arrival" placeholder="도착지를 입력해주세요" />
+          <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
           <XSVG />
@@ -66,6 +48,21 @@ export default function SearchPage() {
         {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
+      {addresses.length > 0 &&
+        addresses.map(({ address_name, place_name, x, y }, index) => {
+          return (
+            <PlaceCard
+              key={index}
+              address={address_name}
+              detailAddress={place_name}
+              x={x}
+              y={y}
+              type={inputType}
+            />
+          );
+        })}
+      {pathResult.arrival.address.length !== 0 &&
+        pathResult.departure.address.length !== 0 && <ResultCards />}
     </Wrap>
   );
 }
@@ -82,37 +79,6 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-`;
-
-const Input = styled.input`
-  display: flex;
-  width: 290px;
-  padding: 12px 24px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 14px;
-  border: 1px solid var(--Gray_aaaaaa, #aaa);
-  background: var(--white, #fff);
-  color: var(--Black, #242424);
-  font-weight: 400;
-  line-height: 20px;
-  font-size: 14px;
-
-  &:first-of-type {
-    margin-bottom: 6px;
-  }
-
-  &:focus {
-    outline: none;
-    border: 1px solid var(--Primary01, #ff8048);
-  }
-
-  &::placeholder {
-    color: var(--Gray_cccccc, #ccc);
-    font-size: 14px;
-    font-weight: 400;
-  }
 `;
 
 const ResetBox = styled.div`
