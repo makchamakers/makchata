@@ -13,6 +13,8 @@ export default function TopInfo({
     setIsBottomSheetOpen((prev) => !prev);
   };
 
+  console.log(mockData);
+
   return (
     <Container onClick={handleTopInfo}>
       <Bar />
@@ -44,6 +46,50 @@ export default function TopInfo({
     </Container>
   );
 }
+
+const mockData = {
+  type: '지하철', // 지하철, 지하철+버스, 버스 중 하나
+  totalTime: 102,
+  totalDistance: 50337,
+  payment: 1900,
+  lastBoardingTime: '2021-10-28T05:18:51.868Z',
+  subPath: [
+    {
+      trafficType: '도보',
+      distance: 656,
+      sectionTime: 10,
+    },
+    {
+      trafficType: '지하철',
+      distance: 28900,
+      startName: '정자',
+      endName: '왕십리',
+      stationCount: 20,
+      sectionTime: 46,
+      door: '1-3',
+    },
+    {
+      trafficType: '도보',
+      distance: 0,
+      sectionTime: 0,
+    },
+    {
+      trafficType: '지하철',
+      distance: 20600,
+      startName: '왕십리',
+      endName: '신정',
+      stationCount: 21,
+      sectionTime: 43,
+      door: 'null',
+      lastTime: '244200',
+    },
+    {
+      trafficType: '도보',
+      distance: 181,
+      sectionTime: 3,
+    },
+  ],
+};
 
 const Container = styled.div`
   z-index: 20;
