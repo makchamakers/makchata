@@ -1,15 +1,27 @@
 'use client';
 import { ChipButton, PlaceCard } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { addressesState } from '@/recoil/search';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { addressesState, pathResultState } from '@/recoil/search';
 import Input from '@/components/search/Input';
+import ResultCards from '@/components/search/ResultCards';
 
 export default function SearchPage() {
   const addresses = useRecoilValue(addressesState);
+  const pathResult = useRecoilValue(pathResultState);
   const [inputType, setInputType] = useState('departure');
+  const resetAddresses = useResetRecoilState(addressesState);
+  useEffect(() => {
+    if (
+      pathResult.arrival.address.length !== 0 &&
+      pathResult.departure.address.length !== 0
+    ) {
+      resetAddresses();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses]);
 
   return (
     <Wrap>
@@ -49,6 +61,8 @@ export default function SearchPage() {
             />
           );
         })}
+      {pathResult.arrival.address.length !== 0 &&
+        pathResult.departure.address.length !== 0 && <ResultCards />}
     </Wrap>
   );
 }
