@@ -12,11 +12,12 @@ const ResultCard = ({
   const lastTime = subPath.map((item) => {
     return item.lastTime || '';
   })[subPath.length - 1];
+  console.log(subPath);
+
   return (
     <Link prefetch={false} href={`/route/${index.toString()}`}>
       <Wrap>
         <Header>
-          <div>{totalDistance}</div>
           <Type>{type}</Type>
           <Right>
             <p>
@@ -28,17 +29,34 @@ const ResultCard = ({
           </Right>
         </Header>
         <RouteBar>
-          {/* {subPath.map(({ distance, trafficType, sectionTime }) => {
+          {subPath.map(({ distance, trafficType, sectionTime }) => {
+            console.log(distance / totalDistance, 'distance');
             return (
-              {trafficType === 1 ? ''}
               <>
-              
-                <TestDiv
-                  distance={Math.floor(totalDistance / distance)}
-                ></TestDiv>
+                {trafficType === '도보' && (
+                  <WorkBar
+                    distance={
+                      Number((distance / totalDistance).toFixed(4)) * 1000
+                    }
+                  ></WorkBar>
+                )}
+                {trafficType === '지하철' && (
+                  <SubwayBar
+                    distance={
+                      Number((distance / totalDistance).toFixed(4)) * 1000
+                    }
+                  >{`${sectionTime}분`}</SubwayBar>
+                )}
+                {trafficType === '버스' && (
+                  <BusBar
+                    distance={
+                      Number((distance / totalDistance).toFixed(4)) * 1000
+                    }
+                  >{`${sectionTime}분`}</BusBar>
+                )}
               </>
             );
-          })} */}
+          })}
         </RouteBar>
         <DepartureText>
           <span>16</span>분 뒤에 출발해야해요
@@ -115,7 +133,24 @@ const DepartureText = styled.p`
   }
 `;
 
-// const TestDiv = styled.div<{ distance: number; trafficType: string }>`
-//   width: ${({ distance }) => distance}%;
-//   background-color: red;
-// `;
+const WorkBar = styled.div<{ distance: number }>`
+  display: flex;
+  width: ${({ distance }) => distance}%;
+  background-color: #eeeeee;
+  justify-content: center;
+  margin: 0 3px;
+  border-radius: 10px;
+  font-size: 10px;
+  color: white;
+`;
+
+const SubwayBar = styled(WorkBar)<{ distance: number }>`
+  display: flex;
+  width: ${({ distance }) => distance}%;
+  background-color: #3cb44a;
+`;
+
+const BusBar = styled(WorkBar)<{ distance: number }>`
+  width: ${({ distance }) => distance}%;
+  background-color: #f06e00;
+`;
