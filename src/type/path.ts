@@ -1,8 +1,8 @@
 export interface PathAllRequestProps {
-  sx: number;
-  sy: number;
-  ex: number;
-  ey: number;
+  sx: string;
+  sy: string;
+  ex: string;
+  ey: string;
 }
 
 // 경로 상세

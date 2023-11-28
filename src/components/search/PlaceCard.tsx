@@ -32,8 +32,8 @@ const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
       <Wrap>
         <LocationSVG />
         <TitleWrap>
-          <p>{address}</p>
           <p>{detailAddress}</p>
+          <p>{address}</p>
         </TitleWrap>
       </Wrap>
     </Button>
