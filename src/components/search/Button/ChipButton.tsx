@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MyHomeSVG } from './assets';
+import { MyHomeSVG } from '../assets';
 
 interface IChipButton {
   text: string;

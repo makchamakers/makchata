@@ -1,5 +1,5 @@
 'use client';
-import { ChipButton, PlaceCard } from '@/components/search';
+import { PlaceCard, ChipButton } from '@/components/search';
 import { SwitchSVG, XSVG } from '@/components/search/assets';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { addressesState, pathResultState } from '@/recoil/search';
 import Input from '@/components/search/Input';
 import ResultCards from '@/components/search/ResultCards';
+import CurrentLocationButton from '@/components/search/Button/CurrentLocationButton';
 
 export default function SearchPage() {
   const addresses = useRecoilValue(addressesState);
@@ -28,10 +29,13 @@ export default function SearchPage() {
       <Header>
         <SwitchSVG />
         <div>
-          <Input
-            inputType="departure"
-            onClick={() => setInputType('departure')}
-          />
+          <InputWrap>
+            <Input
+              inputType="departure"
+              onClick={() => setInputType('departure')}
+            />
+            <CurrentLocationButton />
+          </InputWrap>
           <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
@@ -99,4 +103,10 @@ const ButtonWrap = styled.div`
     gap: 8px;
     display: flex;
   }
+`;
+
+const InputWrap = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
 `;

@@ -36,17 +36,19 @@ const Input = ({ inputType, onClick }: InputProps) => {
   }, [debounceValue.arrival, debounceValue.departure]);
 
   return (
-    <SearchInput
-      onChange={(e) => onChangeValue(e)}
-      onClick={onClick}
-      placeholder={
-        inputType === 'arrival'
-          ? '도착지를 입력해주세요'
-          : '출발지를 입력해주세요'
-      }
-      name={inputType}
-      value={inputType === 'arrival' ? search.arrival : search.departure}
-    />
+    <>
+      <SearchInput
+        onChange={(e) => onChangeValue(e)}
+        onClick={onClick}
+        placeholder={
+          inputType === 'arrival'
+            ? '도착지를 입력해주세요'
+            : '출발지를 입력해주세요'
+        }
+        name={inputType}
+        value={inputType === 'arrival' ? search.arrival : search.departure}
+      />
+    </>
   );
 };
 
@@ -55,6 +57,8 @@ export default Input;
 const SearchInput = styled.input`
   display: flex;
   width: 290px;
+  position: relative;
+  padding-right: 30px;
   padding: 12px 24px;
   justify-content: center;
   align-items: center;
@@ -70,7 +74,6 @@ const SearchInput = styled.input`
   &:first-of-type {
     margin-bottom: 6px;
   }
-
   &:focus {
     outline: none;
     border: 1px solid var(--Primary01, #ff8048);
