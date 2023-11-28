@@ -33,10 +33,10 @@ export const getSearchResult = async (search: string) => {
  * @returns
  */
 export const getUserRoute = async (
-  sx: string,
-  sy: string,
-  ex: string,
-  ey: string
+  sx: number,
+  sy: number,
+  ex: number,
+  ey: number
 ) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
