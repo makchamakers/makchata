@@ -5,8 +5,8 @@ import { addressesState, pathResultState, searchState } from '@/recoil/search';
 interface IPlaceCard {
   address: string;
   detailAddress: string;
-  x: string;
-  y: string;
+  x: number;
+  y: number;
   type: string;
 }
 
