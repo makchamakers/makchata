@@ -59,8 +59,8 @@ export default function SearchPage() {
               key={index}
               address={address_name}
               detailAddress={place_name}
-              x={x}
-              y={y}
+              x={Number(x)}
+              y={Number(y)}
               type={inputType}
             />
           );
