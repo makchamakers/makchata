@@ -19,14 +19,14 @@ export const pathResultState = atom({
     arrival: {
       address: '',
       detailAddress: '',
-      x: '',
-      y: '',
+      x: 0,
+      y: 0,
     },
     departure: {
       address: '',
       detailAddress: '',
-      x: '',
-      y: '',
+      x: 0,
+      y: 0,
     },
   },
 });
