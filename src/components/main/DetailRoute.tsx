@@ -5,11 +5,11 @@ import { SUBWAY_COLOR } from '@/constants/routeColor';
 import { PathDetailResponseProps } from '@/type/path';
 
 interface DetailRouteProps {
-  index: number;
+  selectedPathIndex: number;
 }
 
-const DetailRoute = ({ index }: DetailRouteProps) => {
-  const subPath = mock.result.path[index].subPath;
+const DetailRoute = ({ selectedPathIndex }: DetailRouteProps) => {
+  const subPath = mock.result.path[selectedPathIndex].subPath;
   return (
     <RouteWrapper>
       <StartPoint>
@@ -20,7 +20,10 @@ const DetailRoute = ({ index }: DetailRouteProps) => {
         switch (step.trafficType) {
           case 1: // Subway
             return (
-              <SubwayStep key={idx} $line={step?.lane[0]?.subwayCode}>
+              <SubwayStep
+                key={step.trafficType}
+                $line={step?.lane[0]?.subwayCode}
+              >
                 <StepIcons
                   $trafficType="sub"
                   $line={step?.lane[0]?.subwayCode}
@@ -39,7 +42,7 @@ const DetailRoute = ({ index }: DetailRouteProps) => {
             );
           case 2: // Bus
             return (
-              <BusStep key={idx}>
+              <BusStep key={step.trafficType}>
                 <StepIcons $trafficType="bus" $line={1} />
                 <RidingStep>{step?.busNo}</RidingStep>
                 <StepTrans>{step.startName}</StepTrans>
@@ -49,12 +52,13 @@ const DetailRoute = ({ index }: DetailRouteProps) => {
             );
           case 3: // Walk
             return (
-              <WalkStep key={idx}>
+              <WalkStep key={step.trafficType}>
                 <p>
-                  {subPath[index + 1]?.startName}
-                  {subPath[index + 1]?.trafficType === 1
+                  {subPath[selectedPathIndex + 1]?.startName}
+                  {subPath[selectedPathIndex + 1]?.trafficType === 1
                     ? '역'
-                    : '정류장'} 까지 {step.distance}m 걷기
+                    : '정류장'}{' '}
+                  까지 {step.distance}m 걷기
                 </p>
                 <SectionTime>{step.sectionTime}분</SectionTime>
               </WalkStep>
