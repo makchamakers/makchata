@@ -38,21 +38,21 @@ const ResultCard = ({
               <div key={i}>
                 {trafficType === '도보' && (
                   <WorkBar
-                    distance={
+                    $distance={
                       Number((distance / totalDistance).toFixed(4)) * 1000
                     }
                   ></WorkBar>
                 )}
                 {trafficType === '지하철' && (
                   <SubwayBar
-                    distance={
+                    $distance={
                       Number((distance / totalDistance).toFixed(4)) * 1000
                     }
                   >{`${sectionTime}분`}</SubwayBar>
                 )}
                 {trafficType === '버스' && (
                   <BusBar
-                    distance={
+                    $distance={
                       Number((distance / totalDistance).toFixed(4)) * 1000
                     }
                   >{`${sectionTime}분`}</BusBar>
@@ -136,9 +136,9 @@ const DepartureText = styled.p`
   }
 `;
 
-const WorkBar = styled.div<{ distance: number }>`
+const WorkBar = styled.div<{ $distance: number }>`
   display: flex;
-  width: ${({ distance }) => distance}%;
+  width: ${({ $distance }) => $distance}%;
   background-color: #eeeeee;
   justify-content: center;
   margin: 0 5px;
@@ -147,13 +147,13 @@ const WorkBar = styled.div<{ distance: number }>`
   color: white;
 `;
 
-const SubwayBar = styled(WorkBar)<{ distance: number }>`
+const SubwayBar = styled(WorkBar)<{ $distance: number }>`
   display: flex;
-  width: ${({ distance }) => distance}%;
+  width: ${({ $distance }) => $distance}%;
   background-color: #3cb44a;
 `;
 
-const BusBar = styled(WorkBar)<{ distance: number }>`
-  width: ${({ distance }) => distance}%;
+const BusBar = styled(WorkBar)<{ $distance: number }>`
+  width: ${({ $distance }) => $distance}%;
   background-color: #f06e00;
 `;

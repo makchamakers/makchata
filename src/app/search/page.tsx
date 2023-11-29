@@ -1,6 +1,7 @@
 'use client';
 import { PlaceCard, ChipButton } from '@/components/search';
-import { SwitchSVG, XSVG } from '@/components/search/assets';
+import icX from 'public/assets/icons/ic_x_lg.svg';
+import icExchange from 'public/assets/icons/ic_exchange.png';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
@@ -8,6 +9,7 @@ import { addressesState, pathResultState } from '@/recoil/search';
 import Input from '@/components/search/Input';
 import ResultCards from '@/components/search/ResultCards';
 import CurrentLocationButton from '@/components/search/Button/CurrentLocationButton';
+import Image from 'next/image';
 
 export default function SearchPage() {
   const addresses = useRecoilValue(addressesState);
@@ -27,7 +29,7 @@ export default function SearchPage() {
   return (
     <Wrap>
       <Header>
-        <SwitchSVG />
+        <Image src={icExchange} alt={'출발지, 도착지 교환'} />
         <div>
           <InputWrap>
             <Input
@@ -39,7 +41,7 @@ export default function SearchPage() {
           <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
-          <XSVG />
+          <Image src={icX} alt={'출발지 삭제 버튼'} />
         </ResetBox>
       </Header>
       <ButtonWrap>
@@ -58,7 +60,7 @@ export default function SearchPage() {
             <PlaceCard
               key={index}
               address={address_name}
-              detailAddress={place_name}
+              location={place_name}
               x={Number(x)}
               y={Number(y)}
               type={inputType}

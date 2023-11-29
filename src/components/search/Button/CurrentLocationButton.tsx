@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import CurrentLocationIcon from '../assets/CurrentLocationIcon';
+import icCurrentLocation from 'public/assets/icons/ic_current_location.png';
 import { pathResultState, searchState } from '@/recoil/search';
 import { useRecoilState } from 'recoil';
-import { getCurrentLocation } from '@/api/api';
+import Image from 'next/image';
+import { getCurrentLocation } from '@/utils/apis/path';
 
 const CurrentLocationButton = () => {
   const [searchValue, setSearchValue] = useRecoilState(searchState);
@@ -22,7 +23,7 @@ const CurrentLocationButton = () => {
           ...pathResult,
           departure: {
             address: res.location,
-            detailAddress: res.location,
+            location: res.location,
             x: res.x,
             y: res.y,
           },
@@ -32,11 +33,9 @@ const CurrentLocationButton = () => {
   };
 
   return (
-    <>
-      <Button onClick={() => onClickCurrentLocation()}>
-        <CurrentLocationIcon />
-      </Button>
-    </>
+    <Button onClick={() => onClickCurrentLocation()}>
+      <Image src={icCurrentLocation} alt="현재위치버튼" />
+    </Button>
   );
 };
 
@@ -44,7 +43,7 @@ export default CurrentLocationButton;
 
 const Button = styled.button`
   position: absolute;
-  right: 5%;
+  right: 7%;
   cursor: pointer;
   border: none;
   background-color: transparent;

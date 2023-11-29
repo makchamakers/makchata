@@ -1,4 +1,4 @@
-import { getSearchResult } from '@/api/api';
+import { getLocationSearchResults } from '@/utils/apis/path';
 import useDebounce from '@/hooks/useDebounce';
 import { addressesState, searchState } from '@/recoil/search';
 import React, { ChangeEvent, useEffect } from 'react';
@@ -18,8 +18,8 @@ const Input = ({ inputType, onClick }: InputProps) => {
     setSearch({ ...search, [name]: value });
   };
 
-  const fetchSearchValue = async (val: string) => {
-    const response = await getSearchResult(val);
+  const fetchSearchValue = async (searchKeyword: string) => {
+    const response = await getLocationSearchResults(searchKeyword);
     return setAddresses(response);
   };
 
@@ -46,6 +46,7 @@ const Input = ({ inputType, onClick }: InputProps) => {
             : '출발지를 입력해주세요'
         }
         name={inputType}
+        type="text"
         value={inputType === 'arrival' ? search.arrival : search.departure}
       />
     </>
@@ -59,7 +60,7 @@ const SearchInput = styled.input`
   width: 290px;
   position: relative;
   padding-right: 30px;
-  padding: 12px 24px;
+  padding: 10px 24px;
   justify-content: center;
   align-items: center;
   gap: 10px;
