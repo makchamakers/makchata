@@ -4,12 +4,17 @@ import Image from 'next/image';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { addressesState, pathResultState, searchState } from '@/recoil/search';
 import { IPlaceCard } from '@/type/search';
+import { useState } from 'react';
 
 const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
   const [path, setPath] = useRecoilState(pathResultState);
   const resetPath = useResetRecoilState(addressesState);
   const [search, setSearch] = useRecoilState(searchState);
+  const [isPressed, setIsPressed] = useState(false);
 
+  const handleTouchEvent = () => {
+    setIsPressed(!isPressed);
+  };
   const saveAddress = () => {
     if (type === 'departure') {
       setPath({ ...path, departure: { address, location, x, y } });
@@ -23,7 +28,19 @@ const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
   };
 
   return (
-    <Button onClick={() => saveAddress()}>
+    <Button
+      $isPressed={isPressed}
+      onTouchStart={() => {
+        handleTouchEvent();
+      }}
+      onTouchEnd={() => {
+        saveAddress();
+        handleTouchEvent();
+      }}
+      onClick={() => {
+        saveAddress();
+      }}
+    >
       <Wrap>
         <Image src={icLocation} alt="위치 이미지" />
         <TitleWrap>
@@ -37,10 +54,14 @@ const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
 
 export default PlaceCard;
 
-const Button = styled.button`
+const Button = styled.button<{ $isPressed: boolean }>`
   cursor: pointer;
-  background-color: white;
+  background: ${({ $isPressed }) =>
+    $isPressed ? 'var(--Gray_eeeeee, #eee)' : 'white'};
   border: none;
+  &:hover {
+    background-color: var(--Gray_eeeeee, #eee);
+  }
 `;
 
 const Wrap = styled.article`
