@@ -1,28 +1,23 @@
 import styled from 'styled-components';
-import { LocationSVG } from './assets';
+import icLocation from 'public/assets/icons/ic_location.svg';
+import Image from 'next/image';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { addressesState, pathResultState, searchState } from '@/recoil/search';
-interface IPlaceCard {
-  address: string;
-  detailAddress: string;
-  x: string;
-  y: string;
-  type: string;
-}
+import { IPlaceCard } from '@/type/search';
 
-const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
+const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
   const [path, setPath] = useRecoilState(pathResultState);
   const resetPath = useResetRecoilState(addressesState);
   const [search, setSearch] = useRecoilState(searchState);
 
   const saveAddress = () => {
     if (type === 'departure') {
-      setPath({ ...path, departure: { address, detailAddress, x, y } });
-      setSearch({ ...search, departure: detailAddress });
+      setPath({ ...path, departure: { address, location, x, y } });
+      setSearch({ ...search, departure: location });
       resetPath();
     } else if (type === 'arrival') {
-      setPath({ ...path, arrival: { address, detailAddress, x, y } });
-      setSearch({ ...search, arrival: detailAddress });
+      setPath({ ...path, arrival: { address, location, x, y } });
+      setSearch({ ...search, arrival: location });
       resetPath();
     }
   };
@@ -30,10 +25,10 @@ const PlaceCard = ({ address, detailAddress, x, y, type }: IPlaceCard) => {
   return (
     <Button onClick={() => saveAddress()}>
       <Wrap>
-        <LocationSVG />
+        <Image src={icLocation} alt="위치 이미지" />
         <TitleWrap>
+          <p>{location}</p>
           <p>{address}</p>
-          <p>{detailAddress}</p>
         </TitleWrap>
       </Wrap>
     </Button>

@@ -1,4 +1,4 @@
-export const subwayColor = {
+export const subwayColor: { [key: string]: string } = {
   1: '0d3692',
   2: '33a23d',
   3: 'fe5d10',
