@@ -1,4 +1,4 @@
-import { getUserRoute } from '@/api/api';
+import { getPathLists } from '@/utils/apis/path';
 import { pathResultState } from '@/recoil/search';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
@@ -17,15 +17,15 @@ const ResultCards = () => {
     pathResult.arrival.y,
   ];
 
-  const { data, isLoading, isError } = useQuery<IQueryProps[]>({
+  const { data, isLoading, isError } = useQuery<IQueryProps>({
     queryKey: queryKey,
     queryFn: () =>
-      getUserRoute(
-        pathResult.departure.x,
-        pathResult.departure.y,
-        pathResult.arrival.x,
-        pathResult.arrival.y
-      ),
+      getPathLists({
+        sx: pathResult.departure.x,
+        sy: pathResult.departure.y,
+        ex: pathResult.arrival.x,
+        ey: pathResult.arrival.y,
+      }),
   });
 
   if (isLoading) {
@@ -35,10 +35,15 @@ const ResultCards = () => {
   if (isError) {
     return <div>에러입니다.</div>;
   }
+
   return (
     <>
-      {data && data.length > 0
-        ? data?.map(({ type, totalTime, totalDistance, subPath }, index) => {
+      {data &&
+        data?.route?.map(
+          (
+            { type, totalTime, totalDistance, subPath, lastBoardingTime },
+            index
+          ) => {
             return (
               <div key={index}>
                 <ResultCard
@@ -46,12 +51,13 @@ const ResultCards = () => {
                   totalTime={totalTime}
                   totalDistance={totalDistance}
                   subPath={subPath}
+                  lastBoardingTime={lastBoardingTime}
                   index={index}
                 />
               </div>
             );
-          })
-        : ''}
+          }
+        )}
     </>
   );
 };

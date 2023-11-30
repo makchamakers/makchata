@@ -1,4 +1,9 @@
 import { IResultProps } from '@/type/search';
+import {
+  formattingBoardingTime,
+  formattingTimeTaken,
+  formattingRemainTime,
+} from '@/utils/time/boardingTime';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -8,40 +13,56 @@ const ResultCard = ({
   totalDistance,
   subPath,
   index,
+  lastBoardingTime,
 }: IResultProps) => {
-  const lastTime = subPath.map((item) => {
-    return item.lastTime || '';
-  })[subPath.length - 1];
+  const formattingTime = formattingBoardingTime(lastBoardingTime);
+  const formattingTaken = formattingTimeTaken(totalTime);
+  const remainTime = formattingRemainTime(lastBoardingTime, totalTime);
   return (
     <Link prefetch={false} href={`/route/${index.toString()}`}>
       <Wrap>
         <Header>
-          <div>{totalDistance}</div>
           <Type>{type}</Type>
           <Right>
             <p>
-              막차 시간 <span>{lastTime}</span>
+              막차 시간 <span>{formattingTime}</span>
             </p>
             <p>
-              소요 시간 <span>{totalTime}</span>
+              소요 시간 <span>{formattingTaken}</span>
             </p>
           </Right>
         </Header>
         <RouteBar>
-          {/* {subPath.map(({ distance, trafficType, sectionTime }) => {
+          {subPath.map(({ distance, trafficType, sectionTime }, i) => {
             return (
-              {trafficType === 1 ? ''}
-              <>
-              
-                <TestDiv
-                  distance={Math.floor(totalDistance / distance)}
-                ></TestDiv>
-              </>
+              <div key={i}>
+                {trafficType === '도보' && (
+                  <WorkBar
+                    $distance={
+                      Number((distance / totalDistance).toFixed(4)) * 1000
+                    }
+                  ></WorkBar>
+                )}
+                {trafficType === '지하철' && (
+                  <SubwayBar
+                    $distance={
+                      Number((distance / totalDistance).toFixed(4)) * 1000
+                    }
+                  >{`${sectionTime}분`}</SubwayBar>
+                )}
+                {trafficType === '버스' && (
+                  <BusBar
+                    $distance={
+                      Number((distance / totalDistance).toFixed(4)) * 1000
+                    }
+                  >{`${sectionTime}분`}</BusBar>
+                )}
+              </div>
             );
-          })} */}
+          })}
         </RouteBar>
         <DepartureText>
-          <span>16</span>분 뒤에 출발해야해요
+          <span>{remainTime}</span> 뒤에 출발해야해요
         </DepartureText>
       </Wrap>
     </Link>
@@ -115,7 +136,24 @@ const DepartureText = styled.p`
   }
 `;
 
-// const TestDiv = styled.div<{ distance: number; trafficType: string }>`
-//   width: ${({ distance }) => distance}%;
-//   background-color: red;
-// `;
+const WorkBar = styled.div<{ $distance: number }>`
+  display: flex;
+  width: ${({ $distance }) => $distance}%;
+  background-color: #eeeeee;
+  justify-content: center;
+  margin: 0 5px;
+  border-radius: 10px;
+  font-size: 10px;
+  color: white;
+`;
+
+const SubwayBar = styled(WorkBar)<{ $distance: number }>`
+  display: flex;
+  width: ${({ $distance }) => $distance}%;
+  background-color: #3cb44a;
+`;
+
+const BusBar = styled(WorkBar)<{ $distance: number }>`
+  width: ${({ $distance }) => $distance}%;
+  background-color: #f06e00;
+`;
