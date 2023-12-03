@@ -53,3 +53,15 @@ export interface IRouteCard {
   departure: string;
   arrival: string;
 }
+
+interface Location {
+  location: string;
+  address: string;
+  x: number;
+  y: number;
+}
+
+export interface IPathProps {
+  arrival: Location;
+  departure: Location;
+}

@@ -1,3 +1,4 @@
+'use client';
 import styled from 'styled-components';
 import icLocation from 'public/assets/icons/ic_location.svg';
 import Image from 'next/image';
@@ -8,27 +9,31 @@ import { useState } from 'react';
 
 const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
   const [path, setPath] = useRecoilState(pathResultState);
-  const resetPath = useResetRecoilState(addressesState);
+  const resetAddress = useResetRecoilState(addressesState);
   const [search, setSearch] = useRecoilState(searchState);
   const [isPressed, setIsPressed] = useState(false);
 
   const handleTouchEvent = () => {
     setIsPressed(!isPressed);
   };
+
   const saveAddress = () => {
     if (type === 'departure') {
+      console.log(path);
       setPath({ ...path, departure: { address, location, x, y } });
       setSearch({ ...search, departure: location });
-      resetPath();
+      resetAddress();
+      return;
     } else if (type === 'arrival') {
       setPath({ ...path, arrival: { address, location, x, y } });
       setSearch({ ...search, arrival: location });
-      resetPath();
+      resetAddress();
+      return;
     }
   };
 
   return (
-    <Button
+    <Container
       $isPressed={isPressed}
       onTouchStart={() => {
         handleTouchEvent();
@@ -37,9 +42,7 @@ const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
         saveAddress();
         handleTouchEvent();
       }}
-      onClick={() => {
-        saveAddress();
-      }}
+      onClick={saveAddress}
     >
       <Wrap>
         <Image src={icLocation} alt="위치 이미지" />
@@ -48,13 +51,13 @@ const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
           <p>{address}</p>
         </TitleWrap>
       </Wrap>
-    </Button>
+    </Container>
   );
 };
 
 export default PlaceCard;
 
-const Button = styled.button<{ $isPressed: boolean }>`
+const Container = styled.div<{ $isPressed: boolean }>`
   cursor: pointer;
   background: ${({ $isPressed }) =>
     $isPressed ? 'var(--Gray_eeeeee, #eee)' : 'white'};
