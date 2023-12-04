@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { MyHomeSVG } from './assets';
+import IcHome from 'public/assets/icons/ic_home.svg';
+import Image from 'next/image';
 
 interface IChipButton {
   text: string;
@@ -9,7 +10,7 @@ interface IChipButton {
 const ChipButton = ({ text, onClick }: IChipButton) => {
   return (
     <Button onClick={onClick}>
-      <MyHomeSVG />
+      <Image src={IcHome} alt="집" />
       <p>{text}</p>
     </Button>
   );

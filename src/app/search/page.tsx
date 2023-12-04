@@ -1,12 +1,15 @@
 'use client';
-import { ChipButton, PlaceCard } from '@/components/search';
-import { SwitchSVG, XSVG } from '@/components/search/assets';
+import { PlaceCard, ChipButton } from '@/components/search';
+import icX from 'public/assets/icons/ic_x_lg.svg';
+import icExchange from 'public/assets/icons/ic_exchange.png';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { addressesState, pathResultState } from '@/recoil/search';
 import Input from '@/components/search/Input';
 import ResultCards from '@/components/search/ResultCards';
+import CurrentLocationButton from '@/components/search/Button/CurrentLocationButton';
+import Image from 'next/image';
 
 export default function SearchPage() {
   const addresses = useRecoilValue(addressesState);
@@ -26,16 +29,19 @@ export default function SearchPage() {
   return (
     <Wrap>
       <Header>
-        <SwitchSVG />
+        <Image src={icExchange} alt={'출발지, 도착지 교환'} />
         <div>
-          <Input
-            inputType="departure"
-            onClick={() => setInputType('departure')}
-          />
+          <InputWrap>
+            <Input
+              inputType="departure"
+              onClick={() => setInputType('departure')}
+            />
+            <CurrentLocationButton />
+          </InputWrap>
           <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
-          <XSVG />
+          <Image src={icX} alt={'출발지 삭제 버튼'} />
         </ResetBox>
       </Header>
       <ButtonWrap>
@@ -54,9 +60,9 @@ export default function SearchPage() {
             <PlaceCard
               key={index}
               address={address_name}
-              detailAddress={place_name}
-              x={x}
-              y={y}
+              location={place_name}
+              x={Number(x)}
+              y={Number(y)}
               type={inputType}
             />
           );
@@ -99,4 +105,10 @@ const ButtonWrap = styled.div`
     gap: 8px;
     display: flex;
   }
+`;
+
+const InputWrap = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
 `;

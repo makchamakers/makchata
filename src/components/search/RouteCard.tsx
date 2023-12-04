@@ -1,12 +1,8 @@
 import styled from 'styled-components';
-import { XSVG } from './assets';
+import icX from 'public/assets/icons/ic_x_sm.png';
 import Link from 'next/link';
-
-interface IRouteCard {
-  link: string;
-  departure: string;
-  arrival: string;
-}
+import { IRouteCard } from '@/type/search';
+import Image from 'next/image';
 
 const RouteCard = (props: IRouteCard) => {
   const { link, departure, arrival } = props;
@@ -22,7 +18,7 @@ const RouteCard = (props: IRouteCard) => {
             <span>도착지</span> {arrival}
           </p>
         </Course>
-        <XSVG size="8" />
+        <Image src={icX} alt="저장된 경로 삭제" />
       </Wrap>
     </Link>
   );

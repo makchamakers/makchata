@@ -17,16 +17,16 @@ export const pathResultState = atom({
   key: 'pathResult',
   default: {
     arrival: {
+      location: '',
       address: '',
-      detailAddress: '',
-      x: '',
-      y: '',
+      x: 0,
+      y: 0,
     },
     departure: {
+      location: '',
       address: '',
-      detailAddress: '',
-      x: '',
-      y: '',
+      x: 0,
+      y: 0,
     },
   },
 });
