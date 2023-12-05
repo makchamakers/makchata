@@ -1,13 +1,12 @@
 'use client';
 
-import { getPathDetail } from '@/utils/apis/path';
 import { PathProps, PathDetailResponseProps } from '@/type/path';
 import { ParamsProps } from '@/type/route';
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { pathResultState } from '@/recoil/search';
 import { IPathProps } from '@/type/search';
+import usePathDetailQuery from '@/hooks/usePathDetailQuery';
 
 declare global {
   interface Window {
@@ -122,25 +121,16 @@ const onLoadKakaoAPI = (
 };
 
 export default function Map({ params }: ParamsProps) {
-  // 경로 상세 response 담는 state
-  const [pathDetailLocations, setPathDetailLocations] =
-    useState<PathDetailResponseProps>();
   const [selectedPathResult] = useRecoilState<IPathProps>(pathResultState);
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getPathDetail({
-        // recoil pathResultState 값 사용 예정
-        sx: selectedPathResult.arrival.x,
-        sy: selectedPathResult.arrival.y,
-        ex: selectedPathResult.departure.x,
-        ey: selectedPathResult.departure.y,
-        index: params.index,
-      });
-      setPathDetailLocations(res);
-    };
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {
+    pathDetailLocations,
+  }: { pathDetailLocations: PathDetailResponseProps } = usePathDetailQuery({
+    sx: selectedPathResult.arrival.x,
+    sy: selectedPathResult.arrival.y,
+    ex: selectedPathResult.departure.x,
+    ey: selectedPathResult.departure.y,
+    index: params.index,
+  });
 
   // 지도불러오는 script
   let kakaoMapScript;
