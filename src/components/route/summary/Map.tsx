@@ -21,7 +21,6 @@ const onLoadKakaoAPI = (
   selectedPathResult: IPathProps,
   pathDetailLocationList: PathProps[]
 ) => {
-  console.log(pathDetailLocationList);
   window.kakao.maps.load(() => {
     // 초기 지도화면 생성
     const mapContainer = document.getElementById('map');
