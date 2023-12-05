@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import HomeIcon from '@/components/HomeIcon';
-import PersonIcon from '@/components/PersonIcon';
-import SettingIcon from '@/components/SettingIcon';
+import Image from 'next/image';
+import icSettingGray from 'public/assets/icons/ic_setting_gray.svg';
+import icHomeGray from 'public/assets/icons/ic_home_gray.svg';
+import icUser from 'public/assets/icons/ic_user.svg';
 import styled from 'styled-components';
 
 export default function NavigationBar() {
@@ -14,22 +15,37 @@ export default function NavigationBar() {
   const isMyPage = activePath === '/mypage';
 
   return (
+    // 컴포넌트가 아니라 svg 파일을 경로로 불러오니 Image 태그에  fill 속성이 먹지 않음
+    // 어떤 방법으로 해야할까요..?
+
     <Container>
       <Link href="/setting">
         <NavLink $active={isSetting}>
-          <SettingIcon color={isSetting ? '#FF8048' : '#BBBBBB'} />
+          <Image
+            src={icSettingGray}
+            alt={'설정 페이지로 이동'}
+            color={isSetting ? '#FF8048' : '#BBBBBB'}
+          />
           <span>설정</span>
         </NavLink>
       </Link>
       <Link href="/">
         <NavLink $active={isHome}>
-          <HomeIcon color={isHome ? '#FF8048' : '#BBBBBB'} />
+          <Image
+            src={icHomeGray}
+            alt={'홈 화면으로 이동'}
+            color={isHome ? '#FF8048' : '#BBBBBB'}
+          />
           <span>홈</span>
         </NavLink>
       </Link>
       <Link href="/mypage">
         <NavLink $active={isMyPage}>
-          <PersonIcon color={isMyPage ? '#FF8048' : '#BBBBBB'} />
+          <Image
+            src={icUser}
+            alt={'마이 페이지로 이동'}
+            color={isMyPage ? '#FF8048' : '#BBBBBB'}
+          />
           <span>마이페이지</span>
         </NavLink>
       </Link>

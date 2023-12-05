@@ -1,10 +1,13 @@
 'use client';
 
 import { getPathDetail } from '@/utils/apis/path';
-import { PathDetailResponseProps } from '@/type/path';
+import { PathProps, PathDetailResponseProps } from '@/type/path';
 import { ParamsProps } from '@/type/route';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { pathResultState } from '@/recoil/search';
+import { IPathProps } from '@/type/search';
 
 declare global {
   interface Window {
@@ -13,23 +16,19 @@ declare global {
   }
 }
 
-const temptObj = {
-  // recoil pathResultState 값 사용 예정
-  departureLongitude: 127.0238072,
-  departureLatitude: 37.5190581,
-  arrivalLongitude: 126.9522394,
-  arrivalLatitude: 37.464007,
-};
-
 // 지도 띄우기 함수
-const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
+const onLoadKakaoAPI = (
+  selectedPathResult: IPathProps,
+  pathDetailLocationList: PathProps[]
+) => {
+  console.log(pathDetailLocationList);
   window.kakao.maps.load(() => {
     // 초기 지도화면 생성
     const mapContainer = document.getElementById('map');
     const mapOption = {
       center: new window.kakao.maps.LatLng(
-        temptObj.departureLatitude,
-        temptObj.departureLongitude
+        selectedPathResult.departure.y,
+        selectedPathResult.departure.x
       ), // 지도의 중심좌표
       level: 3, // 지도의 확대 레벨
     };
@@ -49,16 +48,16 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
       {
         title: '출발지',
         latlng: new window.kakao.maps.LatLng(
-          temptObj.departureLatitude,
-          temptObj.departureLongitude
+          selectedPathResult.departure.y,
+          selectedPathResult.departure.x
         ),
         src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/blue_b.png',
       },
       {
         title: '도착지',
         latlng: new window.kakao.maps.LatLng(
-          temptObj.arrivalLatitude,
-          temptObj.arrivalLongitude
+          selectedPathResult.arrival.y,
+          selectedPathResult.arrival.x
         ),
         src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/flagImg/red_b.png',
       },
@@ -97,8 +96,8 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
       color: string;
     };
     const linePaths: LinePathsProps[] = [];
-    const arrayExceptedWalkingPath = pathDetailLocations.filter(
-      (path: PathDetailResponseProps) => path.trafficType !== '도보'
+    const arrayExceptedWalkingPath = pathDetailLocationList.filter(
+      (path) => path.trafficType !== '도보'
     );
     arrayExceptedWalkingPath.map((path) => {
       linePaths.push({
@@ -125,18 +124,17 @@ const onLoadKakaoAPI = (pathDetailLocations: PathDetailResponseProps[]) => {
 
 export default function Map({ params }: ParamsProps) {
   // 경로 상세 response 담는 state
-  const [pathDetailLocations, setPathDetailLocations] = useState<
-    PathDetailResponseProps[]
-  >([]);
-
+  const [pathDetailLocations, setPathDetailLocations] =
+    useState<PathDetailResponseProps>();
+  const [selectedPathResult] = useRecoilState<IPathProps>(pathResultState);
   useEffect(() => {
     const fetchData = async () => {
       const res = await getPathDetail({
         // recoil pathResultState 값 사용 예정
-        sx: temptObj.departureLongitude,
-        sy: temptObj.departureLatitude,
-        ex: temptObj.arrivalLongitude,
-        ey: temptObj.arrivalLatitude,
+        sx: selectedPathResult.arrival.x,
+        sy: selectedPathResult.arrival.y,
+        ex: selectedPathResult.departure.x,
+        ey: selectedPathResult.departure.y,
         index: params.index,
       });
       setPathDetailLocations(res);
@@ -154,8 +152,11 @@ export default function Map({ params }: ParamsProps) {
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false&libraries=services,clusterer,drawing`;
     document.head.appendChild(kakaoMapScript);
 
-    kakaoMapScript.addEventListener('load', () =>
-      onLoadKakaoAPI(pathDetailLocations)
+    kakaoMapScript.addEventListener(
+      'load',
+      () =>
+        pathDetailLocations &&
+        onLoadKakaoAPI(selectedPathResult, pathDetailLocations?.path)
     );
   }
 

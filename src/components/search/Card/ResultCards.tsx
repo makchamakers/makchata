@@ -3,8 +3,8 @@ import { pathResultState } from '@/recoil/search';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { ResultCard } from '.';
 import { IQueryProps } from '@/type/search';
+import ResultCard from './ResultCard';
 
 const ResultCards = () => {
   const pathResult = useRecoilValue(pathResultState);

@@ -1,3 +1,5 @@
+'use client';
+import { pathResultState, remainPathState } from '@/recoil/search';
 import { IResultProps } from '@/type/search';
 import {
   formattingBoardingTime,
@@ -5,6 +7,7 @@ import {
   formattingRemainTime,
 } from '@/utils/time/boardingTime';
 import Link from 'next/link';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 const ResultCard = ({
@@ -15,11 +18,22 @@ const ResultCard = ({
   index,
   lastBoardingTime,
 }: IResultProps) => {
+  const remainPath = useSetRecoilState(remainPathState);
+  const pathResult = useRecoilValue(pathResultState);
   const formattingTime = formattingBoardingTime(lastBoardingTime);
   const formattingTaken = formattingTimeTaken(totalTime);
   const remainTime = formattingRemainTime(lastBoardingTime, totalTime);
+  const savePath = () => {
+    remainPath((prev) => {
+      return [...prev, pathResult];
+    });
+  };
   return (
-    <Link prefetch={false} href={`/route/${index.toString()}`}>
+    <Link
+      prefetch={false}
+      href={`/route/${index.toString()}`}
+      onClick={() => savePath()}
+    >
       <Wrap>
         <Header>
           <Type>{type}</Type>
