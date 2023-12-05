@@ -9,7 +9,12 @@ export interface PathAllRequestProps {
 export interface PathDetailRequestProps extends PathAllRequestProps {
   index: number;
 }
+
 export interface PathDetailResponseProps {
+  lastBoardingTime: string;
+  path: PathProps[];
+}
+export interface PathProps {
   trafficType: string;
   distance: number;
   startName?: string;
