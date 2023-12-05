@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { pathResultState } from '@/recoil/search';
-import { IPathResult } from '@/type/search';
+import { IPathProps } from '@/type/search';
 
 declare global {
   interface Window {
@@ -18,7 +18,7 @@ declare global {
 
 // 지도 띄우기 함수
 const onLoadKakaoAPI = (
-  selectedPathResult: IPathResult,
+  selectedPathResult: IPathProps,
   pathDetailLocationList: PathProps[]
 ) => {
   console.log(pathDetailLocationList);
@@ -126,7 +126,7 @@ export default function Map({ params }: ParamsProps) {
   // 경로 상세 response 담는 state
   const [pathDetailLocations, setPathDetailLocations] =
     useState<PathDetailResponseProps>();
-  const [selectedPathResult] = useRecoilState<IPathResult>(pathResultState);
+  const [selectedPathResult] = useRecoilState<IPathProps>(pathResultState);
   useEffect(() => {
     const fetchData = async () => {
       const res = await getPathDetail({
