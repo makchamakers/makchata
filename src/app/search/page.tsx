@@ -1,21 +1,29 @@
 'use client';
-import { PlaceCard, ChipButton } from '@/components/search';
 import icX from 'public/assets/icons/ic_x_lg.svg';
 import icExchange from 'public/assets/icons/ic_exchange.png';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { addressesState, pathResultState } from '@/recoil/search';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import {
+  addressesState,
+  pathResultState,
+  remainPathState,
+} from '@/recoil/search';
 import Input from '@/components/search/Input';
-import ResultCards from '@/components/search/ResultCards';
+import ResultCards from '@/components/search/Card/ResultCards';
 import CurrentLocationButton from '@/components/search/Button/CurrentLocationButton';
 import Image from 'next/image';
+import ChipButton from '@/components/search/Button/ChipButton';
+import RouteCard from '@/components/search/Card/RouteCard';
+import PlaceCard from '@/components/search/Card/PlaceCard';
 
 export default function SearchPage() {
   const addresses = useRecoilValue(addressesState);
   const pathResult = useRecoilValue(pathResultState);
   const [inputType, setInputType] = useState('departure');
   const resetAddresses = useResetRecoilState(addressesState);
+  const [remainPath, setRemainPath] = useRecoilState(remainPathState);
+
   useEffect(() => {
     if (
       pathResult.arrival.address.length !== 0 &&
@@ -26,6 +34,17 @@ export default function SearchPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addresses]);
 
+  // addresses가 변할 때 실행되면 로컬스토리지에 addresses의 갯수만큼 저장됨.
+  // 그렇기 때문에 deps에 보이는 것처럼 적어 놓음.
+  useEffect(() => {
+    if (
+      pathResult.arrival.address.length !== 0 &&
+      pathResult.departure.address.length !== 0
+    ) {
+      setRemainPath([...remainPath, pathResult]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathResult.arrival.address, pathResult.departure.address]);
   return (
     <Wrap>
       <Header>
@@ -54,6 +73,10 @@ export default function SearchPage() {
         {/* TODO: 즐겨찾기 스타일, onClick 수정 */}
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
+      {/* input들에 value가 없으면서, localStorage에 value가 있을 때 */}
+      {addresses.length === 0 &&
+        pathResult.arrival.address.length === 0 &&
+        pathResult.departure.address.length === 0 && <RouteCard />}
       {addresses.length > 0 &&
         addresses.map(({ address_name, place_name, x, y }, index) => {
           return (
