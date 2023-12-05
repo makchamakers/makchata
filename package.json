@@ -28,13 +28,15 @@
     "react-dom": "^18",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
-    "styled-components": "^6.1.0"
+    "styled-components": "^6.1.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint": "^8.52.0",
