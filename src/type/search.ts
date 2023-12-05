@@ -53,3 +53,7 @@ export interface IRouteCard {
   departure: string;
   arrival: string;
 }
+
+export interface ITaxiFareProps {
+  taxiPay: number;
+}

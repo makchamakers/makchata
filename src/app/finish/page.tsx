@@ -5,15 +5,47 @@ import { styled } from 'styled-components';
 import icCharDefault from 'public/assets/icons/ic_char_default.svg';
 import { useState } from 'react';
 import Link from 'next/link';
+import { ITaxiFareProps } from '@/type/search';
+import { useQuery } from '@tanstack/react-query';
+import { getTaxiFare } from '@/utils/apis/finish';
+import { useRecoilValue } from 'recoil';
+import { pathResultState } from '@/recoil/search';
 
 export default function finish() {
   const [isCheckedBefore, setIsCheckedBefore] = useState(true);
   const [isDoneSuccess, setIsDoneSuccess] = useState(false);
+  const pathResult = useRecoilValue(pathResultState);
 
   const CheckSuccessHandler = (state: boolean): void => {
     setIsCheckedBefore(false);
     setIsDoneSuccess(state);
   };
+  const querykey = [
+    'useTaxiFare',
+    pathResult.departure.x,
+    pathResult.departure.y,
+    pathResult.arrival.x,
+    pathResult.arrival.y,
+  ];
+
+  const { data, isLoading, isError } = useQuery<ITaxiFareProps>({
+    queryKey: querykey,
+    queryFn: () =>
+      getTaxiFare({
+        sx: pathResult.departure.x,
+        sy: pathResult.departure.y,
+        ex: pathResult.arrival.x,
+        ey: pathResult.arrival.y,
+      }),
+  });
+
+  if (isLoading) {
+    return <div>로딩중입니다.</div>;
+  }
+
+  if (isError) {
+    return <div>에러입니다.</div>;
+  }
 
   return (
     <Container>
@@ -26,7 +58,7 @@ export default function finish() {
           <p>
             오늘 내가 아낀 예상 택시비는
             <br />
-            <b>40,200원</b>이에요
+            <b>{data?.taxiPay}원</b>이에요
           </p>
         ) : (
           <p>
