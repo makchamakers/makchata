@@ -19,7 +19,6 @@ const PlaceCard = ({ location, address, x, y, type }: IPlaceCard) => {
 
   const saveAddress = () => {
     if (type === 'departure') {
-      console.log(path);
       setPath({ ...path, departure: { address, location, x, y } });
       setSearch({ ...search, departure: location });
       resetAddress();

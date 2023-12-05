@@ -65,3 +65,8 @@ export interface IPathProps {
   arrival: Location;
   departure: Location;
 }
+
+export interface IPathPropsWithoutKey {
+  departure: Location;
+  arrival: Location;
+}

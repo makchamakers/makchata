@@ -3,40 +3,46 @@
 import styled from 'styled-components';
 import icX from 'public/assets/icons/ic_x_sm.png';
 import Image from 'next/image';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { pathResultState, remainPathState } from '@/recoil/search';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { pathResultState, remainPathSelector } from '@/recoil/search';
 import { useMounted } from '@/hooks/useMounted';
-import { v4 as uuidv4 } from 'uuid';
+import { IPathPropsWithoutKey } from '@/type/search';
+import { MouseEvent } from 'react';
 
 const RouteCard = () => {
   const { isMounted } = useMounted();
-  const remainPath = useRecoilValue(remainPathState);
+  const [remainPath, setRemainPath] = useRecoilState(remainPathSelector);
   const pathResult = useSetRecoilState(pathResultState);
+  const showResult = ({ arrival, departure }: IPathPropsWithoutKey) => {
+    pathResult({
+      arrival: {
+        location: arrival.location,
+        address: arrival.address,
+        x: arrival.x,
+        y: arrival.y,
+      },
+      departure: {
+        location: departure.location,
+        address: departure.address,
+        x: departure.x,
+        y: departure.y,
+      },
+    });
+  };
+  const removePath = (id: string, e: MouseEvent<HTMLImageElement>) => {
+    e.stopPropagation();
+    setRemainPath(remainPath.filter((path) => path.id !== id));
+  };
 
   return (
     <>
       {isMounted &&
-        remainPath?.map(({ arrival, departure }) => {
-          const uniqueKey = uuidv4();
-          const showResult = () => {
-            pathResult({
-              arrival: {
-                location: arrival.location,
-                address: arrival.address,
-                x: arrival.x,
-                y: arrival.y,
-              },
-              departure: {
-                location: departure.location,
-                address: departure.address,
-                x: departure.x,
-                y: departure.y,
-              },
-            });
-          };
-
+        remainPath?.map(({ id, arrival, departure }) => {
           return (
-            <Container key={uniqueKey} onClick={() => showResult()}>
+            <Container
+              key={id}
+              onClick={() => showResult({ arrival, departure })}
+            >
               <Wrap>
                 <Course>
                   <p>
@@ -46,7 +52,11 @@ const RouteCard = () => {
                     <span>도착지</span> {arrival.location}
                   </p>
                 </Course>
-                <Image src={icX} alt="저장된 경로 삭제" />
+                <Image
+                  src={icX}
+                  alt="저장된 경로 삭제"
+                  onClick={(e) => removePath(id, e)}
+                />
               </Wrap>
             </Container>
           );
