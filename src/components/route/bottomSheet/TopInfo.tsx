@@ -34,6 +34,8 @@ export default function TopInfo({
     const [hour, minutes] = matchResult;
     const timeZone = Number(hour) < 24 && Number(hour) >= 12 ? 'PM' : 'AM';
     formatLastBoardingTime = `${timeZone}${hour}:${minutes}`;
+  } else {
+    formatLastBoardingTime = '정보없음';
   }
 
   const handleTopInfo = () => {
