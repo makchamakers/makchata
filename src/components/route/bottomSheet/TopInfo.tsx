@@ -27,7 +27,14 @@ export default function TopInfo({
     index: paramsIndex,
   });
 
-  console.log(pathDetailLocations);
+  // 막차시간
+  const matchResult = pathDetailLocations?.lastBoardingTime?.match(/.{1,2}/g);
+  let formatLastBoardingTime;
+  if (matchResult) {
+    const [hour, minutes] = matchResult;
+    const timeZone = Number(hour) < 24 && Number(hour) >= 12 ? 'PM' : 'AM';
+    formatLastBoardingTime = `${timeZone}${hour}:${minutes}`;
+  }
 
   const handleTopInfo = () => {
     setIsBottomSheetOpen((prev) => !prev);
@@ -48,7 +55,7 @@ export default function TopInfo({
           <ul>
             <li>
               <span>막차시간 </span>
-              <span>AM00:11</span>
+              <span>{formatLastBoardingTime}</span>
             </li>
             <span></span>
             <li>
