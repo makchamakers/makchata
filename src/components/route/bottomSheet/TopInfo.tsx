@@ -81,7 +81,7 @@ const Container = styled.div`
 
   > div {
     display: flex;
-    gap: 28px;
+    gap: 24px;
   }
 `;
 
