@@ -3,12 +3,32 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import icBusBlue from 'public/assets/icons/ic_bus_blue.svg';
 import icSubGreen from 'public/assets/icons/ic_sub_green.svg';
+import useGetParamsIndex from '@/hooks/useGetParamsIndex';
+import { useRecoilState } from 'recoil';
+import { IPathProps } from '@/type/search';
+import { pathResultState } from '@/recoil/search';
+import { PathDetailResponseProps } from '@/type/path';
+import usePathDetailQuery from '@/hooks/usePathDetailQuery';
 
 export default function TopInfo({
   setIsBottomSheetOpen,
 }: {
   setIsBottomSheetOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const paramsIndex = useGetParamsIndex();
+  const [selectedPathResult] = useRecoilState<IPathProps>(pathResultState);
+  const {
+    pathDetailLocations,
+  }: { pathDetailLocations: PathDetailResponseProps } = usePathDetailQuery({
+    sx: selectedPathResult.arrival.x,
+    sy: selectedPathResult.arrival.y,
+    ex: selectedPathResult.departure.x,
+    ey: selectedPathResult.departure.y,
+    index: paramsIndex,
+  });
+
+  console.log(pathDetailLocations);
+
   const handleTopInfo = () => {
     setIsBottomSheetOpen((prev) => !prev);
   };
