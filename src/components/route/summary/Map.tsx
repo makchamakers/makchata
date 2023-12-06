@@ -1,12 +1,12 @@
 'use client';
 
 import { PathProps, PathDetailResponseProps } from '@/type/path';
-import { ParamsProps } from '@/type/route';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { pathResultState } from '@/recoil/search';
 import { IPathProps } from '@/type/search';
 import usePathDetailQuery from '@/hooks/usePathDetailQuery';
+import useGetParamsIndex from '@/hooks/useGetParamsIndex';
 
 declare global {
   interface Window {
@@ -120,7 +120,8 @@ const onLoadKakaoAPI = (
   });
 };
 
-export default function Map({ params }: ParamsProps) {
+export default function Map() {
+  const paramsIndex = useGetParamsIndex();
   const [selectedPathResult] = useRecoilState<IPathProps>(pathResultState);
   const {
     pathDetailLocations,
@@ -129,7 +130,7 @@ export default function Map({ params }: ParamsProps) {
     sy: selectedPathResult.arrival.y,
     ex: selectedPathResult.departure.x,
     ey: selectedPathResult.departure.y,
-    index: params.index,
+    index: paramsIndex,
   });
 
   // 지도불러오는 script
