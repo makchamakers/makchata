@@ -20,9 +20,9 @@ const ResultCard = ({
 }: IResultProps) => {
   const remainPath = useSetRecoilState(remainPathState);
   const pathResult = useRecoilValue(pathResultState);
-  const formattingTime = formattingBoardingTime(lastBoardingTime);
+  const formattingTime = formattingBoardingTime(lastBoardingTime, type);
   const formattingTaken = formattingTimeTaken(totalTime);
-  const remainTime = formattingRemainTime(lastBoardingTime, totalTime);
+  const remainTime = formattingRemainTime(lastBoardingTime, totalTime, type);
   const savePath = () => {
     remainPath((prev) => {
       return [...prev, pathResult];
