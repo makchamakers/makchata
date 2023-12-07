@@ -1,14 +1,18 @@
-export const formattingBoardingTime = (time: string | undefined | null) => {
-  if (!time) {
-    return '막차시간 오류';
-  }
+export const formattingBoardingTime = (time: string, type: string) => {
+  if (type === '지하철') {
+    const hours = parseInt(time.substring(0, 2), 10);
+    const minutes = parseInt(time.substring(2, 4), 10);
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 24 === 0 ? '00' : hours % 12;
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    return `${meridiem} ${formattedHours}:${formattedMinutes}`;
+  } else {
+    const [hour, minute] = time.split(':').map(Number);
+    const period = hour < 12 ? 'AM' : 'PM';
+    const formattedHour = hour % 12 || 12;
 
-  const hours = parseInt(time.substring(0, 2), 10);
-  const minutes = parseInt(time.substring(2, 4), 10);
-  const meridiem = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = hours % 24 === 0 ? '00' : hours % 12;
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  return `${meridiem} ${formattedHours}:${formattedMinutes}`;
+    return `${period} ${formattedHour}:${String(minute).padStart(2, '0')}`;
+  }
 };
 
 export const formattingTimeTaken = (time: number) => {
@@ -27,43 +31,52 @@ export const formattingTimeTaken = (time: number) => {
 };
 
 export const formattingRemainTime = (
-  boardingTime: string | undefined | null,
-  timeTaken: number
+  boardingTime: string,
+  timeTaken: number,
+  type: string
 ) => {
-  if (!boardingTime) {
-    return '막차시간 오류';
-  }
-
   const getCurrentTime = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
     const minutes = now.getMinutes().toString().padStart(2, '0');
     return `${hours}${minutes}`;
   };
-
   const currentTime = getCurrentTime();
-
   const hoursNow = parseInt(currentTime.substring(0, 2), 10);
   const minutesNow = parseInt(currentTime.substring(2, 4), 10);
-
-  const hoursBoarding = parseInt(boardingTime.substring(0, 2), 10);
-  const minutesBoarding = parseInt(boardingTime.substring(2, 4), 10);
-
-  const boardingDate = new Date();
-  boardingDate.setHours(hoursBoarding, minutesBoarding, 0);
-
   const currentDate = new Date();
   currentDate.setHours(hoursNow, minutesNow, 0);
-  const remainingTime =
-    boardingDate.getTime() - currentDate.getTime() + timeTaken * 60 * 1000;
-  const remainingHours = Math.floor(remainingTime / (60 * 60 * 1000));
-  const remainingMinutes = Math.floor(
-    (remainingTime % (60 * 60 * 1000)) / (60 * 1000)
-  );
 
-  if (remainingHours >= 1) {
-    return `${remainingHours}시간 ${remainingMinutes}분`;
+  if (type === '지하철') {
+    const hoursBoarding = parseInt(boardingTime.substring(0, 2), 10);
+    const minutesBoarding = parseInt(boardingTime.substring(2, 4), 10);
+    const boardingDate = new Date();
+    boardingDate.setHours(hoursBoarding, minutesBoarding, 0);
+    const remainingTime =
+      boardingDate.getTime() - currentDate.getTime() + timeTaken * 60 * 1000;
+    const remainingHours = Math.floor(remainingTime / (60 * 60 * 1000));
+    const remainingMinutes = Math.floor(
+      (remainingTime % (60 * 60 * 1000)) / (60 * 1000)
+    );
+    if (remainingHours >= 1) {
+      return `${remainingHours}시간 ${remainingMinutes}분`;
+    } else {
+      return `${remainingMinutes}분`;
+    }
   } else {
-    return `${remainingMinutes}분`;
+    const [hour, minute] = boardingTime.split(':');
+    const boardingDate = new Date();
+    boardingDate.setHours(Number(hour), Number(minute), 0);
+    const remainingTime =
+      boardingDate.getTime() - currentDate.getTime() + timeTaken * 60 * 1000;
+    const remainingHours = Math.floor(remainingTime / (60 * 60 * 1000));
+    const remainingMinutes = Math.floor(
+      (remainingTime % (60 * 60 * 1000)) / (60 * 1000)
+    );
+    if (remainingHours >= 1) {
+      return `${remainingHours}시간 ${remainingMinutes}분`;
+    } else {
+      return `${remainingMinutes}분`;
+    }
   }
 };
