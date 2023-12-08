@@ -40,7 +40,11 @@ export interface IQueryProps {
   route: IPathResultProps[];
 }
 
-export interface IPlaceCard extends Location {
+export interface IPlaceCard {
+  location: string;
+  address: string;
+  x: number;
+  y: number;
   type: string;
 }
 
@@ -60,4 +64,9 @@ interface Location {
 export interface IPathProps {
   arrival: Location;
   departure: Location;
+}
+
+export interface IPathPropsWithoutKey {
+  departure: Location;
+  arrival: Location;
 }
