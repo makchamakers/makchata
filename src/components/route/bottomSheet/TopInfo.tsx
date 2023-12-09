@@ -3,12 +3,39 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import icBusBlue from 'public/assets/icons/ic_bus_blue.svg';
 import icSubGreen from 'public/assets/icons/ic_sub_green.svg';
+import useGetParamsIndex from '@/hooks/useGetParamsIndex';
+import { useRecoilState } from 'recoil';
+import { IPathProps } from '@/type/search';
+import { pathResultState } from '@/recoil/search';
+import { PathDetailResponseProps } from '@/type/path';
+import usePathDetailQuery from '@/hooks/usePathDetailQuery';
 
 export default function TopInfo({
   setIsBottomSheetOpen,
 }: {
   setIsBottomSheetOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const paramsIndex = useGetParamsIndex();
+  const [selectedPathResult] = useRecoilState<IPathProps>(pathResultState);
+  const {
+    pathDetailLocations,
+  }: { pathDetailLocations: PathDetailResponseProps } = usePathDetailQuery({
+    sx: selectedPathResult.arrival.x,
+    sy: selectedPathResult.arrival.y,
+    ex: selectedPathResult.departure.x,
+    ey: selectedPathResult.departure.y,
+    index: paramsIndex,
+  });
+
+  // 막차시간
+  const matchResult = pathDetailLocations?.lastBoardingTime?.match(/.{1,2}/g);
+  let formatLastBoardingTime;
+  if (matchResult) {
+    const [hour, minutes] = matchResult;
+    const timeZone = Number(hour) < 24 && Number(hour) >= 12 ? 'PM' : 'AM';
+    formatLastBoardingTime = `${timeZone}${hour}:${minutes}`;
+  }
+
   const handleTopInfo = () => {
     setIsBottomSheetOpen((prev) => !prev);
   };
@@ -28,7 +55,7 @@ export default function TopInfo({
           <ul>
             <li>
               <span>막차시간 </span>
-              <span>AM00:11</span>
+              <span>{formatLastBoardingTime}</span>
             </li>
             <span></span>
             <li>
@@ -54,7 +81,7 @@ const Container = styled.div`
 
   > div {
     display: flex;
-    gap: 28px;
+    gap: 24px;
   }
 `;
 
