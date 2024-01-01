@@ -8,6 +8,7 @@ import {
   addressesState,
   pathResultState,
   remainPathState,
+  searchState,
 } from '@/recoil/search';
 import Input from '@/components/search/Input';
 import ResultCards from '@/components/search/Card/ResultCards';
@@ -23,6 +24,7 @@ export default function SearchPage() {
   const [inputType, setInputType] = useState('departure');
   const resetAddresses = useResetRecoilState(addressesState);
   const [remainPath, setRemainPath] = useRecoilState(remainPathState);
+  const [search, setSearch] = useRecoilState(searchState);
 
   useEffect(() => {
     if (
@@ -45,10 +47,24 @@ export default function SearchPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathResult.arrival.address, pathResult.departure.address]);
+
+  const changeSearchValue = () => {
+    setSearch({ arrival: search.departure, departure: search.arrival });
+  };
+
+  const deleteSearchValue = () => {
+    setSearch({ ...search, departure: '' });
+  };
+
   return (
     <Wrap>
       <Header>
-        <Image src={icExchange} alt={'출발지, 도착지 교환'} />
+        <Image
+          src={icExchange}
+          alt={'출발지, 도착지 교환'}
+          onClick={() => changeSearchValue()}
+          style={{ cursor: 'pointer' }}
+        />
         <div>
           <InputWrap>
             <Input
@@ -60,7 +76,12 @@ export default function SearchPage() {
           <Input inputType="arrival" onClick={() => setInputType('arrival')} />
         </div>
         <ResetBox>
-          <Image src={icX} alt={'출발지 삭제 버튼'} />
+          <Image
+            src={icX}
+            alt={'출발지 삭제 버튼'}
+            onClick={() => deleteSearchValue()}
+            style={{ cursor: 'pointer' }}
+          />
         </ResetBox>
       </Header>
       <ButtonWrap>
