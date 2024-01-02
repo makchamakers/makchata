@@ -9,6 +9,10 @@ import { IPathProps } from '@/type/search';
 import { pathResultState } from '@/recoil/search';
 import { PathDetailResponseProps } from '@/type/path';
 import usePathDetailQuery from '@/hooks/usePathDetailQuery';
+import {
+  formattingTimeTaken,
+  formattingRemainTime,
+} from '@/utils/time/boardingTime';
 
 export default function TopInfo({
   setIsBottomSheetOpen,
@@ -38,6 +42,27 @@ export default function TopInfo({
     formatLastBoardingTime = '정보없음';
   }
 
+  // 소요시간
+  const totalTime = formattingTimeTaken(pathDetailLocations?.totalTime);
+
+  // 대기시간
+  let waitingTime;
+  if (
+    pathDetailLocations?.lastBoardingTime === undefined &&
+    pathDetailLocations?.totalTime === undefined &&
+    pathDetailLocations?.type === undefined
+  ) {
+    waitingTime = undefined;
+  } else {
+    waitingTime = formattingRemainTime(
+      pathDetailLocations?.lastBoardingTime,
+      pathDetailLocations?.totalTime,
+      pathDetailLocations?.type
+    );
+  }
+
+  console.log(waitingTime);
+
   const handleTopInfo = () => {
     setIsBottomSheetOpen((prev) => !prev);
   };
@@ -51,7 +76,11 @@ export default function TopInfo({
             <Image src={icSubGreen} alt="지하철 아이콘" />
             <Image src={icBusBlue} alt="버스 아이콘" />
           </div>
-          <p>지하철+버스</p>
+          <p>
+            {pathDetailLocations?.type === undefined
+              ? '정보없음'
+              : pathDetailLocations?.type}
+          </p>
         </Vehicle>
         <TextInfo>
           <ul>
@@ -62,11 +91,17 @@ export default function TopInfo({
             <span></span>
             <li>
               <span>소요시간 </span>
-              <span>1시간 31분</span>
+              <span>{totalTime === 0 ? '정보없음' : totalTime}</span>
             </li>
           </ul>
           <p>
-            <span>16분</span> 뒤에 출발해야해요
+            {waitingTime === undefined ? (
+              <span>정보없음</span>
+            ) : (
+              <>
+                <span>{waitingTime}</span> 뒤에 출발해야해요
+              </>
+            )}
           </p>
         </TextInfo>
       </div>
