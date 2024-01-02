@@ -59,8 +59,7 @@ const SearchInput = styled.input`
   display: flex;
   width: 290px;
   position: relative;
-  padding-right: 30px;
-  padding: 10px 24px;
+  padding: 10px 50px 10px 24px;
   justify-content: center;
   align-items: center;
   gap: 10px;

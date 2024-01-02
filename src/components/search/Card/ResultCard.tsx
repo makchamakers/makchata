@@ -18,6 +18,8 @@ const ResultCard = ({
   index,
   lastBoardingTime,
 }: IResultProps) => {
+  console.log(lastBoardingTime, 'lastBoardingTime');
+  console.log(totalTime, 'totalTime');
   const remainPath = useSetRecoilState(remainPathState);
   const pathResult = useRecoilValue(pathResultState);
   const formattingTime = formattingBoardingTime(lastBoardingTime, type);
@@ -28,6 +30,7 @@ const ResultCard = ({
       return [...prev, pathResult];
     });
   };
+
   return (
     <Link
       prefetch={false}
