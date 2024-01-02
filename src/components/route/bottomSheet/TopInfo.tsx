@@ -61,8 +61,6 @@ export default function TopInfo({
     );
   }
 
-  console.log(waitingTime);
-
   const handleTopInfo = () => {
     setIsBottomSheetOpen((prev) => !prev);
   };
