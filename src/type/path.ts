@@ -12,6 +12,8 @@ export interface PathDetailRequestProps extends PathAllRequestProps {
 
 export interface PathDetailResponseProps {
   lastBoardingTime: string;
+  totalTime: number;
+  type: '버스' | '지하철';
   path: PathProps[];
 }
 export interface PathProps {
