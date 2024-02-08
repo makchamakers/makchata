@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useRef } from 'react';
 import styled from 'styled-components';
 import TopInfo from '@/components/route/bottomSheet/TopInfo';
 import BackBtn from '@/components/route/common/BackBtn';
-import PathDetail from '@/components/route/bottomSheet/PathDetail';
+import DetailRoute from '@/components/main/DetailRoute';
 
 interface IBottomSheetType {
   isBottomSheetOpen: boolean;
@@ -30,7 +30,7 @@ export default function BottomSheet({
       <div>
         <TopInfo setIsBottomSheetOpen={setIsBottomSheetOpen} />
         <PathDetailInfo className="hide-scroll">
-          <PathDetail />
+          <DetailRoute index={0} />
         </PathDetailInfo>
       </div>
     </Container>
@@ -52,14 +52,15 @@ const Container = styled.div<{ $isBottomSheetOpen: boolean }>`
     height: calc(100vh - 203px);
 
     transform: ${(props) =>
-      props.$isBottomSheetOpen ? 'translate(0, 0)' : 'translate(0, 526px)'};
+      props.$isBottomSheetOpen ? 'translate(0, 0)' : 'translate(0, 85%)'};
     transition: all 0.5s ease-in-out;
   }
 `;
 
 const PathDetailInfo = styled.div`
+  width: 390px;
   height: 100%;
-  padding: 24px 27px 0 16px;
+  padding: 24px 16px 88px;
   background-color: #fff;
   overflow: auto;
 `;
