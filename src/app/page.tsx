@@ -29,9 +29,7 @@ export default function Home() {
         />
       </TitleWrapper>
       <ContentWrapper>
-        {/* {alarm ? <AlarmCardComponent /> : <SetAlarmComponent />} */}
-        <AlarmCardComponent />
-
+        {alarm ? <AlarmCardComponent /> : <SetAlarmComponent />}
         <RouteWrap>
           {alarm === false ? (
             <InfoBox>
