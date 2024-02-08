@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import icSettingGray from 'public/assets/icons/ic_setting_gray.svg';
-import icHomeGray from 'public/assets/icons/ic_home_gray.svg';
+import icLocationOrange from 'public/assets/icons/ic_location_orange.png';
 import icUser from 'public/assets/icons/ic_user.svg';
 import styled from 'styled-components';
 
@@ -15,9 +15,6 @@ export default function NavigationBar() {
   const isMyPage = activePath === '/mypage';
 
   return (
-    // 컴포넌트가 아니라 svg 파일을 경로로 불러오니 Image 태그에  fill 속성이 먹지 않음
-    // 어떤 방법으로 해야할까요..?
-
     <Container>
       <Link href="/setting">
         <NavLink $active={isSetting}>
@@ -29,16 +26,22 @@ export default function NavigationBar() {
           <span>설정</span>
         </NavLink>
       </Link>
-      <Link href="/">
-        <NavLink $active={isHome}>
-          <Image
-            src={icHomeGray}
-            alt={'홈 화면으로 이동'}
-            color={isHome ? '#FF8048' : '#BBBBBB'}
-          />
-          <span>홈</span>
-        </NavLink>
-      </Link>
+      <CircleWrapper>
+        <Circle>
+          <Link href="/">
+            <NavLink $active={isHome}>
+              <Image
+                src={icLocationOrange}
+                alt={'홈 화면으로 이동'}
+                color={isHome ? '#FF8048' : '#BBBBBB'}
+                width={24}
+                height={28}
+              />
+            </NavLink>
+          </Link>
+        </Circle>
+      </CircleWrapper>
+      <CircleText $active={isHome}>막차 찾기</CircleText>
       <Link href="/mypage">
         <NavLink $active={isMyPage}>
           <Image
@@ -81,4 +84,28 @@ const NavLink = styled.div<{ $active: boolean }>`
     line-height: 18px;
     color: ${({ $active }) => ($active ? '#FF8048' : '#BBBBBB')};
   }
+`;
+
+const CircleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Circle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  margin-bottom: 50px;
+  padding: 14px;
+  border-radius: 50%;
+  box-shadow: 0px -4px 10px 0px rgba(0, 0, 0, 0.08);
+`;
+
+const CircleText = styled.span<{ $active: boolean }>`
+  position: absolute;
+  bottom: 30px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${({ $active }) => ($active ? '#FF8048' : '#BBBBBB')};
 `;

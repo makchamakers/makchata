@@ -2,13 +2,13 @@
 import NavigationBar from '@/components/NavigationBar';
 import Image from 'next/image';
 import styled from 'styled-components';
-import icExclamationMark from 'public/assets/icons/ic_exclamationMark_gray.svg';
+import icWayMark from 'public/assets/icons/ic_way_mark.png';
 import icCharDefault from 'public/assets/icons/ic_char_default.png';
 import DetailRoute from '@/components/main/DetailRoute';
 import AlarmCardComponent from '@/components/main/AlarmCard';
 import { useRecoilState } from 'recoil';
 import { alarmState } from '@/recoil/alarm';
-import SetAlaramCardComponent from '@/components/main/SetAlaramCard';
+import SetAlarmComponent from '@/components/main/SetAlarmCardComponent';
 
 export default function Home() {
   const [alarm] = useRecoilState(alarmState);
@@ -29,16 +29,17 @@ export default function Home() {
         />
       </TitleWrapper>
       <ContentWrapper>
-        {alarm ? <AlarmCardComponent /> : <SetAlaramCardComponent />}
+        {/* {alarm ? <AlarmCardComponent /> : <SetAlarmComponent />} */}
+        <AlarmCardComponent />
 
         <RouteWrap>
           {alarm === false ? (
             <InfoBox>
               <Image
-                src={icExclamationMark}
+                src={icWayMark}
                 alt="alert이미지"
-                width={40}
-                height={40}
+                width={80}
+                height={80}
                 priority
               />
               <p>막차 알림을 설정하면 경로가 나타나요</p>

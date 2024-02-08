@@ -7,7 +7,7 @@ export const getCurrentLocation = async (
 ) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_LOCAL}?latitude=${latitude}&longitude=${longitude}`
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}?latitude=${latitude}&longitude=${longitude}`
     );
     return await res.json();
   } catch (error) {
@@ -19,7 +19,7 @@ export const getCurrentLocation = async (
 export const getLocationSearchResults = async (search: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_LOCAL}/search?search=${search}`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/search?search=${search}`,
       {
         cache: 'force-cache',
       }
@@ -41,7 +41,7 @@ export const getLocationSearchResults = async (search: string) => {
 export const getPathLists = async ({ sx, sy, ex, ey }: PathAllRequestProps) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_LOCAL}/destination?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
     );
     return await res.json();
   } catch (error) {
@@ -59,7 +59,7 @@ export const getPathDetail = async ({
 }: PathDetailRequestProps) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_LOCAL}/destination/${index}?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/destination/${index}?sx=${sx}&sy=${sy}&ex=${ex}&ey=${ey}`
     );
     return await res.json();
   } catch (error) {
