@@ -1,9 +1,11 @@
 import { alarmSettingState, alarmState } from '@/recoil/alarm';
 import { updateCurrentTime } from '@/utils/time/alarmTime';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import IcClose from 'public/assets/icons/ic_close.png';
 
 export const AlarmCardComponent = () => {
   const alarmSettingTime: Date = useRecoilValue(alarmSettingState);
@@ -27,12 +29,10 @@ export const AlarmCardComponent = () => {
     setRestHour(formattedRestHour);
     setRestMinute(formattedRestMinute);
     setTimeGage(currentLeftTime);
-
     // 그 후에는 1분마다 실행
     const timerId = setInterval(updateCurrentTime, 60000);
-
     return () => {
-      clearInterval(timerId); // 컴포넌트가 언마운트되면 타이머 해제
+      clearInterval(timerId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -48,71 +48,76 @@ export const AlarmCardComponent = () => {
   const progress = timeGage / 100;
   const circleProgress = CIRCUMFERENCE * (1 - progress);
   return (
-    <AlarmCard>
-      <AlarmSetting>
-        <StartingPoint $alarm={alarm.toString()}>
-          출발지
-          <Link href={'/search'}>
-            {alarm === false ? '출발지 설정하기' : ''}
-          </Link>
-        </StartingPoint>
-        <Destination $alarm={alarm.toString()}>
-          도착지
-          <Link href={'/search'}>
-            {alarm === false ? '도착지 설정하기' : ''}
-          </Link>
-        </Destination>
-        <StartAlarm $alarm={alarm.toString()}>
-          <p>출발 알림</p>
-          <AlarmToggle $alarm={alarm.toString()}>
-            <ToggleSwitch
-              $alarm={alarm.toString()}
-              onClick={() => {
-                alarmSettingHandler();
-              }}
-            >
-              {alarm === false ? 'OFF' : 'ON'}
-            </ToggleSwitch>
-          </AlarmToggle>
-        </StartAlarm>
-      </AlarmSetting>
-      <AlarmGage>
-        <svg
-          className="circle_progress"
-          width="120"
-          height="120"
-          viewBox="0 0 120 120"
-        >
-          <circle
-            className="frame"
-            cx="60"
-            cy="60"
-            r={RADIUS}
-            strokeWidth="15"
-            fill="transparent"
-            stroke="#ddd"
-            strokeDasharray={CIRCUMFERENCE}
-            strokeDashoffset="0"
-            strokeLinecap="round"
-          />
-          <circle
-            className="bar"
-            cx="60"
-            cy="60"
-            r={RADIUS}
-            stroke={alarm === false ? '#ddd' : '#FFD9C9'}
-            strokeWidth="15"
-            strokeDasharray={CIRCUMFERENCE}
-            strokeDashoffset={circleProgress}
-            fill="transparent"
-            strokeLinecap="round"
-          />
-        </svg>
-        <AlarmTimer $alarm={alarm.toString()}>
-          {alarm === false ? '00:00' : `${restHour} : ${restMinute}`}
-        </AlarmTimer>
-      </AlarmGage>
-    </AlarmCard>
+    <>
+      <AlarmCard>
+        <AlarmSetting>
+          <StartingPoint $alarm={alarm.toString()}>
+            출발지
+            <Link href={'/search'}>
+              {alarm === false ? '출발지 설정하기' : ''}
+            </Link>
+          </StartingPoint>
+          <Destination $alarm={alarm.toString()}>
+            도착지
+            <Link href={'/search'}>
+              {alarm === false ? '도착지 설정하기' : ''}
+            </Link>
+          </Destination>
+          <StartAlarm $alarm={alarm.toString()}>
+            <p>출발 알림</p>
+            <AlarmToggle $alarm={alarm.toString()}>
+              <ToggleSwitch
+                $alarm={alarm.toString()}
+                onClick={() => {
+                  alarmSettingHandler();
+                }}
+              >
+                {alarm === false ? 'OFF' : 'ON'}
+              </ToggleSwitch>
+            </AlarmToggle>
+          </StartAlarm>
+        </AlarmSetting>
+        <AlarmGage>
+          <svg
+            className="circle_progress"
+            width="120"
+            height="120"
+            viewBox="0 0 120 120"
+          >
+            <circle
+              className="frame"
+              cx="60"
+              cy="60"
+              r={RADIUS}
+              strokeWidth="15"
+              fill="transparent"
+              stroke="#ddd"
+              strokeDasharray={CIRCUMFERENCE}
+              strokeDashoffset="0"
+              strokeLinecap="round"
+            />
+            <circle
+              className="bar"
+              cx="60"
+              cy="60"
+              r={RADIUS}
+              stroke={alarm === false ? '#ddd' : '#FFD9C9'}
+              strokeWidth="15"
+              strokeDasharray={CIRCUMFERENCE}
+              strokeDashoffset={circleProgress}
+              fill="transparent"
+              strokeLinecap="round"
+            />
+          </svg>
+          <AlarmTimer $alarm={alarm.toString()}>
+            {alarm === false ? '00:00' : `${restHour} : ${restMinute}`}
+          </AlarmTimer>
+        </AlarmGage>
+      </AlarmCard>
+      <CloseButton>
+        <Image src={IcClose} alt={'지정한 경로 삭제 버튼'}></Image>
+      </CloseButton>
+    </>
   );
 };
 
@@ -221,4 +226,9 @@ const AlarmTimer = styled.p<{ $alarm: string }>`
   font-size: 24px;
   text-align: center;
   color: ${(props) => (props.$alarm === 'true' ? '#FF8048' : '#aaa')};
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 0;
 `;

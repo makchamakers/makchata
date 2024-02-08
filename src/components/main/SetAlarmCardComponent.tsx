@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const SetAlaramCardComponent = () => {
+const SetAlarmCardComponent = () => {
   return (
     <SetAlarmCard>
       <AlarmBox>
@@ -15,7 +15,7 @@ const SetAlaramCardComponent = () => {
   );
 };
 
-export default SetAlaramCardComponent;
+export default SetAlarmCardComponent;
 
 const SetAlarmCard = styled.div`
   position: absolute;
