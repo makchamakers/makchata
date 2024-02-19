@@ -230,5 +230,8 @@ const AlarmTimer = styled.p<{ $alarm: string }>`
 
 const CloseButton = styled.button`
   position: absolute;
-  right: 0;
+  border: none;
+  background-color: transparent;
+  right: 25px;
+  top: -70px;
 `;
