@@ -28,8 +28,8 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (
-      pathResult.arrival.address.length !== 0 &&
-      pathResult.departure.address.length !== 0
+      pathResult?.arrival?.address?.length !== 0 &&
+      pathResult?.departure?.address?.length !== 0
     ) {
       resetAddresses();
     }
@@ -40,8 +40,8 @@ export default function SearchPage() {
   // 그렇기 때문에 deps에 보이는 것처럼 적어 놓음.
   useEffect(() => {
     if (
-      pathResult.arrival.address.length !== 0 &&
-      pathResult.departure.address.length !== 0
+      pathResult?.arrival?.address?.length !== 0 &&
+      pathResult?.departure?.address?.length !== 0
     ) {
       setRemainPath([...remainPath, pathResult]);
     }
