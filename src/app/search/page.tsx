@@ -95,11 +95,11 @@ export default function SearchPage() {
         <ChipButton text="장소 즐겨찾기" onClick={() => console.log('hi')} />
       </ButtonWrap>
       {/* input들에 value가 없으면서, localStorage에 value가 있을 때 */}
-      {addresses.length === 0 &&
-        pathResult.arrival.address.length === 0 &&
-        pathResult.departure.address.length === 0 && <RouteCard />}
-      {addresses.length > 0 &&
-        addresses.map(({ address_name, place_name, x, y }, index) => {
+      {addresses?.length === 0 &&
+        pathResult?.arrival?.address?.length === 0 &&
+        pathResult?.departure?.address?.length === 0 && <RouteCard />}
+      {addresses?.length > 0 &&
+        addresses?.map(({ address_name, place_name, x, y }, index) => {
           return (
             <PlaceCard
               key={index}
@@ -111,8 +111,8 @@ export default function SearchPage() {
             />
           );
         })}
-      {pathResult.arrival.address.length !== 0 &&
-        pathResult.departure.address.length !== 0 && <ResultCards />}
+      {pathResult?.arrival?.address?.length !== 0 &&
+        pathResult?.departure?.address?.length !== 0 && <ResultCards />}
     </Wrap>
   );
 }
